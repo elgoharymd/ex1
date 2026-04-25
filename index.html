@@ -2,11 +2,22 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>دوبامين | المركز العلمي للدوبامين</title>
     
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -21,6 +32,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -28,344 +42,326 @@
     <style>
         * { font-family: 'Cairo', sans-serif; }
         html { scroll-behavior: smooth; }
-        
         :root { --primary: #2563eb; --primary-dark: #1d4ed8; }
-        
         body { background: linear-gradient(135deg, #f8fafc, #eff6ff); }
         
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(37, 99, 235, 0.15);
-        }
+        .glass-nav { background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(37,99,235,0.15); }
+        .premium-card { background: white; border-radius: 24px; transition: all 0.3s ease; border: 1px solid rgba(37,99,235,0.1); overflow: hidden; cursor: pointer; }
+        .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -15px rgba(0,0,0,0.15); }
+        .card-cover { height: 200px; background-size: cover; background-position: center; background-color: #e2e8f0; }
+        .gradient-text { background: linear-gradient(135deg, #1e40af, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; }
         
-        .premium-card {
-            background: white;
-            border-radius: 24px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(37, 99, 235, 0.1);
-            overflow: hidden;
-            cursor: pointer;
-        }
-        
-        .premium-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.15);
-        }
-        
-        .card-cover {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            background-color: #e2e8f0;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        /* Admin Panel */
-        .admin-panel {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 90%;
-            max-width: 500px;
-            height: 100vh;
-            background: white;
-            z-index: 1000;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.2);
-        }
-        
+        .admin-panel { position: fixed; top: 0; right: -100%; width: 85%; max-width: 450px; height: 100vh; background: white; z-index: 1000; transition: right 0.3s ease; overflow-y: auto; box-shadow: -5px 0 30px rgba(0,0,0,0.2); }
         .admin-panel.open { right: 0; }
-        
-        .admin-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-            display: none;
-        }
-        
+        .admin-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; }
         .admin-overlay.open { display: block; }
-        
-        .admin-tab {
-            padding: 8px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        
+        .admin-tab { padding: 8px 12px; border-radius: 12px; cursor: pointer; transition: 0.2s; font-size: 13px; }
         .admin-tab.active { background: var(--primary); color: white; }
         
-        .quiz-option {
-            padding: 12px;
+        /* Quiz Styles - New Design */
+        .quiz-question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #eef2ff;
+        }
+        
+        .quiz-question-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .quiz-question-number {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
             border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            margin-left: 12px;
+        }
+        
+        .quiz-option {
+            padding: 12px 16px;
+            border-radius: 14px;
             background: #f8fafc;
             border: 2px solid #e2e8f0;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             text-align: center;
+            font-weight: 500;
         }
         
-        .quiz-option:hover { border-color: var(--primary); background: #eff6ff; }
-        .quiz-option.selected { background: var(--primary); color: white; }
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+            transform: translateX(-3px);
+        }
+        
+        .quiz-option.selected {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border-color: #1e40af;
+            transform: scale(1.02);
+        }
+        
+        /* Result Styles */
+        .result-card {
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         
         .result-normal { background: linear-gradient(135deg, #22c55e, #16a34a); }
         .result-recovery { background: linear-gradient(135deg, #eab308, #ca8a04); }
         .result-severe { background: linear-gradient(135deg, #ef4444, #dc2626); }
         
-        .admin-trigger {
-            position: fixed;
-            bottom: 15px;
-            left: 15px;
-            width: 35px;
-            height: 35px;
-            background: rgba(0,0,0,0.2);
+        .score-circle {
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
+            background: rgba(255,255,255,0.2);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            z-index: 98;
+            margin: 0 auto;
+            backdrop-filter: blur(5px);
         }
         
-        .admin-trigger:hover { background: rgba(0,0,0,0.5); color: white; }
-        
-        .scroll-top {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 45px;
-            height: 45px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s;
-            z-index: 99;
+        .progress-bar-custom {
+            height: 12px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.3);
+            overflow: hidden;
         }
         
+        .progress-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: white;
+            transition: width 1.2s cubic-bezier(0.22, 0.97, 0.36, 1);
+            width: 0%;
+        }
+        
+        .admin-trigger { position: fixed; bottom: 20px; left: 20px; width: 45px; height: 45px; background: rgba(30,41,59,0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 98; }
+        .admin-trigger:hover { background: #1e293b; transform: scale(1.05); }
+        .admin-trigger i { color: white; font-size: 20px; }
+        
+        .scroll-top { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 99; }
         .scroll-top.visible { opacity: 1; visibility: visible; }
         
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            background: white;
-            border-radius: 24px;
-            border: 2px dashed #cbd5e1;
-        }
-        
+        .empty-state { text-align: center; padding: 50px 20px; background: white; border-radius: 24px; border: 2px dashed #cbd5e1; }
         .empty-state i { font-size: 50px; color: #94a3b8; margin-bottom: 15px; }
-        .empty-state h3 { font-size: 18px; font-weight: 600; color: #475569; }
         
-        .shimmer {
-            background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 20px;
-        }
+        .shimmer { background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 20px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        
-        .detail-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 32px;
-            padding: 35px;
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
-        }
-        
-        .detail-cover {
-            width: 100%;
-            height: 350px;
-            background-size: cover;
-            background-position: center;
-            background-color: #e2e8f0;
-            border-radius: 20px;
-            margin-bottom: 25px;
-        }
-        
-        .share-btn {
-            background: #f0fdf4;
-            color: #16a34a;
-            border: 1px solid #bbf7d0;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
+        .detail-container { max-width: 900px; margin: 0 auto; background: white; border-radius: 32px; padding: 25px; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1); }
+        .detail-cover { width: 100%; height: 250px; background-size: cover; background-position: center; background-color: #e2e8f0; border-radius: 20px; margin-bottom: 25px; }
+        .share-btn { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; cursor: pointer; transition: 0.3s; padding: 8px 16px; border-radius: 12px; }
         .share-btn:hover { background: #16a34a; color: white; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .logo-img { height: 40px; width: auto; object-fit: contain; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+        .grid-responsive { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        @media (max-width: 640px) { .grid-responsive { gap: 1rem; } }
+        .nav-link { transition: 0.2s; }
+        .nav-link:hover { color: var(--primary); }
+        
+        /* Quiz Progress Bar */
+        .quiz-progress {
+            background: #e2e8f0;
+            border-radius: 30px;
+            height: 8px;
             overflow: hidden;
         }
-        
-        .progress-bar { transition: width 1s ease-out; }
-        
-        .logo-img { height: 45px; width: auto; object-fit: contain; }
-        
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 16px;
-        }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+        .quiz-progress-fill {
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
             height: 100%;
+            border-radius: 30px;
+            transition: width 0.3s ease;
+            width: 0%;
         }
-        
-        button { cursor: pointer; }
     </style>
 </head>
 <body>
 
     <!-- Header -->
     <header class="glass-nav sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
-            <a href="./" class="flex items-center gap-3">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBvZ0YYLa9TxsEfprbBhFoVfHlVthVD82mlNonGJanDw7E79TtNrW_BrGeOcmwHK0Tp0BaXihRTF6P-dn2weeY4Kc6CrUQZwv5Z6xaaiMmL3U_XgpdDQPogdWWu4VMZ9qMc75XT3WZbHoWsDMSJpXe532L5JGsKZSXRegJ-5DOjPv9tMBAqKT03CFVpXJY/s640/moaz1.png" 
-                     alt="Logo" class="logo-img">
-                <h1 id="headerTitle" class="text-xl font-black gradient-text">دوبامين</h1>
+        <div class="container mx-auto px-3 py-2 flex flex-wrap justify-between items-center">
+            <a href="./" class="flex items-center gap-2">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg" class="logo-img" alt="logo">
+                <h1 id="headerTitle" class="text-lg md:text-xl font-black gradient-text">دوبامين</h1>
             </a>
-            <div class="flex flex-wrap gap-1" id="navLinks">
-                <a href="./" class="nav-link px-3 py-1.5 text-gray-600 hover:text-blue-600 text-sm"><i class="fas fa-home ml-1"></i> الرئيسية</a>
-                <a href="#reports" class="nav-link px-3 py-1.5 text-gray-600 hover:text-blue-600 text-sm"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
-                <a href="#articles" class="nav-link px-3 py-1.5 text-gray-600 hover:text-blue-600 text-sm"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
-                <a href="#investigations" class="nav-link px-3 py-1.5 text-gray-600 hover:text-blue-600 text-sm"><i class="fas fa-microscope ml-1"></i> التحقيقات</a>
-                <a href="#infographics" class="nav-link px-3 py-1.5 text-gray-600 hover:text-blue-600 text-sm"><i class="fas fa-chart-pie ml-1"></i> إنفوجرافيك</a>
-                <a href="#videos" class="nav-link px-3 py-1.5 text-gray-600 hover:text-blue-600 text-sm"><i class="fas fa-video ml-1"></i> فيديو</a>
-                <a href="#quiz" class="nav-link px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm"><i class="fas fa-tasks ml-1"></i> الاختبار</a>
+            <div class="flex flex-wrap gap-1">
+                <a href="./" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-home ml-1"></i> الرئيسية</a>
+                <a href="#reports" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
+                <a href="#articles" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
+                <a href="#news" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-bullhorn ml-1"></i> الأخبار</a>
+                <a href="#interviews" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-comments ml-1"></i> حوارات</a>
+                <a href="#investigations" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-microscope ml-1"></i> تحقيقات</a>
+                <a href="#quiz" class="nav-link px-2 md:px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs md:text-sm"><i class="fas fa-chart-line ml-1"></i> مقياس الإدمان</a>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main id="mainContent" class="container mx-auto px-4 py-8 max-w-6xl">
-        <div class="shimmer h-96 w-full"></div>
+    <main id="mainContent" class="container mx-auto px-3 py-6 max-w-6xl">
+        <div class="shimmer h-80 w-full"></div>
     </main>
 
     <!-- Footer -->
-    <footer id="siteFooter" class="bg-gray-900 text-white py-6 mt-10 text-center">
-        <p id="footerText">© 2026 المركز العلمي للدوبامين</p>
+    <footer class="bg-gray-900 text-white py-6 mt-10 text-center">
+        <p id="footerText" class="text-sm">© 2025 المركز العلمي للدوبامين</p>
     </footer>
 
     <!-- Admin Panel -->
     <div id="adminOverlay" class="admin-overlay"></div>
     <div id="adminPanel" class="admin-panel">
-        <div class="bg-gray-900 text-white p-4 sticky top-0 flex justify-between">
-            <span><i class="fas fa-lock ml-2"></i> لوحة الإدارة</span>
+        <div class="bg-gray-900 text-white p-3 sticky top-0 flex justify-between items-center">
+            <span class="text-sm"><i class="fas fa-lock ml-2"></i> لوحة الإدارة</span>
             <button onclick="closeAdminPanel()" class="text-white text-xl">&times;</button>
         </div>
-        <div class="p-4">
-            <div class="flex flex-wrap gap-2 mb-4 border-b pb-2">
-                <button onclick="showAdminTab('reports')" class="admin-tab active" id="tabReports">التقارير</button>
-                <button onclick="showAdminTab('articles')" class="admin-tab" id="tabArticles">المقالات</button>
-                <button onclick="showAdminTab('investigations')" class="admin-tab" id="tabInvestigations">التحقيقات</button>
+        <div class="p-3">
+            <div class="flex flex-wrap gap-1 mb-3 border-b pb-2">
+                <button onclick="showAdminTab('reports')" class="admin-tab active" id="tabReports">تقارير</button>
+                <button onclick="showAdminTab('articles')" class="admin-tab" id="tabArticles">مقالات</button>
+                <button onclick="showAdminTab('news')" class="admin-tab" id="tabNews">أخبار</button>
+                <button onclick="showAdminTab('interviews')" class="admin-tab" id="tabInterviews">حوارات</button>
+                <button onclick="showAdminTab('investigations')" class="admin-tab" id="tabInvestigations">تحقيقات</button>
                 <button onclick="showAdminTab('infographics')" class="admin-tab" id="tabInfographics">إنفوجرافيك</button>
                 <button onclick="showAdminTab('videos')" class="admin-tab" id="tabVideos">فيديو</button>
                 <button onclick="showAdminTab('quiz')" class="admin-tab" id="tabQuiz">الاختبار</button>
-                <button onclick="showAdminTab('texts')" class="admin-tab" id="tabTexts">النصوص</button>
+                <button onclick="showAdminTab('texts')" class="admin-tab" id="tabTexts">نصوص</button>
             </div>
             
             <div id="reportsPanel">
-                <div class="bg-blue-50 p-3 rounded-xl mb-4">
-                    <input type="text" id="repTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="repDate" placeholder="التاريخ" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="repImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <textarea id="repSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-2 text-sm"></textarea>
-                    <textarea id="repContent" placeholder="المحتوى الكامل" rows="4" class="w-full border rounded-lg p-2 mb-2 text-sm"></textarea>
-                    <input type="text" id="repRef" placeholder="المرجع" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <button onclick="addReport()" class="w-full bg-blue-600 text-white py-2 rounded-lg">حفظ</button>
+                <div class="bg-blue-50 p-2 rounded-xl mb-3">
+                    <input type="text" id="repTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="repDate" placeholder="التاريخ" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="repImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <textarea id="repSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <textarea id="repContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <button onclick="addItem('reports')" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm">حفظ</button>
                 </div>
-                <div id="reportsList" class="space-y-2 max-h-80 overflow-y-auto"></div>
+                <div id="reportsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
             </div>
             
             <div id="articlesPanel" class="hidden">
-                <div class="bg-green-50 p-3 rounded-xl mb-4">
-                    <input type="text" id="artTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="artCategory" placeholder="التصنيف" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="artImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <textarea id="artSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-2 text-sm"></textarea>
-                    <textarea id="artContent" placeholder="المحتوى الكامل" rows="4" class="w-full border rounded-lg p-2 mb-2 text-sm"></textarea>
-                    <input type="number" id="artReadTime" placeholder="وقت القراءة" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <button onclick="addArticle()" class="w-full bg-green-600 text-white py-2 rounded-lg">حفظ</button>
+                <div class="bg-green-50 p-2 rounded-xl mb-3">
+                    <input type="text" id="artTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="artCategory" placeholder="التصنيف" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="artImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <textarea id="artSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <textarea id="artContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <input type="number" id="artReadTime" placeholder="وقت القراءة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <button onclick="addItem('articles')" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm">حفظ</button>
                 </div>
-                <div id="articlesList" class="space-y-2 max-h-80 overflow-y-auto"></div>
+                <div id="articlesList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
+            </div>
+            
+            <div id="newsPanel" class="hidden">
+                <div class="bg-yellow-50 p-2 rounded-xl mb-3">
+                    <input type="text" id="newsTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="newsDate" placeholder="التاريخ" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="newsImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <textarea id="newsSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <textarea id="newsContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <button onclick="addItem('news')" class="w-full bg-yellow-600 text-white py-2 rounded-lg text-sm">حفظ</button>
+                </div>
+                <div id="newsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
+            </div>
+            
+            <div id="interviewsPanel" class="hidden">
+                <div class="bg-pink-50 p-2 rounded-xl mb-3">
+                    <input type="text" id="interTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="interSpeaker" placeholder="المتحدث" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="interDate" placeholder="التاريخ" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="interImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <textarea id="interSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <textarea id="interContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <button onclick="addItem('interviews')" class="w-full bg-pink-600 text-white py-2 rounded-lg text-sm">حفظ</button>
+                </div>
+                <div id="interviewsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
             </div>
             
             <div id="investigationsPanel" class="hidden">
-                <div class="bg-purple-50 p-3 rounded-xl mb-4">
-                    <input type="text" id="invTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <textarea id="invSummary" placeholder="الوصف" rows="2" class="w-full border rounded-lg p-2 mb-2 text-sm"></textarea>
-                    <button onclick="addInvestigation()" class="w-full bg-purple-600 text-white py-2 rounded-lg">حفظ</button>
+                <div class="bg-purple-50 p-2 rounded-xl mb-3">
+                    <input type="text" id="invTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="invImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <textarea id="invSummary" placeholder="الوصف" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <textarea id="invContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <button onclick="addItem('investigations')" class="w-full bg-purple-600 text-white py-2 rounded-lg text-sm">حفظ</button>
                 </div>
-                <div id="investigationsList" class="space-y-2 max-h-80 overflow-y-auto"></div>
+                <div id="investigationsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
             </div>
             
             <div id="infographicsPanel" class="hidden">
-                <div class="bg-orange-50 p-3 rounded-xl mb-4">
-                    <input type="text" id="infTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="infImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <button onclick="addInfographic()" class="w-full bg-orange-600 text-white py-2 rounded-lg">حفظ</button>
+                <div class="bg-orange-50 p-2 rounded-xl mb-3">
+                    <input type="text" id="infTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="infImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <button onclick="addItem('infographics')" class="w-full bg-orange-600 text-white py-2 rounded-lg text-sm">حفظ</button>
                 </div>
-                <div id="infographicsList" class="space-y-2 max-h-80 overflow-y-auto"></div>
+                <div id="infographicsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
             </div>
             
             <div id="videosPanel" class="hidden">
-                <div class="bg-red-50 p-3 rounded-xl mb-4">
-                    <input type="text" id="vidTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="vidUrl" placeholder="رابط يوتيوب" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <button onclick="addVideo()" class="w-full bg-red-600 text-white py-2 rounded-lg">حفظ</button>
+                <div class="bg-red-50 p-2 rounded-xl mb-3">
+                    <input type="text" id="vidTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="vidUrl" placeholder="رابط يوتيوب" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <textarea id="vidDesc" placeholder="الوصف" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <button onclick="addItem('videos')" class="w-full bg-red-600 text-white py-2 rounded-lg text-sm">حفظ</button>
                 </div>
-                <div id="videosList" class="space-y-2 max-h-80 overflow-y-auto"></div>
+                <div id="videosList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
             </div>
             
             <div id="quizPanel" class="hidden">
-                <div class="bg-gray-50 p-3 rounded-xl">
-                    <textarea id="quizJson" rows="12" class="w-full border rounded-lg p-2 text-sm font-mono"></textarea>
-                    <button onclick="saveQuiz()" class="w-full bg-blue-600 text-white py-2 rounded-lg mt-3">حفظ الأسئلة</button>
+                <div class="bg-gray-50 p-2 rounded-xl">
+                    <h3 class="font-bold text-sm mb-2">أسئلة مقياس الدوبامين</h3>
+                    <p class="text-xs text-gray-500 mb-2">كل سؤال: نص السؤال، 4 خيارات، درجات [4,3,2,1]</p>
+                    <textarea id="quizJson" rows="10" class="w-full border rounded-lg p-2 text-xs font-mono"></textarea>
+                    <button onclick="saveQuiz()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm mt-2">حفظ الأسئلة</button>
                 </div>
             </div>
             
             <div id="textsPanel" class="hidden">
-                <div class="bg-indigo-50 p-3 rounded-xl">
-                    <input type="text" id="textSiteTitle" placeholder="عنوان الصفحة" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textHeaderTitle" placeholder="عنوان الهيدر" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textHeroTitle" placeholder="نص الهيرو" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <textarea id="textHeroDesc" placeholder="وصف الهيرو" rows="2" class="w-full border rounded-lg p-2 mb-2 text-sm"></textarea>
-                    <input type="text" id="textReportsTitle" placeholder="عنوان التقارير" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textArticlesTitle" placeholder="عنوان المقالات" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textInvestigationsTitle" placeholder="عنوان التحقيقات" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textInfographicsTitle" placeholder="عنوان الإنفوجرافيك" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textVideosTitle" placeholder="عنوان الفيديو" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textQuizTitle" placeholder="عنوان الاختبار" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <input type="text" id="textFooter" placeholder="نص التذييل" class="w-full border rounded-lg p-2 mb-2 text-sm">
-                    <button onclick="saveTexts()" class="w-full bg-indigo-600 text-white py-2 rounded-lg mt-3">حفظ</button>
+                <div class="bg-indigo-50 p-2 rounded-xl">
+                    <input type="text" id="textSiteTitle" placeholder="عنوان الصفحة" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textHeaderTitle" placeholder="عنوان الهيدر" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textHeroTitle" placeholder="نص الهيرو" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <textarea id="textHeroDesc" placeholder="وصف الهيرو" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
+                    <input type="text" id="textReportsTitle" placeholder="عنوان التقارير" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textArticlesTitle" placeholder="عنوان المقالات" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textNewsTitle" placeholder="عنوان الأخبار" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textInterviewsTitle" placeholder="عنوان الحوارات" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textInvestigationsTitle" placeholder="عنوان التحقيقات" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textInfographicsTitle" placeholder="عنوان الإنفوجرافيك" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textVideosTitle" placeholder="عنوان الفيديو" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textQuizTitle" placeholder="عنوان الاختبار" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <input type="text" id="textFooter" placeholder="نص التذييل" class="w-full border rounded-lg p-2 mb-1 text-sm">
+                    <button onclick="saveTexts()" class="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm mt-2">حفظ</button>
                 </div>
             </div>
         </div>
@@ -373,7 +369,7 @@
 
     <!-- Admin Trigger -->
     <div class="admin-trigger" onclick="openAdminPanel()">
-        <i class="fas fa-cog text-gray-600 text-sm"></i>
+        <i class="fas fa-cog"></i>
     </div>
     
     <div id="scrollTopBtn" class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
@@ -395,24 +391,46 @@
         const db = firebase.database();
         
         // Global
-        let quizData = [];
-        let quizAnswers = [];
+        let quizQuestions = [];
+        let userAnswers = [];
+        let currentQuestionIndex = 0;
+        let quizMode = 'all'; // 'all' or 'one-by-one'
+        
+        const defaultQuiz = [
+            { text: "كم مرة تشعر برغبة ملحة في التحقق من هاتفك ووسائل التواصل الاجتماعي؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تجد صعوبة في التوقف عن استخدام الأجهزة الإلكترونية (هاتف، كمبيوتر، تلفاز)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تتناول الطعام بدافع الملل أو التوتر وليس بسبب الجوع؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تشعر بالنشوة أو السعادة عند شراء أشياء جديدة حتى لو لم تكن بحاجتها؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تقضي ساعات طويلة في مشاهدة المقاطع القصيرة (تيك توك، ريلز، شورتس)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تجد نفسك تتصفح الإنترنت دون هدف محدد لفترات طويلة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تؤجل مهامك اليومية بسبب الرغبة في الترفيه (مسلسل، لعبة، تصفح)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تشعر بالقلق أو الانزعاج عندما تنفد بطارية هاتفك أو لا يتوفر إنترنت؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تستهلك المشروبات التي تحتوي على الكافيين (قهوة، شاي، مشروبات طاقة) بشكل مفرط؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تجد صعوبة في الاستمتاع بالأنشطة اليومية بدون وجود محفز رقمي (هاتف، تلفاز)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تشعر بالحاجة إلى الحصول على إعجابات أو تفاعل على منشوراتك؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تمارس سلوكيات خطرة بحثًا عن الإثارة والدوبامين؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تشعر بالرغبة في المقامرة أو الألعاب التي تعتمد على الحظ؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تؤثر عاداتك الرقمية على نومك أو علاقاتك الاجتماعية؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تحاول الإقلاع عن عادة معينة ولكنك تفشل؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] }
+        ];
         
         const defaultTexts = {
-            siteTitle: "دوبامين | المركز العلمي للدوبامين",
+            siteTitle: "دوبامين | المركز العلمي",
             headerTitle: "دوبامين",
             heroTitle: "الدوبامين",
             heroDesc: "استكشف أحدث الأبحاث والتقارير حول الناقل العصبي الأكثر تأثيرًا",
             reportsTitle: "التقارير العلمية",
             articlesTitle: "المقالات العلمية",
-            investigationsTitle: "التحقيقات الميدانية",
+            newsTitle: "أخبار الدوبامين",
+            interviewsTitle: "حوارات وخبراء",
+            investigationsTitle: "التحقيقات",
             infographicsTitle: "الإنفوجرافيك",
             videosTitle: "الفيديوهات",
             quizTitle: "مقياس إدمان الدوبامين",
-            footer: "© 2026 المركز العلمي للدوبامين"
+            footer: "© 2025 المركز العلمي للدوبامين"
         };
         
-        // Helper functions
+        // Helpers
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
         
         function getYouTubeEmbedUrl(url) {
@@ -426,7 +444,6 @@
                 let id = params.get('v');
                 if (id) return `https://www.youtube.com/embed/${id}`;
             }
-            if (url.includes('youtube.com/embed/')) return url;
             return url;
         }
         
@@ -440,17 +457,17 @@
             else btn.classList.remove('visible');
         });
         
-        // Fix navigation links - make sure they scroll to sections
+        // Navigation
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
-                if (href && href.startsWith('#')) {
+                if (href === './' || href === '#' || href === '') {
                     e.preventDefault();
-                    const targetId = href.substring(1);
-                    const target = document.getElementById(targetId);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.getElementById(href.substring(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
@@ -463,9 +480,11 @@
         
         async function route() {
             const p = getParams();
-            if (p.type === 'article' && p.id) await showArticle(p.id);
-            else if (p.type === 'report' && p.id) await showReport(p.id);
-            else await showHome();
+            if (p.type && p.id) {
+                await showDetailPage(p.type, p.id);
+            } else {
+                await showHome();
+            }
         }
         
         window.sharePage = function() {
@@ -474,68 +493,385 @@
             else navigator.clipboard.writeText(url).then(() => Swal.fire("تم نسخ الرابط", "", "success"));
         };
         
-        // Show Article
-        async function showArticle(id) {
+        // Detail Page
+        async function showDetailPage(type, id) {
             const main = document.getElementById('mainContent');
             main.innerHTML = '<div class="shimmer h-96 max-w-4xl mx-auto"></div>';
             try {
-                const snap = await db.ref(`articles/${id}`).once('value');
-                const article = snap.val();
-                if (!article) throw new Error();
-                document.title = `${article.title} | دوبامين`;
+                const snap = await db.ref(`${type}/${id}`).once('value');
+                const item = snap.val();
+                if (!item) throw new Error();
+                document.title = `${item.title} | دوبامين`;
+                
+                let typeName = '';
+                if (type === 'reports') typeName = 'تقرير علمي';
+                else if (type === 'articles') typeName = 'مقالة';
+                else if (type === 'news') typeName = 'خبر';
+                else if (type === 'interviews') typeName = 'حوار';
+                else if (type === 'investigations') typeName = 'تحقيق';
+                else typeName = type;
+                
+                let contentHtml = '';
+                if (item.image) contentHtml += `<img src="${item.image}" class="w-full rounded-xl my-4" onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=No+Image'">`;
+                if (item.content) contentHtml += `<p class="mb-4">${escapeHtml(item.content)}</p>`;
+                
                 main.innerHTML = `
                     <div class="detail-container">
-                        <div class="detail-cover" style="background-image: url('${article.image || ''}')"></div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">${escapeHtml(article.category || 'علوم')}</span>
-                            <button onclick="sharePage()" class="share-btn px-4 py-2 rounded-lg text-sm"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
+                        <div class="detail-cover" style="background-image: url('${item.image || ''}')"></div>
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">${typeName}</span>
+                            <button onclick="sharePage()" class="share-btn"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
                         </div>
-                        <h1 class="text-2xl md:text-3xl font-bold mb-4">${escapeHtml(article.title)}</h1>
-                        <div class="text-gray-700 leading-relaxed">
-                            ${(article.content || article.summary || 'لا يوجد محتوى').split(/\n\n/).map(p => `<p class="mb-4">${escapeHtml(p)}</p>`).join('')}
-                        </div>
+                        <h1 class="text-xl md:text-3xl font-bold mb-4">${escapeHtml(item.title)}</h1>
+                        <div class="text-gray-700 leading-relaxed">${contentHtml || '<p>لا يوجد محتوى</p>'}</div>
                         <div class="border-t mt-6 pt-4 text-center">
-                            <a href="./" class="text-blue-600 hover:underline"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</a>
+                            <a href="./" class="text-blue-600 hover:underline" id="backToHomeBtn"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</a>
                         </div>
                     </div>
                 `;
+                
+                document.getElementById('backToHomeBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = './';
+                });
             } catch(e) {
-                main.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>المقال غير موجود</h3><a href="./" class="inline-block mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg">الرئيسية</a></div>`;
+                main.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>المحتوى غير موجود</h3><a href="./" class="inline-block mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg">الرئيسية</a></div>`;
             }
         }
         
-        // Show Report
-        async function showReport(id) {
-            const main = document.getElementById('mainContent');
-            main.innerHTML = '<div class="shimmer h-96 max-w-4xl mx-auto"></div>';
+        // Load Sections
+        async function loadSection(type, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '<div class="shimmer h-56"></div><div class="shimmer h-56"></div><div class="shimmer h-56"></div>';
+            const snap = await db.ref(type).once('value');
+            const data = snap.val();
+            if (data && Object.keys(data).length) {
+                container.innerHTML = '';
+                document.getElementById(type + 'Count')?.setAttribute('data-count', Object.keys(data).length);
+                Object.entries(data).forEach(([id, item]) => {
+                    container.innerHTML += `
+                        <div class="premium-card" onclick="location.href='?type=${type}&id=${id}'" data-aos="fade-up">
+                            <div class="card-cover" style="background-image: url('${item.image || ''}')"></div>
+                            <div class="p-3">
+                                <span class="text-xs text-white bg-blue-600 px-2 py-0.5 rounded-full">${escapeHtml(item.date || '')}</span>
+                                <h3 class="font-bold text-sm md:text-base mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                <p class="text-gray-600 text-xs mt-1 line-clamp-2">${escapeHtml(item.summary || '')}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-inbox"></i><h3>لا توجد محتويات</h3></div>`;
+            }
+        }
+        
+        async function loadVideos() {
+            const c = document.getElementById('videosContainer');
+            if (!c) return;
+            c.innerHTML = '<div class="shimmer h-56"></div><div class="shimmer h-56"></div>';
+            const snap = await db.ref('videos').once('value');
+            const data = snap.val();
+            if (data && Object.keys(data).length) {
+                c.innerHTML = '';
+                Object.values(data).forEach((item) => {
+                    let embedUrl = getYouTubeEmbedUrl(item.videoUrl || '');
+                    c.innerHTML += `
+                        <div class="premium-card overflow-hidden">
+                            <div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>
+                            <div class="p-3"><h3 class="font-bold text-sm">${escapeHtml(item.title)}</h3><p class="text-gray-500 text-xs">${escapeHtml(item.description || '')}</p></div>
+                        </div>
+                    `;
+                });
+            } else {
+                c.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-video"></i><h3>لا توجد فيديوهات</h3></div>`;
+            }
+        }
+        
+        // ==================== RESTRUCTURED QUIZ SECTION ====================
+        
+        async function loadQuiz() {
+            const container = document.getElementById('quizContainer');
+            if (!container) return;
+            
+            const snap = await db.ref('quiz/questions').once('value');
+            if (snap.exists()) {
+                quizQuestions = snap.val();
+            } else {
+                quizQuestions = defaultQuiz;
+                await db.ref('quiz/questions').set(defaultQuiz);
+            }
+            
+            userAnswers = new Array(quizQuestions.length).fill(-1);
+            renderAllQuestions();
+        }
+        
+        function renderAllQuestions() {
+            const container = document.getElementById('quizContainer');
+            if (!container) return;
+            
+            let html = `
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                            <span class="text-gray-600">${quizQuestions.length} سؤال</span>
+                        </div>
+                        <div class="quiz-progress w-48">
+                            <div class="quiz-progress-fill" id="quizProgressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-200 mb-4"></div>
+                </div>
+            `;
+            
+            for (let i = 0; i < quizQuestions.length; i++) {
+                const q = quizQuestions[i];
+                const isAnswered = userAnswers[i] !== -1;
+                html += `
+                    <div class="quiz-question-card" data-qidx="${i}">
+                        <div class="flex items-start gap-3 mb-4">
+                            <div class="quiz-question-number">${i+1}</div>
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-800 text-base md:text-lg">${escapeHtml(q.text)}</p>
+                                ${isAnswered ? `<span class="text-xs text-green-600 mt-1 inline-block"><i class="fas fa-check-circle"></i> تم الإجابة</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            ${q.options.map((opt, oidx) => `
+                                <div class="quiz-option ${userAnswers[i] === oidx ? 'selected' : ''}" data-q="${i}" data-opt="${oidx}">
+                                    ${escapeHtml(opt)}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div class="mt-8 text-center">
+                    <button id="submitQuizFinalBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold text-lg hover:shadow-xl transition-all flex items-center gap-2 mx-auto">
+                        <i class="fas fa-chart-line"></i> تحليل النتيجة النهائية
+                    </button>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            // Update progress
+            const answeredCount = userAnswers.filter(a => a !== -1).length;
+            const progressPercent = (answeredCount / quizQuestions.length) * 100;
+            const progressFill = document.getElementById('quizProgressFill');
+            if (progressFill) progressFill.style.width = progressPercent + '%';
+            
+            // Attach click events to options
+            document.querySelectorAll('.quiz-option').forEach(el => {
+                el.addEventListener('click', function() {
+                    const q = parseInt(this.dataset.q);
+                    const o = parseInt(this.dataset.opt);
+                    userAnswers[q] = o;
+                    
+                    // Update UI
+                    const questionCard = this.closest('.quiz-question-card');
+                    questionCard.querySelectorAll('.quiz-option').forEach(x => x.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    // Add answered indicator
+                    const answeredSpan = questionCard.querySelector('.text-green-600');
+                    if (!answeredSpan) {
+                        const flexDiv = questionCard.querySelector('.flex-1');
+                        flexDiv.innerHTML += `<span class="text-xs text-green-600 mt-1 inline-block"><i class="fas fa-check-circle"></i> تم الإجابة</span>`;
+                    }
+                    
+                    // Update progress bar
+                    const newAnsweredCount = userAnswers.filter(a => a !== -1).length;
+                    const newProgress = (newAnsweredCount / quizQuestions.length) * 100;
+                    const progressFillEl = document.getElementById('quizProgressFill');
+                    if (progressFillEl) progressFillEl.style.width = newProgress + '%';
+                });
+            });
+            
+            // Submit button
+            const submitBtn = document.getElementById('submitQuizFinalBtn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', calculateAndShowResult);
+            }
+        }
+        
+        function calculateScore() {
+            let total = 0;
+            let max = quizQuestions.length * 4;
+            for (let i = 0; i < quizQuestions.length; i++) {
+                if (userAnswers[i] !== -1) {
+                    total += quizQuestions[i].scores[userAnswers[i]];
+                } else {
+                    total += 1; // Default to lowest score for unanswered
+                }
+            }
+            return Math.round((total / max) * 100);
+        }
+        
+        async function calculateAndShowResult() {
+            // Check for unanswered
+            let unanswered = [];
+            for (let i = 0; i < quizQuestions.length; i++) {
+                if (userAnswers[i] === -1) unanswered.push(i + 1);
+            }
+            
+            if (unanswered.length > 0) {
+                Swal.fire({
+                    title: "أسئلة غير مكتملة",
+                    text: `الرجاء الإجابة على الأسئلة: ${unanswered.join(', ')}`,
+                    icon: "warning",
+                    confirmButtonColor: "#2563eb"
+                });
+                return;
+            }
+            
+            const percentage = calculateScore();
+            
+            let resultClass = '', title = '', message = '', advice = '', icon = '';
+            if (percentage <= 40) {
+                resultClass = 'result-normal';
+                title = '🟢 درجة إدمان منخفضة';
+                message = 'ممتاز! مستوى اعتمادك على محفزات الدوبامين ضمن المعدل الطبيعي.';
+                advice = '✅ حافظ على عاداتك الصحية\n✅ مارس الهوايات الإيجابية\n✅ استمر في توازنك الحياتي';
+                icon = 'fa-face-smile';
+            } else if (percentage <= 60) {
+                resultClass = 'result-recovery';
+                title = '🟡 درجة إدمان متوسطة';
+                message = 'لديك بعض السلوكيات التي تشير إلى اعتماد زائد على محفزات الدوبامين.';
+                advice = '📱 قلل استخدام وسائل التواصل ساعة يومياً\n🏃 مارس الرياضة 30 دقيقة يومياً\n😴 نام 7-8 ساعات\n🚫 تجنب المشتريات الاندفاعية';
+                icon = 'fa-face-meh';
+            } else {
+                resultClass = 'result-severe';
+                title = '🔴 درجة إدمان عالية';
+                message = 'نتائجك تشير إلى اعتماد شديد على محفزات الدوبامين مما يؤثر على جودة حياتك.';
+                advice = '⚠️ ننصحك باستشارة طبيب نفسي متخصص\n⚠️ تواصل مع خط الدعم النفسي\n⚠️ فكر في برامج العلاج السلوكي\n⚠️ تحدث مع شخص تثق به عن مشاعرك';
+                icon = 'fa-face-frown';
+            }
+            
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.innerHTML = `
+                <div class="${resultClass} result-card">
+                    <i class="fas ${icon} text-5xl mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">${title}</h3>
+                    <div class="score-circle">
+                        <span class="text-5xl font-bold">${percentage}%</span>
+                        <span class="text-sm opacity-90">نسبة الإدمان</span>
+                    </div>
+                    <div class="progress-bar-custom w-full max-w-md mx-auto my-6">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <p class="text-lg mb-4 max-w-md mx-auto">${message}</p>
+                    <div class="bg-white/20 rounded-xl p-4 text-right max-w-md mx-auto">
+                        <p class="text-sm whitespace-pre-line font-semibold">📋 نصائح مخصصة لك:</p>
+                        <p class="text-sm whitespace-pre-line mt-2">${advice}</p>
+                    </div>
+                    <div class="flex gap-3 justify-center mt-6">
+                        <button onclick="resetQuiz()" class="px-6 py-2 bg-white text-gray-800 rounded-xl font-semibold hover:bg-gray-100 transition">
+                            <i class="fas fa-redo-alt ml-1"></i> إعادة الاختبار
+                        </button>
+                        <button onclick="shareResult(${percentage})" class="px-6 py-2 bg-white/20 text-white rounded-xl font-semibold hover:bg-white/30 transition">
+                            <i class="fas fa-share-alt ml-1"></i> مشاركة النتيجة
+                        </button>
+                    </div>
+                </div>
+            `;
+            resultDiv.classList.remove('hidden');
+            
+            // Animate progress bar
+            setTimeout(() => {
+                const fill = document.querySelector('.progress-fill');
+                if (fill) fill.style.width = percentage + '%';
+            }, 100);
+            
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Save to database
             try {
-                const snap = await db.ref(`reports/${id}`).once('value');
-                const report = snap.val();
-                if (!report) throw new Error();
-                document.title = `${report.title} | دوبامين`;
-                main.innerHTML = `
-                    <div class="detail-container">
-                        <div class="detail-cover" style="background-image: url('${report.image || ''}')"></div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">تقرير علمي</span>
-                            <button onclick="sharePage()" class="share-btn px-4 py-2 rounded-lg text-sm"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
-                        </div>
-                        <h1 class="text-2xl md:text-3xl font-bold mb-4">${escapeHtml(report.title)}</h1>
-                        <div class="text-gray-700 leading-relaxed">
-                            ${(report.content || report.summary || 'لا يوجد محتوى').split(/\n\n/).map(p => `<p class="mb-4">${escapeHtml(p)}</p>`).join('')}
-                        </div>
-                        ${report.ref ? `<div class="bg-gray-50 rounded-lg p-4 mt-4"><strong><i class="fas fa-book ml-1"></i> المراجع:</strong><p class="text-sm mt-1">${escapeHtml(report.ref)}</p></div>` : ''}
-                        <div class="border-t mt-6 pt-4 text-center">
-                            <a href="./" class="text-blue-600 hover:underline"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</a>
-                        </div>
-                    </div>
-                `;
-            } catch(e) {
-                main.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>التقرير غير موجود</h3><a href="./" class="inline-block mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg">الرئيسية</a></div>`;
+                await db.ref('quiz_results').push().set({ percentage: percentage, date: new Date().toISOString() });
+                await loadCounts();
+            } catch(e) {}
+        }
+        
+        function resetQuiz() {
+            userAnswers.fill(-1);
+            const container = document.getElementById('quizContainer');
+            if (container) renderAllQuestions();
+            const resultDiv = document.getElementById('quizResult');
+            if (resultDiv) resultDiv.classList.add('hidden');
+            window.scrollTo({ top: document.getElementById('quiz').offsetTop - 100, behavior: 'smooth' });
+        }
+        
+        function shareResult(percentage) {
+            const text = `نتيجتي في مقياس إدمان الدوبامين: ${percentage}% - دوبامين | المركز العلمي`;
+            if (navigator.share) {
+                navigator.share({ title: 'نتيجة مقياس الدوبامين', text: text, url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(text + ' ' + window.location.href);
+                Swal.fire("تم النسخ", "تم نسخ النتيجة للحافظة", "success");
             }
         }
         
-        // Text functions
+        // ==================== HOME PAGE ====================
+        async function showHome() {
+            const texts = await loadTexts();
+            document.getElementById('mainContent').innerHTML = `
+                <div class="text-center p-6 md:p-8 rounded-2xl mb-6" style="background:linear-gradient(135deg,rgba(37,99,235,0.05),white)" data-aos="fade-up">
+                    <i class="fas fa-dna text-4xl md:text-5xl text-blue-600 mb-2"></i>
+                    <h2 class="text-2xl md:text-4xl font-bold">${texts.heroTitle}<br><span class="gradient-text">علم الأعصاب المتقدم</span></h2>
+                    <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto my-3">${texts.heroDesc}</p>
+                    <div class="flex gap-2 justify-center flex-wrap">
+                        <a href="#reports" class="px-4 md:px-6 py-1.5 md:py-2 bg-blue-600 text-white rounded-xl text-sm">استكشف</a>
+                        <a href="#quiz" class="px-4 md:px-6 py-1.5 md:py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-xl text-sm">اختبر نفسك</a>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 mb-6" data-aos="fade-up">
+                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-file-alt text-xl text-blue-600"></i><div id="reportsCount" class="text-xl font-bold">0</div><div class="text-xs">تقارير</div></div>
+                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-pen-nib text-xl text-blue-600"></i><div id="articlesCount" class="text-xl font-bold">0</div><div class="text-xs">مقالات</div></div>
+                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-bullhorn text-xl text-blue-600"></i><div id="newsCount" class="text-xl font-bold">0</div><div class="text-xs">أخبار</div></div>
+                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-comments text-xl text-blue-600"></i><div id="interviewsCount" class="text-xl font-bold">0</div><div class="text-xs">حوارات</div></div>
+                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-users text-xl text-blue-600"></i><div id="quizCount" class="text-xl font-bold">0</div><div class="text-xs">مشاركات</div></div>
+                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-chart-line text-xl text-blue-600"></i><div id="avgScore" class="text-xl font-bold">--%</div><div class="text-xs">المتوسط</div></div>
+                </div>
+                
+                <section id="reports" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-newspaper text-blue-600 ml-2"></i> ${texts.reportsTitle}</h2><div id="reportsContainer" class="grid-responsive"></div></section>
+                <section id="articles" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-pen-fancy text-blue-600 ml-2"></i> ${texts.articlesTitle}</h2><div id="articlesContainer" class="grid-responsive"></div></section>
+                <section id="news" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-bullhorn text-blue-600 ml-2"></i> ${texts.newsTitle}</h2><div id="newsContainer" class="grid-responsive"></div></section>
+                <section id="interviews" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-comments text-blue-600 ml-2"></i> ${texts.interviewsTitle}</h2><div id="interviewsContainer" class="grid-responsive"></div></section>
+                <section id="investigations" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-microscope text-blue-600 ml-2"></i> ${texts.investigationsTitle}</h2><div id="investigationsContainer" class="grid-responsive"></div></section>
+                <section id="infographics" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-chart-pie text-blue-600 ml-2"></i> ${texts.infographicsTitle}</h2><div id="infographicsContainer" class="grid md:grid-cols-2 gap-4"></div></section>
+                <section id="videos" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-video text-blue-600 ml-2"></i> ${texts.videosTitle}</h2><div id="videosContainer" class="grid md:grid-cols-2 gap-4"></div></section>
+                <section id="quiz"><div class="bg-white rounded-2xl shadow-xl overflow-hidden"><div class="bg-gradient-to-r from-blue-700 to-blue-900 px-4 md:px-6 py-4"><h2 class="text-xl md:text-2xl font-bold text-white">${texts.quizTitle}</h2><p class="text-blue-100 text-sm">اختبار علمي مكون من ${quizQuestions.length || '15'} سؤالاً لتقييم درجة إدمان الدوبامين</p></div><div class="p-4 md:p-6"><div id="quizContainer"></div><div id="quizResult" class="mt-6 hidden"></div></div></div></section>
+            `;
+            
+            await loadSection('reports', 'reportsContainer');
+            await loadSection('articles', 'articlesContainer');
+            await loadSection('news', 'newsContainer');
+            await loadSection('interviews', 'interviewsContainer');
+            await loadSection('investigations', 'investigationsContainer');
+            await loadSection('infographics', 'infographicsContainer');
+            await loadVideos();
+            await loadQuiz();
+            await loadCounts();
+            
+            // Re-attach navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.getElementById(href.substring(1));
+                        if (target) target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+        
+        // Text Functions
         async function loadTexts() {
             const snap = await db.ref('site_texts').once('value');
             const texts = snap.val();
@@ -556,6 +892,8 @@
                 heroDesc: document.getElementById('textHeroDesc').value,
                 reportsTitle: document.getElementById('textReportsTitle').value,
                 articlesTitle: document.getElementById('textArticlesTitle').value,
+                newsTitle: document.getElementById('textNewsTitle').value,
+                interviewsTitle: document.getElementById('textInterviewsTitle').value,
                 investigationsTitle: document.getElementById('textInvestigationsTitle').value,
                 infographicsTitle: document.getElementById('textInfographicsTitle').value,
                 videosTitle: document.getElementById('textVideosTitle').value,
@@ -573,258 +911,22 @@
             document.getElementById('footerText').innerText = texts.footer;
         }
         
-        // Home Page
-        async function showHome() {
-            const texts = await loadTexts();
-            document.getElementById('mainContent').innerHTML = `
-                <div class="text-center p-8 rounded-2xl mb-8" style="background:linear-gradient(135deg,rgba(37,99,235,0.05),white)" data-aos="fade-up">
-                    <i class="fas fa-dna text-5xl text-blue-600 mb-3"></i>
-                    <h2 class="text-3xl md:text-4xl font-bold">${texts.heroTitle}<br><span class="gradient-text">علم الأعصاب المتقدم</span></h2>
-                    <p class="text-gray-600 max-w-2xl mx-auto my-3">${texts.heroDesc}</p>
-                    <div class="flex gap-3 justify-center">
-                        <a href="#reports" class="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">استكشف</a>
-                        <a href="#quiz" class="px-6 py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-xl hover:bg-blue-50 transition">اختبر نفسك</a>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" data-aos="fade-up" data-aos-delay="100">
-                    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-file-alt text-2xl text-blue-600"></i><div id="reportsCount" class="text-2xl font-bold">0</div><div class="text-sm">تقارير</div></div>
-                    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-pen-nib text-2xl text-blue-600"></i><div id="articlesCount" class="text-2xl font-bold">0</div><div class="text-sm">مقالات</div></div>
-                    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-users text-2xl text-blue-600"></i><div id="quizCount" class="text-2xl font-bold">0</div><div class="text-sm">مشاركات</div></div>
-                    <div class="bg-white rounded-xl p-4 text-center shadow"><i class="fas fa-chart-line text-2xl text-blue-600"></i><div id="avgScore" class="text-2xl font-bold">--%</div><div class="text-sm">المتوسط</div></div>
-                </div>
-                
-                <section id="reports" class="mb-10"><h2 class="text-xl font-bold mb-4"><i class="fas fa-newspaper text-blue-600 ml-2"></i> ${texts.reportsTitle}</h2><div id="reportsContainer" class="grid md:grid-cols-3 gap-6"></div></section>
-                <section id="articles" class="mb-10"><h2 class="text-xl font-bold mb-4"><i class="fas fa-pen-fancy text-blue-600 ml-2"></i> ${texts.articlesTitle}</h2><div id="articlesContainer" class="grid md:grid-cols-3 gap-6"></div></section>
-                <section id="investigations" class="mb-10"><h2 class="text-xl font-bold mb-4"><i class="fas fa-microscope text-blue-600 ml-2"></i> ${texts.investigationsTitle}</h2><div id="investigationsContainer" class="space-y-4"></div></section>
-                <section id="infographics" class="mb-10"><h2 class="text-xl font-bold mb-4"><i class="fas fa-chart-pie text-blue-600 ml-2"></i> ${texts.infographicsTitle}</h2><div id="infographicsContainer" class="grid md:grid-cols-2 gap-6"></div></section>
-                <section id="videos" class="mb-10"><h2 class="text-xl font-bold mb-4"><i class="fas fa-video text-blue-600 ml-2"></i> ${texts.videosTitle}</h2><div id="videosContainer" class="grid md:grid-cols-2 gap-6"></div></section>
-                <section id="quiz"><div class="bg-white rounded-2xl shadow overflow-hidden"><div class="bg-blue-700 px-6 py-4"><h2 class="text-xl font-bold text-white">${texts.quizTitle}</h2></div><div class="p-6"><div id="quizContainer"></div><button id="submitQuizBtn" class="mt-5 w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition">تحليل النتيجة</button><div id="quizResult" class="mt-5 hidden"></div></div></div></section>
-            `;
-            await loadReports(); await loadArticles(); await loadInvestigations(); await loadInfographics(); await loadVideos(); await loadQuiz(); await loadCounts();
-        }
-        
-        // Load Reports
-        async function loadReports() {
-            const c = document.getElementById('reportsContainer');
-            if (!c) return;
-            c.innerHTML = '<div class="shimmer h-64"></div><div class="shimmer h-64"></div><div class="shimmer h-64"></div>';
-            const snap = await db.ref('reports').once('value');
-            const data = snap.val();
-            if (data && Object.keys(data).length) {
-                c.innerHTML = '';
-                document.getElementById('reportsCount').innerText = Object.keys(data).length;
-                Object.entries(data).forEach(([id, item]) => {
-                    c.innerHTML += `
-                        <div class="premium-card" onclick="location.href='?type=report&id=${id}'" data-aos="fade-up">
-                            <div class="card-cover" style="background-image: url('${item.image || ''}')"></div>
-                            <div class="p-4">
-                                <span class="text-xs text-white bg-blue-600 px-2 py-1 rounded-full">${escapeHtml(item.date || '')}</span>
-                                <h3 class="font-bold text-lg mt-2">${escapeHtml(item.title)}</h3>
-                                <p class="text-gray-600 text-sm mt-1 line-clamp-2">${escapeHtml(item.summary || '')}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                c.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-newspaper"></i><h3>لا توجد تقارير</h3></div>`;
-                document.getElementById('reportsCount').innerText = '0';
-            }
-        }
-        
-        // Load Articles
-        async function loadArticles() {
-            const c = document.getElementById('articlesContainer');
-            if (!c) return;
-            c.innerHTML = '<div class="shimmer h-56"></div><div class="shimmer h-56"></div><div class="shimmer h-56"></div>';
-            const snap = await db.ref('articles').once('value');
-            const data = snap.val();
-            if (data && Object.keys(data).length) {
-                c.innerHTML = '';
-                document.getElementById('articlesCount').innerText = Object.keys(data).length;
-                Object.entries(data).forEach(([id, item]) => {
-                    c.innerHTML += `
-                        <div class="premium-card p-4" onclick="location.href='?type=article&id=${id}'" data-aos="zoom-in">
-                            <div class="flex justify-between mb-2">
-                                <i class="fas fa-pen-nib text-2xl text-blue-600"></i>
-                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">${escapeHtml(item.category || 'علوم')}</span>
-                            </div>
-                            <h3 class="font-bold text-lg">${escapeHtml(item.title)}</h3>
-                            <p class="text-gray-500 text-sm mt-1 line-clamp-2">${escapeHtml(item.summary || '')}</p>
-                            <div class="text-xs text-gray-400 mt-3"><i class="fas fa-clock ml-1"></i> ${item.readTime || 5} دقائق</div>
-                        </div>
-                    `;
-                });
-            } else {
-                c.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-pen-fancy"></i><h3>لا توجد مقالات</h3></div>`;
-                document.getElementById('articlesCount').innerText = '0';
-            }
-        }
-        
-        // Load Investigations
-        async function loadInvestigations() {
-            const c = document.getElementById('investigationsContainer');
-            if (!c) return;
-            c.innerHTML = '<div class="shimmer h-32"></div>';
-            const snap = await db.ref('investigations').once('value');
-            const data = snap.val();
-            if (data && Object.keys(data).length) {
-                c.innerHTML = '';
-                Object.entries(data).forEach(([id, item]) => {
-                    c.innerHTML += `
-                        <div class="bg-white rounded-xl p-4 shadow" data-aos="fade-right">
-                            <h3 class="font-bold text-blue-800">🔎 ${escapeHtml(item.title)}</h3>
-                            <p class="text-gray-600 mt-1">${escapeHtml(item.summary)}</p>
-                            <div class="bg-gray-50 rounded-lg p-2 mt-2 flex gap-2">
-                                <input type="text" id="comment-${id}" placeholder="أضف تعليق..." class="flex-1 border rounded-lg px-3 py-1 text-sm">
-                                <button onclick="addComment('${id}')" class="bg-blue-600 text-white px-4 py-1 rounded-lg text-sm hover:bg-blue-700 transition">نشر</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                c.innerHTML = `<div class="empty-state"><i class="fas fa-microscope"></i><h3>لا توجد تحقيقات</h3></div>`;
-            }
-        }
-        
-        // Load Infographics
-        async function loadInfographics() {
-            const c = document.getElementById('infographicsContainer');
-            if (!c) return;
-            c.innerHTML = '<div class="shimmer h-80"></div><div class="shimmer h-80"></div>';
-            const snap = await db.ref('infographics').once('value');
-            const data = snap.val();
-            if (data && Object.keys(data).length) {
-                c.innerHTML = '';
-                Object.values(data).forEach((item, idx) => {
-                    c.innerHTML += `
-                        <div class="premium-card p-4" data-aos="flip-left" data-aos-delay="${idx * 100}">
-                            <h3 class="font-bold mb-2">${escapeHtml(item.title)}</h3>
-                            <img src="${item.imageUrl}" class="w-full rounded-lg" alt="" onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=No+Image'">
-                        </div>
-                    `;
-                });
-            } else {
-                c.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-chart-pie"></i><h3>لا توجد إنفوجرافيك</h3></div>`;
-            }
-        }
-        
-        // Load Videos
-        async function loadVideos() {
-            const c = document.getElementById('videosContainer');
-            if (!c) return;
-            c.innerHTML = '<div class="shimmer h-64"></div><div class="shimmer h-64"></div>';
-            const snap = await db.ref('videos').once('value');
-            const data = snap.val();
-            if (data && Object.keys(data).length) {
-                c.innerHTML = '';
-                Object.values(data).forEach((item, idx) => {
-                    let embedUrl = getYouTubeEmbedUrl(item.videoUrl || '');
-                    c.innerHTML += `
-                        <div class="premium-card overflow-hidden" data-aos="zoom-in" data-aos-delay="${idx * 100}">
-                            <div class="video-container">
-                                <iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                            <div class="p-3">
-                                <h3 class="font-bold">${escapeHtml(item.title)}</h3>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                c.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-video"></i><h3>لا توجد فيديوهات</h3></div>`;
-            }
-        }
-        
-        // Add Comment
-        window.addComment = async function(id) {
-            const input = document.getElementById(`comment-${id}`);
-            const text = input?.value?.trim();
-            if (!text) return;
-            const ref = db.ref(`investigations/${id}`);
-            const snap = await ref.once('value');
-            const inv = snap.val();
-            const comments = inv?.comments || [];
-            comments.push(text);
-            await ref.update({ comments });
-            input.value = '';
-            loadInvestigations();
-            Swal.fire("تم", "تم إضافة تعليقك", "success");
-        };
-        
-        // Quiz
-        async function loadQuiz() {
-            const c = document.getElementById('quizContainer');
-            if (!c) return;
-            const snap = await db.ref('quiz/questions').once('value');
-            if (!snap.exists()) {
-                c.innerHTML = `<div class="empty-state"><i class="fas fa-tasks"></i><h3>الاختبار غير جاهز</h3></div>`;
-                return;
-            }
-            quizData = snap.val();
-            quizAnswers = new Array(quizData.length).fill(-1);
-            c.innerHTML = quizData.map((q, idx) => `
-                <div class="border-b pb-4 mb-4" data-qidx="${idx}">
-                    <p class="font-bold mb-3"><span class="w-6 h-6 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm ml-2">${idx+1}</span> ${escapeHtml(q.text)}</p>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        ${q.options.map((opt, oidx) => `<div class="quiz-option" data-q="${idx}" data-opt="${oidx}">${escapeHtml(opt)}</div>`).join('')}
-                    </div>
-                </div>
-            `).join('');
-            
-            document.querySelectorAll('.quiz-option').forEach(el => {
-                el.addEventListener('click', function() {
-                    const q = parseInt(this.dataset.q);
-                    const o = parseInt(this.dataset.opt);
-                    quizAnswers[q] = o;
-                    const parent = this.closest('.border-b');
-                    parent.querySelectorAll('.quiz-option').forEach(x => x.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-        }
-        
-        document.getElementById('submitQuizBtn')?.addEventListener('click', async () => {
-            if (!quizData.length) return;
-            let missing = [];
-            for (let i=0; i<quizData.length; i++) if (quizAnswers[i] === -1) missing.push(i+1);
-            if (missing.length) {
-                Swal.fire("تنبيه", `الرجاء الإجابة على الأسئلة: ${missing.join(', ')}`, "warning");
-                return;
-            }
-            let total = 0, max = quizData.length * 4;
-            for (let i=0; i<quizData.length; i++) total += quizData[i].scores[quizAnswers[i]];
-            const percent = Math.round((total/max)*100);
-            let resultClass = '', title = '', message = '', advice = '';
-            if (percent <= 40) { resultClass = 'result-normal'; title = '🟢 منخفض'; message = 'مستوى طبيعي'; advice = '✅ حافظ على عاداتك'; }
-            else if (percent <= 60) { resultClass = 'result-recovery'; title = '🟡 متوسط'; message = 'يوجد اعتماد زائد'; advice = '📱 قلل استخدام وسائل التواصل\n🏃 مارس الرياضة'; }
-            else { resultClass = 'result-severe'; title = '🔴 مرتفع'; message = 'اعتماد شديد على الدوبامين'; advice = '⚠️ استشر طبيباً نفسياً'; }
-            const resultDiv = document.getElementById('quizResult');
-            resultDiv.innerHTML = `
-                <div class="${resultClass} text-white p-6 rounded-xl text-center">
-                    <i class="fas fa-chart-line text-4xl mb-3"></i>
-                    <h3 class="text-xl font-bold">${title}</h3>
-                    <div class="text-5xl font-bold my-3">${percent}%</div>
-                    <div class="w-full bg-white/30 rounded-full h-2 mb-3"><div class="progress-bar h-2 rounded-full bg-white" style="width:0%"></div></div>
-                    <p>${message}</p>
-                    <div class="bg-white/20 rounded-lg p-3 mt-3"><p class="text-sm whitespace-pre-line">${advice}</p></div>
-                    <button onclick="location.reload()" class="mt-4 bg-white text-gray-800 px-5 py-2 rounded-lg">إعادة</button>
-                </div>
-            `;
-            resultDiv.classList.remove('hidden');
-            setTimeout(() => { document.querySelector('.progress-bar').style.width = percent + '%'; }, 100);
-            await db.ref('quiz_results').push().set({ percentage: percent, date: new Date().toISOString() });
-            loadCounts();
-        });
-        
         async function loadCounts() {
             const r = await db.ref('reports').once('value');
             document.getElementById('reportsCount').innerText = r.numChildren() || '0';
             const a = await db.ref('articles').once('value');
             document.getElementById('articlesCount').innerText = a.numChildren() || '0';
+            const n = await db.ref('news').once('value');
+            document.getElementById('newsCount').innerText = n.numChildren() || '0';
+            const i = await db.ref('interviews').once('value');
+            document.getElementById('interviewsCount').innerText = i.numChildren() || '0';
             const q = await db.ref('quiz_results').once('value');
             document.getElementById('quizCount').innerText = q.numChildren() || '0';
-            if (q.exists()) { let vals = Object.values(q.val()); let tot = vals.reduce((s,v)=>s+(v.percentage||0),0); document.getElementById('avgScore').innerText = Math.round(tot/vals.length)+'%'; }
+            if (q.exists()) {
+                let vals = Object.values(q.val());
+                let tot = vals.reduce((s, v) => s + (v.percentage || 0), 0);
+                document.getElementById('avgScore').innerText = Math.round(tot / vals.length) + '%';
+            }
         }
         
         // Admin Functions
@@ -833,7 +935,7 @@
             if (pwd === "admin2025") {
                 document.getElementById('adminPanel').classList.add('open');
                 document.getElementById('adminOverlay').classList.add('open');
-                loadAdminLists();
+                loadAllAdminLists();
                 loadQuizToAdminForm();
                 loadTextsToAdminForm();
             } else if (pwd !== null) {
@@ -847,16 +949,18 @@
         }
         
         function showAdminTab(tab) {
-            const panels = ['reports','articles','investigations','infographics','videos','quiz','texts'];
+            const panels = ['reports','articles','news','interviews','investigations','infographics','videos','quiz','texts'];
             panels.forEach(t => document.getElementById(t+'Panel').classList.add('hidden'));
             document.getElementById(tab+'Panel').classList.remove('hidden');
             document.querySelectorAll('.admin-tab').forEach(x => x.classList.remove('active'));
             document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
         }
         
-        async function loadAdminLists() {
+        async function loadAllAdminLists() {
             await loadList('reports', 'reportsList');
             await loadList('articles', 'articlesList');
+            await loadList('news', 'newsList');
+            await loadList('interviews', 'interviewsList');
             await loadList('investigations', 'investigationsList');
             await loadList('infographics', 'infographicsList');
             await loadList('videos', 'videosList');
@@ -870,91 +974,89 @@
             c.innerHTML = '';
             if (data) {
                 Object.entries(data).forEach(([id, item]) => {
-                    c.innerHTML += `<div class="bg-gray-50 rounded-lg p-2 flex justify-between"><span class="text-sm">${escapeHtml(item.title)}</span><button onclick="deleteItem('${col}','${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600 transition">حذف</button></div>`;
+                    c.innerHTML += `<div class="bg-gray-50 rounded-lg p-2 flex justify-between items-center"><span class="text-xs">${escapeHtml(item.title)}</span><button onclick="deleteItem('${col}','${id}')" class="bg-red-500 text-white px-2 py-0.5 rounded text-xs">حذف</button></div>`;
                 });
             } else {
-                c.innerHTML = '<div class="text-gray-400 text-center py-2">لا يوجد</div>';
+                c.innerHTML = '<div class="text-gray-400 text-center py-2 text-xs">لا يوجد</div>';
             }
         }
         
-        async function loadTextsToAdminForm() {
-            const snap = await db.ref('site_texts').once('value');
-            const texts = snap.val() || defaultTexts;
-            document.getElementById('textSiteTitle').value = texts.siteTitle || '';
-            document.getElementById('textHeaderTitle').value = texts.headerTitle || '';
-            document.getElementById('textHeroTitle').value = texts.heroTitle || '';
-            document.getElementById('textHeroDesc').value = texts.heroDesc || '';
-            document.getElementById('textReportsTitle').value = texts.reportsTitle || '';
-            document.getElementById('textArticlesTitle').value = texts.articlesTitle || '';
-            document.getElementById('textInvestigationsTitle').value = texts.investigationsTitle || '';
-            document.getElementById('textInfographicsTitle').value = texts.infographicsTitle || '';
-            document.getElementById('textVideosTitle').value = texts.videosTitle || '';
-            document.getElementById('textQuizTitle').value = texts.quizTitle || '';
-            document.getElementById('textFooter').value = texts.footer || '';
-        }
-        
-        function loadQuizToAdminForm() {
-            const ta = document.getElementById('quizJson');
-            if (ta && quizData.length) ta.value = JSON.stringify(quizData, null, 2);
-        }
-        
-        window.addReport = async function() {
-            let title = document.getElementById('repTitle').value.trim();
+        window.addItem = async function(type) {
+            let title = '';
+            if (type === 'reports') title = document.getElementById('repTitle')?.value.trim();
+            else if (type === 'articles') title = document.getElementById('artTitle')?.value.trim();
+            else if (type === 'news') title = document.getElementById('newsTitle')?.value.trim();
+            else if (type === 'interviews') title = document.getElementById('interTitle')?.value.trim();
+            else if (type === 'investigations') title = document.getElementById('invTitle')?.value.trim();
+            else if (type === 'infographics') title = document.getElementById('infTitle')?.value.trim();
+            else if (type === 'videos') title = document.getElementById('vidTitle')?.value.trim();
+            
             if (!title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
-            await db.ref('reports').push().set({ 
-                title, date: document.getElementById('repDate').value, 
-                image: document.getElementById('repImage').value, 
-                summary: document.getElementById('repSummary').value, 
-                content: document.getElementById('repContent').value, 
-                ref: document.getElementById('repRef').value 
-            });
-            Swal.fire("تم", "تم إضافة التقرير", "success");
-            ['repTitle','repDate','repImage','repSummary','repContent','repRef'].forEach(id => document.getElementById(id).value = '');
-            loadAdminLists(); loadReports();
-        };
-        
-        window.addArticle = async function() {
-            let title = document.getElementById('artTitle').value.trim();
-            if (!title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
-            await db.ref('articles').push().set({ 
-                title, category: document.getElementById('artCategory').value, 
-                image: document.getElementById('artImage').value, 
-                summary: document.getElementById('artSummary').value, 
-                content: document.getElementById('artContent').value, 
-                readTime: parseInt(document.getElementById('artReadTime').value) || 5, 
-                date: new Date().toLocaleDateString('ar-EG') 
-            });
-            Swal.fire("تم", "تم إضافة المقالة", "success");
-            ['artTitle','artCategory','artImage','artSummary','artContent','artReadTime'].forEach(id => document.getElementById(id).value = '');
-            loadAdminLists(); loadArticles();
-        };
-        
-        window.addInvestigation = async function() {
-            let title = document.getElementById('invTitle').value.trim();
-            if (!title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
-            await db.ref('investigations').push().set({ title, summary: document.getElementById('invSummary').value, comments: [] });
-            Swal.fire("تم", "تم إضافة التحقيق", "success");
-            document.getElementById('invTitle').value = ''; document.getElementById('invSummary').value = '';
-            loadAdminLists(); loadInvestigations();
-        };
-        
-        window.addInfographic = async function() {
-            let title = document.getElementById('infTitle').value.trim();
-            if (!title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
-            await db.ref('infographics').push().set({ title, imageUrl: document.getElementById('infImage').value });
-            Swal.fire("تم", "تم إضافة الإنفوجرافيك", "success");
-            document.getElementById('infTitle').value = ''; document.getElementById('infImage').value = '';
-            loadAdminLists(); loadInfographics();
-        };
-        
-        window.addVideo = async function() {
-            let title = document.getElementById('vidTitle').value.trim();
-            let url = document.getElementById('vidUrl').value.trim();
-            if (!title || !url) return Swal.fire("خطأ", "العنوان والرابط مطلوبان", "error");
-            await db.ref('videos').push().set({ title, videoUrl: url });
-            Swal.fire("تم", "تم إضافة الفيديو", "success");
-            document.getElementById('vidTitle').value = ''; document.getElementById('vidUrl').value = '';
-            loadAdminLists(); loadVideos();
+            
+            let item = { title: title, date: new Date().toLocaleDateString('ar-EG') };
+            
+            if (type === 'reports') {
+                item.date = document.getElementById('repDate').value;
+                item.image = document.getElementById('repImage').value;
+                item.summary = document.getElementById('repSummary').value;
+                item.content = document.getElementById('repContent').value;
+                await db.ref('reports').push().set(item);
+                clearForm(['repTitle','repDate','repImage','repSummary','repContent']);
+                loadList('reports', 'reportsList');
+            }
+            else if (type === 'articles') {
+                item.category = document.getElementById('artCategory').value;
+                item.image = document.getElementById('artImage').value;
+                item.summary = document.getElementById('artSummary').value;
+                item.content = document.getElementById('artContent').value;
+                item.readTime = parseInt(document.getElementById('artReadTime').value) || 5;
+                await db.ref('articles').push().set(item);
+                clearForm(['artTitle','artCategory','artImage','artSummary','artContent','artReadTime']);
+                loadList('articles', 'articlesList');
+            }
+            else if (type === 'news') {
+                item.date = document.getElementById('newsDate').value;
+                item.image = document.getElementById('newsImage').value;
+                item.summary = document.getElementById('newsSummary').value;
+                item.content = document.getElementById('newsContent').value;
+                await db.ref('news').push().set(item);
+                clearForm(['newsTitle','newsDate','newsImage','newsSummary','newsContent']);
+                loadList('news', 'newsList');
+            }
+            else if (type === 'interviews') {
+                item.speaker = document.getElementById('interSpeaker').value;
+                item.date = document.getElementById('interDate').value;
+                item.image = document.getElementById('interImage').value;
+                item.summary = document.getElementById('interSummary').value;
+                item.content = document.getElementById('interContent').value;
+                await db.ref('interviews').push().set(item);
+                clearForm(['interTitle','interSpeaker','interDate','interImage','interSummary','interContent']);
+                loadList('interviews', 'interviewsList');
+            }
+            else if (type === 'investigations') {
+                item.image = document.getElementById('invImage').value;
+                item.summary = document.getElementById('invSummary').value;
+                item.content = document.getElementById('invContent').value;
+                await db.ref('investigations').push().set(item);
+                clearForm(['invTitle','invImage','invSummary','invContent']);
+                loadList('investigations', 'investigationsList');
+            }
+            else if (type === 'infographics') {
+                item.imageUrl = document.getElementById('infImage').value;
+                await db.ref('infographics').push().set(item);
+                clearForm(['infTitle','infImage']);
+                loadList('infographics', 'infographicsList');
+            }
+            else if (type === 'videos') {
+                item.videoUrl = document.getElementById('vidUrl').value;
+                item.description = document.getElementById('vidDesc').value;
+                await db.ref('videos').push().set(item);
+                clearForm(['vidTitle','vidUrl','vidDesc']);
+                loadList('videos', 'videosList');
+            }
+            
+            Swal.fire("تم", "تم الحفظ بنجاح", "success");
+            location.reload();
         };
         
         window.saveQuiz = async function() {
@@ -972,10 +1074,37 @@
             if (r.isConfirmed) {
                 await db.ref(`${col}/${id}`).remove();
                 Swal.fire("تم الحذف", "", "success");
-                loadAdminLists();
-                if (!window.location.search) { loadReports(); loadArticles(); loadInvestigations(); loadInfographics(); loadVideos(); }
+                loadAllAdminLists();
+                if (!window.location.search) location.reload();
             }
         };
+        
+        function clearForm(ids) {
+            ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+        }
+        
+        function loadQuizToAdminForm() {
+            const ta = document.getElementById('quizJson');
+            if (ta && quizQuestions.length) ta.value = JSON.stringify(quizQuestions, null, 2);
+        }
+        
+        async function loadTextsToAdminForm() {
+            const snap = await db.ref('site_texts').once('value');
+            const texts = snap.val() || defaultTexts;
+            document.getElementById('textSiteTitle').value = texts.siteTitle || '';
+            document.getElementById('textHeaderTitle').value = texts.headerTitle || '';
+            document.getElementById('textHeroTitle').value = texts.heroTitle || '';
+            document.getElementById('textHeroDesc').value = texts.heroDesc || '';
+            document.getElementById('textReportsTitle').value = texts.reportsTitle || '';
+            document.getElementById('textArticlesTitle').value = texts.articlesTitle || '';
+            document.getElementById('textNewsTitle').value = texts.newsTitle || '';
+            document.getElementById('textInterviewsTitle').value = texts.interviewsTitle || '';
+            document.getElementById('textInvestigationsTitle').value = texts.investigationsTitle || '';
+            document.getElementById('textInfographicsTitle').value = texts.infographicsTitle || '';
+            document.getElementById('textVideosTitle').value = texts.videosTitle || '';
+            document.getElementById('textQuizTitle').value = texts.quizTitle || '';
+            document.getElementById('textFooter').value = texts.footer || '';
+        }
         
         // Start
         route();
