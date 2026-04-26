@@ -2,90 +2,206 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دوبامين | المركز العلمي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- SEO الأساسية -->
+    <title>دوبامين | المركز العلمي للدوبامين - أبحاث وتقارير علمية</title>
+    <meta name="description" content="المركز العلمي المتخصص في أبحاث الدوبامين - أحدث الدراسات والتقارير العلمية، مقياس إدمان الدوبامين، مقالات محكمة عن الناقل العصبي الدوبامين وتأثيراته">
+    <meta name="keywords" content="دوبامين, dopamine, علم الأعصاب, صحة نفسية, إدمان الدوبامين, ناقل عصبي, السعادة, التحفيز, أبحاث علمية, تقارير طبية">
+    <meta name="author" content="المركز العلمي للدوبامين">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="googlebot" content="index, follow">
+    <meta name="language" content="Arabic">
+    <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Open Graph / فيسبوك -->
+    <meta property="og:title" content="دوبامين | المركز العلمي للدوبامين">
+    <meta property="og:description" content="منصة علمية متخصصة في أبحاث الدوبامين - أحدث التقارير والدراسات">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:site_name" content="دوبامين | المركز العلمي">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="دوبامين | المركز العلمي للدوبامين">
+    <meta name="twitter:description" content="منصة علمية متخصصة في أبحاث الدوبامين">
+    
+    <!-- أيقونات الموقع -->
+    <link rel="icon" type="image/jpeg" sizes="16x16" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
+    <link rel="icon" type="image/jpeg" sizes="32x32" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
+    <link rel="apple-touch-icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
+    
+    <!-- رابط أساسي -->
+    <link rel="canonical" href="https://prmaga1.web.app/project/index.html">
+    
+    <!-- بيانات منظمة JSON-LD لتحسين SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MedicalWebPage",
+        "name": "المركز العلمي للدوبامين",
+        "description": "منصة علمية متخصصة في أبحاث الدوبامين وتأثيراته على الدماغ والسلوك البشري",
+        "url": "https://prmaga1.web.app/project/index.html",
+        "inLanguage": "ar",
+        "about": {
+            "@type": "MedicalCondition",
+            "name": "إدمان الدوبامين",
+            "description": "تقييم درجة اعتماد الشخص على محفزات الدوبامين والسلوكيات الإدمانية"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "باحثون، طلاب طب، عامة الناس"
+        }
+    }
+    </script>
+    
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #0a0e27, #1a1a3e);
+            overflow: hidden;
+            background: #0a0e27;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Cairo', system-ui, sans-serif;
+        }
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f172a 100%);
+            z-index: 10000;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-family: 'Cairo', sans-serif;
+            transition: opacity 0.8s ease;
         }
-        .loader {
-            text-align: center;
-            color: white;
-        }
-        .logo {
-            width: 100px;
-            height: 100px;
+        .splash-screen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+        .splash-logo {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px;
+            background: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg') center/cover no-repeat;
             border-radius: 50%;
-            background: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg') center/cover;
-            margin: 0 auto 20px;
             animation: pulse 1.5s infinite;
-            border: 3px solid rgba(59,130,246,0.5);
+            border: 3px solid rgba(59,130,246,0.4);
+            box-shadow: 0 0 30px rgba(59,130,246,0.3);
         }
-        @keyframes pulse {
-            0%,100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .progress-bar {
-            width: 250px;
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            margin: 20px auto;
-            overflow: hidden;
-        }
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            transition: width 0.3s;
-        }
+        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        .splash-title { font-size: 34px; font-weight: 800; color: white; text-align: center; letter-spacing: 1px; }
+        .splash-subtitle { font-size: 14px; color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 40px; }
+        .progress-bar-container { width: 280px; height: 5px; background: rgba(255,255,255,0.15); border-radius: 10px; margin: 25px auto; overflow: hidden; }
+        .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6); background-size: 200% 100%; transition: width 0.3s ease; }
+        .progress-text { color: rgba(255,255,255,0.7); font-size: 13px; text-align: center; }
+        .secure-iframe { position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; background: white; opacity: 0; transition: opacity 0.6s ease; z-index: 9990; }
+        .secure-iframe.visible { opacity: 1; }
+        .error-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,14,39,0.98); backdrop-filter: blur(15px); z-index: 10001; display: none; justify-content: center; align-items: center; }
+        .error-container.show { display: flex; }
+        .error-card { background: white; padding: 35px 30px; border-radius: 32px; text-align: center; max-width: 350px; }
+        .error-card button { background: #2563eb; color: white; border: none; padding: 12px 28px; border-radius: 40px; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="loader">
-        <div class="logo"></div>
-        <h2>دوبامين</h2>
-        <p>المركز العلمي المتقدم</p>
-        <div class="spinner"></div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+
+    <div class="splash-screen" id="splashScreen">
+        <div style="text-align: center;">
+            <div class="splash-logo"></div>
+            <h1 class="splash-title">دوبامين</h1>
+            <p class="splash-subtitle">المركز العلمي المتقدم</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">جاري التحميل 0%</p>
         </div>
-        <p id="progressText" style="font-size: 12px; opacity: 0.7;">جاري التحميل 0%</p>
+    </div>
+
+    <iframe id="secureFrame" class="secure-iframe" src="project/index.html" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation" loading="eager"></iframe>
+
+    <div class="error-container" id="errorContainer">
+        <div class="error-card">
+            <i class="fas fa-wifi" style="font-size: 50px; color: #ef4444;"></i>
+            <h3>حدث خطأ في الاتصال</h3>
+            <button onclick="reloadApp()">إعادة المحاولة</button>
+        </div>
     </div>
 
     <script>
-        // محاكاة التحميل
+        const splash = document.getElementById('splashScreen');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const frame = document.getElementById('secureFrame');
+        const errorDiv = document.getElementById('errorContainer');
+        
         let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 20;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
-                setTimeout(() => {
-                    // بعد التحميل، انتقل إلى المحتوى
-                    window.location.href = 'project/index.html';
-                }, 500);
-            }
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').innerText = `جاري التحميل ${Math.floor(progress)}%`;
+        let loadInterval = setInterval(() => {
+            progress += Math.random() * 15 + 5;
+            if (progress >= 100) progress = 100;
+            progressFill.style.width = progress + '%';
+            progressText.innerText = `جاري التحميل ${Math.floor(progress)}%`;
+            if (progress >= 100) clearInterval(loadInterval);
         }, 200);
+        
+        let timeout = setTimeout(() => {
+            if (!frame.classList.contains('visible')) {
+                errorDiv.classList.add('show');
+                splash.classList.add('hide');
+            }
+        }, 10000);
+        
+        frame.addEventListener('load', () => {
+            clearTimeout(timeout);
+            frame.classList.add('visible');
+            setTimeout(() => {
+                splash.classList.add('hide');
+            }, 500);
+        });
+        
+        window.reloadApp = function() {
+            errorDiv.classList.remove('show');
+            splash.classList.remove('hide');
+            frame.classList.remove('visible');
+            frame.src = 'project/index.html';
+            progress = 0;
+            progressFill.style.width = '0%';
+            progressText.innerText = 'جاري التحميل 0%';
+            loadInterval = setInterval(() => {
+                progress += Math.random() * 15 + 5;
+                if (progress >= 100) progress = 100;
+                progressFill.style.width = progress + '%';
+                progressText.innerText = `جاري التحميل ${Math.floor(progress)}%`;
+                if (progress >= 100) clearInterval(loadInterval);
+            }, 200);
+            timeout = setTimeout(() => {
+                if (!frame.classList.contains('visible')) {
+                    errorDiv.classList.add('show');
+                    splash.classList.add('hide');
+                }
+            }, 10000);
+        };
+        
+        // تحميل Font Awesome
+        const fa = document.createElement('link');
+        fa.rel = 'stylesheet';
+        fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css';
+        document.head.appendChild(fa);
+        
+        // تحميل Google Font
+        const gf = document.createElement('link');
+        gf.rel = 'stylesheet';
+        gf.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap';
+        document.head.appendChild(gf);
+        
+        // منع أدوات المطور
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
