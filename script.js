@@ -1,3 +1,6 @@
+// المتغير الرئيسي: هنا الرابط النهائي للموقع الأساسي
+const targetUrl = "https://dopaminea.com";
+
 const splashScreen = document.getElementById('splashScreen');
 const progressFill = document.getElementById('progressFill');
 const progressText = document.getElementById('progressText');
@@ -77,7 +80,7 @@ function startLoadTimer() {
             if (retryCount < maxRetries) {
                 retryCount++;
                 console.log('محاولة إعادة التحميل رقم', retryCount);
-                frame.src = 'project/index.html';
+                frame.src = targetUrl;
                 startLoadTimer();
             } else {
                 showError();
@@ -97,7 +100,7 @@ frame.addEventListener('load', function() {
 window.reloadSecureApp = function() {
     hideError();
     frame.classList.remove('visible');
-    frame.src = 'project/index.html';
+    frame.src = targetUrl;
     retryCount = 0;
     startLoadTimer();
     splashScreen.classList.remove('hide');
