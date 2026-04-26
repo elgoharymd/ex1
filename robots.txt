@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dopaminea.com/sitemap.xml
