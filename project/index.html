@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="jpMp5DgPIK1zfpJjYl0AoBZ7dZQ64dHe-59k28jXsDw" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" id="themeColor" content="#0f172a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-navbutton-color" content="#0f172a">
+    <title>دوبامين Dobamen</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="dark">
+    <div class="animated-bg"></div>
+    
+    <!-- Page Transition -->
+    <div id="pageTransition" class="page-transition"></div>
+    
+    <!-- Modals -->
+    <div id="fullscreenModal" class="fullscreen-modal" onclick="closeFullscreenModal()">
+        <div class="fullscreen-content" onclick="event.stopPropagation()">
+            <div class="fullscreen-close" onclick="closeFullscreenModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div id="fullscreenModalContent"></div>
+        </div>
+    </div>
+    
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="close-modal" onclick="closeImageModal()">&times;</span>
+        <img id="modalImage" class="modal-content" src="">
+    </div>
+
+    <!-- Header -->
+    <header class="glass-nav sticky top-0 z-50">
+        <div class="container mx-auto px-3 py-2 flex flex-wrap justify-between items-center">
+            <a href="./" class="flex items-center gap-2">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg" class="logo-img" alt="logo">
+                <h1 id="headerTitle" class="text-lg md:text-xl font-black gradient-text">دوبامين</h1>
+            </a>
+            <div class="flex flex-wrap gap-1">
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('hero')"><i class="fas fa-home ml-1"></i> الرئيسية</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('reports')"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('articles')"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('news')"><i class="fas fa-bullhorn ml-1"></i> الأخبار</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('interviews')"><i class="fas fa-comments ml-1"></i> حوارات</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('investigations')"><i class="fas fa-microscope ml-1"></i> تحقيقات</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('infographics')"><i class="fas fa-chart-pie ml-1"></i> إنفوجرافيك</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('videos')"><i class="fas fa-video ml-1"></i> فيديو</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 rounded-lg text-xs md:text-sm" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;" onclick="navigateToSection('quiz')"><i class="fas fa-chart-line ml-1"></i> مقياس الإدمان</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent" class="container mx-auto px-3 py-6 max-w-6xl relative z-10">
+        <div class="shimmer h-80 w-full"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container mx-auto text-center">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg" class="footer-logo" alt="logo" onclick="openImageModal(this.src)">
+            <h3 class="text-xl font-bold gradient-text mb-3">دوبامين</h3>
+            <p class="text-gray-400 text-sm mb-4">وعي رقمي = عقل سليم</p>
+            <div class="team-names">
+                <span class="team-name">محمود وليد محمود</span>
+                <span class="team-name">محمد خليل محمد</span>
+                <span class="team-name">محمد الشحات السيد</span>
+                <span class="team-name">أحمد محمد محمد</span>
+                <span class="team-name">محمود صابر السيد</span>
+                <span class="team-name">محمود نبيل عبد الدايم</span>
+                <span class="team-name">محمود عصام عبد الحكيم</span>
+                <span class="team-name">مصطفى يحيى صوفي</span>
+            </div>
+            <a href="https://www.facebook.com/share/1DfeQVVvSG/" target="_blank" class="facebook-btn">
+                <i class="fab fa-facebook-f"></i>
+                <span>تابعنا على فيسبوك</span>
+            </a>
+            <p id="footerText" class="text-gray-500 text-xs mt-6">© 2026 دوبامين - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- Floating Buttons -->
+    <div id="scrollTopBtn" class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="fas fa-arrow-up text-white"></i>
+    </div>
+
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-sun"></i>
+    </div>
+
+    <div id="colorPickerPanel" class="color-picker-panel">
+        <div class="color-option" style="background: #2563eb;" onclick="changeColor('#2563eb', '#1d4ed8')"></div>
+        <div class="color-option" style="background: #22c55e;" onclick="changeColor('#22c55e', '#16a34a')"></div>
+        <div class="color-option" style="background: #ef4444;" onclick="changeColor('#ef4444', '#dc2626')"></div>
+        <div class="color-option" style="background: #a855f7;" onclick="changeColor('#a855f7', '#9333ea')"></div>
+        <div class="color-option" style="background: #f59e0b;" onclick="changeColor('#f59e0b', '#d97706')"></div>
+        <div class="color-option" style="background: #ec4899;" onclick="changeColor('#ec4899', '#db2777')"></div>
+        <div class="color-option" style="background: #06b6d4;" onclick="changeColor('#06b6d4', '#0891b2')"></div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
