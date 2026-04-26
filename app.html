@@ -33,9 +33,6 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -43,42 +40,302 @@
     <style>
         * { font-family: 'Cairo', sans-serif; }
         html { scroll-behavior: smooth; }
-        :root { --primary: #2563eb; --primary-dark: #1d4ed8; }
-        body { background: linear-gradient(135deg, #f8fafc, #eff6ff); }
         
-        .glass-nav { background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(37,99,235,0.15); }
-        .premium-card { background: white; border-radius: 24px; transition: all 0.3s ease; border: 1px solid rgba(37,99,235,0.1); overflow: hidden; cursor: pointer; }
-        .premium-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -15px rgba(0,0,0,0.15); }
-        .card-cover { height: 200px; background-size: cover; background-position: center; background-color: #e2e8f0; }
-        .gradient-text { background: linear-gradient(135deg, #1e40af, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        /* =============== Light Mode =============== */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #60a5fa;
+            --bg-gradient-start: #f8fafc;
+            --bg-gradient-end: #eff6ff;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --header-bg: rgba(255,255,255,0.95);
+            --glow-color: rgba(37,99,235,0.2);
+            --glow-strong: rgba(37,99,235,0.4);
+        }
         
-        .admin-panel { position: fixed; top: 0; right: -100%; width: 85%; max-width: 450px; height: 100vh; background: white; z-index: 1000; transition: right 0.3s ease; overflow-y: auto; box-shadow: -5px 0 30px rgba(0,0,0,0.2); }
-        .admin-panel.open { right: 0; }
-        .admin-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; }
-        .admin-overlay.open { display: block; }
-        .admin-tab { padding: 8px 12px; border-radius: 12px; cursor: pointer; transition: 0.2s; font-size: 13px; }
-        .admin-tab.active { background: var(--primary); color: white; }
+        /* =============== Dark Mode (الافتراضي) =============== */
+        body.dark {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --bg-gradient-start: #0f172a;
+            --bg-gradient-end: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --header-bg: rgba(15,23,42,0.95);
+            --glow-color: rgba(59,130,246,0.25);
+            --glow-strong: rgba(59,130,246,0.5);
+        }
         
-        /* Quiz Styles - New Design */
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+        
+        body.dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 30%, #0f172a 100%);
+        }
+        
+        /* =============== أنميشن الخلفية =============== */
+        body.dark::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(37,99,235,0.2) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes bgPulse {
+            0% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+            100% { opacity: 0.3; transform: scale(1); }
+        }
+        
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(37,99,235,0.05) 0%, 
+                rgba(59,130,246,0.1) 25%, 
+                rgba(37,99,235,0.05) 50%,
+                rgba(59,130,246,0.1) 75%,
+                rgba(37,99,235,0.05) 100%);
+            background-size: 200% 200%;
+            pointer-events: none;
+            z-index: -1;
+            animation: bgMove 10s ease infinite;
+        }
+        
+        @keyframes bgMove {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+        
+        /* Glass Navigation */
+        .glass-nav { 
+            background: var(--header-bg); 
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(37,99,235,0.15);
+            transition: background 0.3s ease;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        /* =============== Premium Card مع توهج خلف البطاقة =============== */
+        .premium-card { 
+            background: var(--card-bg); 
+            border-radius: 24px; 
+            transition: all 0.3s ease; 
+            border: 1px solid var(--border-color); 
+            overflow: hidden; 
+            cursor: pointer;
+            position: relative;
+            animation: cardFloat 4s ease-in-out infinite;
+        }
+        
+        /* التوهج خلف البطاقة */
+        .premium-card::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(135deg, 
+                var(--primary-light), 
+                var(--primary), 
+                var(--primary-dark), 
+                var(--primary));
+            border-radius: 28px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            filter: blur(15px);
+        }
+        
+        /* توهج مستمر للبطاقة (دائماً) */
+        .premium-card {
+            box-shadow: 0 8px 25px var(--glow-color), 0 0 15px var(--glow-color);
+            animation: cardGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes cardGlow {
+            0% { 
+                box-shadow: 0 8px 20px var(--glow-color), 0 0 10px var(--glow-color);
+                transform: translateY(0);
+            }
+            50% { 
+                box-shadow: 0 15px 35px var(--glow-strong), 0 0 25px var(--glow-strong);
+                transform: translateY(-5px);
+            }
+            100% { 
+                box-shadow: 0 8px 20px var(--glow-color), 0 0 10px var(--glow-color);
+                transform: translateY(0);
+            }
+        }
+        
+        .premium-card:hover::before {
+            opacity: 0.6;
+        }
+        
+        .premium-card:hover {
+            transform: translateY(-5px);
+            animation: none;
+            box-shadow: 0 20px 40px var(--glow-strong), 0 0 35px var(--glow-strong);
+        }
+        
+        body.dark .premium-card {
+            background: rgba(30,41,59,0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59,130,246,0.3);
+        }
+        
+        .card-cover { 
+            height: 200px; 
+            background-size: cover; 
+            background-position: center; 
+            background-color: #e2e8f0;
+            transition: transform 0.5s ease;
+        }
+        
+        .premium-card:hover .card-cover {
+            transform: scale(1.05);
+        }
+        
+        .gradient-text { 
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light)); 
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            color: transparent; 
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Hero Logo */
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid var(--primary);
+            animation: logoFloat 3s ease-in-out infinite, logoPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes logoPulse {
+            0% { box-shadow: 0 0 0 0 var(--glow-color); }
+            70% { box-shadow: 0 0 0 20px rgba(37,99,235,0); }
+            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+        }
+        
+        .hero-logo:hover {
+            transform: scale(1.05);
+            animation: none;
+        }
+        
+        /* Scroll Top Button */
+        .scroll-top { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            width: 45px; 
+            height: 45px; 
+            background: var(--primary); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: 0.3s; 
+            z-index: 99; 
+            box-shadow: 0 4px 12px var(--glow-color);
+        }
+        .scroll-top.visible { opacity: 1; visibility: visible; animation: btnPulse 1.5s ease-in-out infinite; }
+        
+        @keyframes btnPulse {
+            0% { box-shadow: 0 0 0 0 var(--glow-color); transform: scale(1); }
+            70% { box-shadow: 0 0 0 15px rgba(37,99,235,0); transform: scale(1.05); }
+            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); transform: scale(1); }
+        }
+        
+        .scroll-top:hover { transform: scale(1.1); animation: none; }
+        
+        /* Quiz Styles مع توهج */
         .quiz-question-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
-            border: 1px solid #eef2ff;
+            border: 1px solid var(--border-color);
+            position: relative;
+            animation: questionGlow 3s ease-in-out infinite;
+            box-shadow: 0 5px 15px var(--glow-color);
+        }
+        
+        @keyframes questionGlow {
+            0% { box-shadow: 0 5px 12px var(--glow-color); }
+            50% { box-shadow: 0 8px 25px var(--glow-strong); }
+            100% { box-shadow: 0 5px 12px var(--glow-color); }
+        }
+        
+        body.dark .quiz-question-card {
+            background: rgba(30,41,59,0.9);
+            backdrop-filter: blur(10px);
         }
         
         .quiz-question-card:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             transform: translateY(-2px);
+            animation: none;
+            box-shadow: 0 10px 30px var(--glow-strong);
         }
         
         .quiz-question-number {
             width: 35px;
             height: 35px;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border-radius: 12px;
             display: flex;
@@ -87,54 +344,315 @@
             font-weight: bold;
             font-size: 16px;
             margin-left: 12px;
+            animation: numberPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         .quiz-option {
             padding: 12px 16px;
             border-radius: 14px;
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: center;
             font-weight: 500;
+            color: var(--text-primary);
         }
         
         .quiz-option:hover {
             border-color: var(--primary);
-            background: #eff6ff;
+            background: var(--primary);
+            color: white;
             transform: translateX(-3px);
+            box-shadow: 0 5px 15px var(--glow-color);
         }
         
         .quiz-option.selected {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            border-color: #1e40af;
-            transform: scale(1.02);
+            animation: selectPulse 0.5s ease;
+            box-shadow: 0 0 15px var(--glow-strong);
         }
         
-        /* Result Styles */
+        @keyframes selectPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .quiz-progress-fill {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.3s ease;
+            width: 0%;
+            animation: progressShine 2s ease-in-out infinite;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+        
+        @keyframes progressShine {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .quiz-toggle-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 35px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px var(--glow-color);
+            animation: btnGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes btnGlow {
+            0% { box-shadow: 0 5px 15px var(--glow-color); transform: scale(1); }
+            50% { box-shadow: 0 8px 30px var(--glow-strong); transform: scale(1.02); }
+            100% { box-shadow: 0 5px 15px var(--glow-color); transform: scale(1); }
+        }
+        
+        .quiz-toggle-btn:hover { transform: scale(1.03); animation: none; }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            transition: all 0.3s ease;
+            animation: themeRotate 4s ease-in-out infinite;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+        
+        @keyframes themeRotate {
+            0% { transform: rotate(0deg); box-shadow: 0 0 10px var(--glow-color); }
+            25% { transform: rotate(10deg); box-shadow: 0 0 20px var(--glow-strong); }
+            75% { transform: rotate(-10deg); box-shadow: 0 0 20px var(--glow-strong); }
+            100% { transform: rotate(0deg); box-shadow: 0 0 10px var(--glow-color); }
+        }
+        
+        .theme-toggle:hover { transform: scale(1.1) rotate(0deg); animation: none; }
+        
+        /* Stat Cards مع توهج */
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            animation: statFloat 4s ease-in-out infinite;
+            box-shadow: 0 5px 15px var(--glow-color);
+            position: relative;
+        }
+        
+        @keyframes statFloat {
+            0%, 100% { transform: translateY(0); box-shadow: 0 5px 12px var(--glow-color); }
+            50% { transform: translateY(-5px); box-shadow: 0 12px 25px var(--glow-strong); }
+        }
+        
+        .stat-card:nth-child(1) { animation-delay: 0s; }
+        .stat-card:nth-child(2) { animation-delay: 0.3s; }
+        .stat-card:nth-child(3) { animation-delay: 0.6s; }
+        .stat-card:nth-child(4) { animation-delay: 0.9s; }
+        .stat-card:nth-child(5) { animation-delay: 1.2s; }
+        .stat-card:nth-child(6) { animation-delay: 1.5s; }
+        
+        body.dark .stat-card {
+            background: rgba(30,41,59,0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px) !important;
+            animation: none;
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px var(--glow-strong);
+        }
+        
+        .stat-card i { 
+            font-size: 28px; 
+            color: var(--primary); 
+            margin-bottom: 8px; 
+            display: block; 
+            animation: iconPop 2s ease-in-out infinite; 
+        }
+        
+        @keyframes iconPop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-top: 1px solid rgba(59,130,246,0.3);
+            margin-top: 50px;
+            padding: 40px 20px 30px;
+            box-shadow: 0 -10px 30px var(--glow-color);
+        }
+        
+        .footer-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid var(--primary);
+            animation: footerLogoPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+        
+        @keyframes footerLogoPulse {
+            0% { box-shadow: 0 0 0 0 var(--glow-color); }
+            70% { box-shadow: 0 0 0 15px rgba(37,99,235,0); }
+            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+        }
+        
+        .team-names {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .team-name {
+            background: rgba(59,130,246,0.15);
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(59,130,246,0.3);
+            animation: teamNameGlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes teamNameGlow {
+            0% { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); box-shadow: 0 0 5px rgba(59,130,246,0.1); }
+            50% { border-color: rgba(59,130,246,0.8); background: rgba(59,130,246,0.2); box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+            100% { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); box-shadow: 0 0 5px rgba(59,130,246,0.1); }
+        }
+        
+        .team-name:hover {
+            transform: translateY(-2px);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 20px var(--glow-color);
+        }
+        
+        /* Facebook Button */
+        .facebook-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #1877f2, #0d65d9);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(24,119,242,0.3);
+            animation: facebookPulse 2s ease-in-out infinite;
+            border: none;
+            cursor: pointer;
+        }
+        
+        @keyframes facebookPulse {
+            0% { box-shadow: 0 5px 15px rgba(24,119,242,0.3); transform: scale(1); }
+            50% { box-shadow: 0 8px 30px rgba(24,119,242,0.6); transform: scale(1.03); }
+            100% { box-shadow: 0 5px 15px rgba(24,119,242,0.3); transform: scale(1); }
+        }
+        
+        .facebook-btn:hover {
+            transform: scale(1.05);
+            animation: none;
+            background: linear-gradient(135deg, #0d65d9, #0a55b8);
+            box-shadow: 0 10px 30px rgba(24,119,242,0.5);
+        }
+        
+        .facebook-btn i {
+            font-size: 20px;
+            animation: facebookIcon 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes facebookIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Detail Container */
+        .detail-container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: var(--card-bg); 
+            border-radius: 32px; 
+            padding: 25px; 
+            box-shadow: 0 20px 40px -15px var(--glow-color), 0 0 30px var(--glow-color);
+            border: 1px solid var(--border-color);
+            animation: detailFadeIn 0.5s ease;
+        }
+        
+        @keyframes detailFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .grid-responsive { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        @media (max-width: 640px) { .grid-responsive { gap: 1rem; } }
+        
+        .nav-link { transition: 0.2s; color: var(--text-secondary); position: relative; }
+        .nav-link:hover { color: var(--primary); transform: translateY(-2px); }
+        
+        .logo-img { height: 40px; width: auto; object-fit: contain; border-radius: 50%; transition: transform 0.3s; }
+        .logo-img:hover { transform: scale(1.05); }
+        
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .empty-state { text-align: center; padding: 50px 20px; background: var(--card-bg); border-radius: 24px; border: 1px solid var(--border-color); box-shadow: 0 5px 20px var(--glow-color); }
+        
+        .share-btn { background: rgba(37,99,235,0.1); color: var(--primary); border: 1px solid var(--border-color); cursor: pointer; transition: 0.3s; padding: 8px 16px; border-radius: 12px; }
+        .share-btn:hover { background: var(--primary); color: white; box-shadow: 0 5px 15px var(--glow-color); }
+        
         .result-card {
             border-radius: 28px;
             padding: 30px;
             text-align: center;
             animation: slideUp 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
+        .result-normal { background: linear-gradient(135deg, #22c55e, #16a34a); animation: resultPulse 2s ease-in-out infinite; }
+        .result-recovery { background: linear-gradient(135deg, #eab308, #ca8a04); animation: resultPulse 2s ease-in-out infinite; }
+        .result-severe { background: linear-gradient(135deg, #ef4444, #dc2626); animation: resultPulse 2s ease-in-out infinite; }
         
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes resultPulse {
+            0%, 100% { filter: brightness(1); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+            50% { filter: brightness(1.05); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
         }
-        
-        .result-normal { background: linear-gradient(135deg, #22c55e, #16a34a); }
-        .result-recovery { background: linear-gradient(135deg, #eab308, #ca8a04); }
-        .result-severe { background: linear-gradient(135deg, #ef4444, #dc2626); }
         
         .score-circle {
             width: 160px;
@@ -147,69 +665,122 @@
             justify-content: center;
             margin: 0 auto;
             backdrop-filter: blur(5px);
+            animation: scoreSpin 0.6s ease-out;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
         }
         
-        .progress-bar-custom {
-            height: 12px;
+        @keyframes scoreSpin {
+            from { transform: rotate(-180deg) scale(0); opacity: 0; }
+            to { transform: rotate(0) scale(1); opacity: 1; }
+        }
+        
+        .color-picker-panel {
+            position: fixed;
+            bottom: 85px;
+            left: 20px;
+            background: var(--card-bg);
             border-radius: 20px;
-            background: rgba(255,255,255,0.3);
-            overflow: hidden;
+            padding: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 98;
+            display: none;
+            gap: 10px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border-color);
+        }
+        .color-picker-panel.open { display: flex; animation: panelPop 0.2s ease; }
+        
+        @keyframes panelPop {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
         
-        .progress-fill {
+        .color-option {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid white;
+            animation: colorPop 2s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes colorPop {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 0 15px var(--glow-color); }
+        }
+        
+        .color-option:hover { transform: scale(1.15); animation: none; }
+        
+        .quiz-content { display: none; }
+        .quiz-content.open { display: block; animation: fadeSlideUp 0.4s ease; }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            border-radius: 20px;
-            background: white;
-            transition: width 1.2s cubic-bezier(0.22, 0.97, 0.36, 1);
-            width: 0%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
         }
+        .image-modal.show { display: flex; animation: modalFade 0.3s ease; }
+        @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
         
-        .admin-trigger { position: fixed; bottom: 20px; left: 20px; width: 45px; height: 45px; background: rgba(30,41,59,0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 98; }
-        .admin-trigger:hover { background: #1e293b; transform: scale(1.05); }
-        .admin-trigger i { color: white; font-size: 20px; }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            box-shadow: 0 0 50px var(--glow-strong);
+            border: 3px solid var(--primary);
+            animation: modalZoom 0.3s ease;
+        }
+        @keyframes modalZoom { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
-        .scroll-top { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 99; }
-        .scroll-top.visible { opacity: 1; visibility: visible; }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 1001;
+        }
+        .close-modal:hover { color: var(--primary); transform: scale(1.1) rotate(90deg); }
         
-        .empty-state { text-align: center; padding: 50px 20px; background: white; border-radius: 24px; border: 2px dashed #cbd5e1; }
-        .empty-state i { font-size: 50px; color: #94a3b8; margin-bottom: 15px; }
-        
-        .shimmer { background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 20px; }
+        .shimmer { 
+            background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%); 
+            background-size: 200% 100%; 
+            animation: shimmer 1.5s infinite; 
+            border-radius: 20px; 
+        }
+        body.dark .shimmer {
+            background: linear-gradient(90deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+        }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        
-        .detail-container { max-width: 900px; margin: 0 auto; background: white; border-radius: 32px; padding: 25px; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1); }
-        .detail-cover { width: 100%; height: 250px; background-size: cover; background-position: center; background-color: #e2e8f0; border-radius: 20px; margin-bottom: 25px; }
-        .share-btn { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; cursor: pointer; transition: 0.3s; padding: 8px 16px; border-radius: 12px; }
-        .share-btn:hover { background: #16a34a; color: white; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .logo-img { height: 40px; width: auto; object-fit: contain; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        
-        .grid-responsive { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-        @media (max-width: 640px) { .grid-responsive { gap: 1rem; } }
-        .nav-link { transition: 0.2s; }
-        .nav-link:hover { color: var(--primary); }
-        
-        /* Quiz Progress Bar */
-        .quiz-progress {
-            background: #e2e8f0;
-            border-radius: 30px;
-            height: 8px;
-            overflow: hidden;
-        }
-        .quiz-progress-fill {
-            background: linear-gradient(90deg, #2563eb, #1d4ed8);
-            height: 100%;
-            border-radius: 30px;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
     </style>
 </head>
-<body>
+<body class="dark">
+    <div class="animated-bg"></div>
+    
+    <!-- Modal -->
+    <div id="imageModal" class="image-modal" onclick="closeModal()">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modalImage" class="modal-content" src="">
+    </div>
 
-    <!-- Header -->
     <header class="glass-nav sticky top-0 z-50">
         <div class="container mx-auto px-3 py-2 flex flex-wrap justify-between items-center">
             <a href="./" class="flex items-center gap-2">
@@ -217,168 +788,84 @@
                 <h1 id="headerTitle" class="text-lg md:text-xl font-black gradient-text">دوبامين</h1>
             </a>
             <div class="flex flex-wrap gap-1">
-                <a href="./" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-home ml-1"></i> الرئيسية</a>
-                <a href="#reports" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
-                <a href="#articles" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
-                <a href="#news" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-bullhorn ml-1"></i> الأخبار</a>
-                <a href="#interviews" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-comments ml-1"></i> حوارات</a>
-                <a href="#investigations" class="nav-link px-2 md:px-3 py-1.5 text-gray-600 text-xs md:text-sm"><i class="fas fa-microscope ml-1"></i> تحقيقات</a>
-                <a href="#quiz" class="nav-link px-2 md:px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs md:text-sm"><i class="fas fa-chart-line ml-1"></i> مقياس الإدمان</a>
+                <a href="./" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-home ml-1"></i> الرئيسية</a>
+                <a href="#reports" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
+                <a href="#articles" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
+                <a href="#news" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-bullhorn ml-1"></i> الأخبار</a>
+                <a href="#interviews" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-comments ml-1"></i> حوارات</a>
+                <a href="#investigations" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-microscope ml-1"></i> تحقيقات</a>
+                <a href="#infographics" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-chart-pie ml-1"></i> إنفوجرافيك</a>
+                <a href="#videos" class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm"><i class="fas fa-video ml-1"></i> فيديو</a>
+                <a href="#quiz-section" class="nav-link px-2 md:px-3 py-1.5 rounded-lg text-xs md:text-sm" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;"><i class="fas fa-chart-line ml-1"></i> مقياس الإدمان</a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main id="mainContent" class="container mx-auto px-3 py-6 max-w-6xl">
+    <main id="mainContent" class="container mx-auto px-3 py-6 max-w-6xl relative z-10">
         <div class="shimmer h-80 w-full"></div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-6 mt-10 text-center">
-        <p id="footerText" class="text-sm">© 2026 دوبامين وعي رقمي=عقل سليم</p>
+    <!-- Footer مع اللوجو والأسماء وزر الفيسبوك -->
+    <footer>
+        <div class="container mx-auto text-center">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg" class="footer-logo" alt="logo" onclick="openModal(this.src)">
+            
+            <h3 class="text-xl font-bold gradient-text mb-3">دوبامين</h3>
+            <p class="text-gray-400 text-sm mb-4">وعي رقمي = عقل سليم</p>
+            
+            <div class="team-names">
+                <span class="team-name">محمود وليد محمود</span>
+                <span class="team-name">محمد خليل محمد</span>
+                <span class="team-name">محمد الشحات السيد</span>
+                <span class="team-name">أحمد محمد محمد</span>
+                <span class="team-name">محمود صابر السيد</span>
+                <span class="team-name">محمود نبيل عبد الدايم</span>
+                <span class="team-name">محمود عصام عبد الحكيم</span>
+                <span class="team-name">مصطفى يحيى صوفي</span>
+            </div>
+            
+            <a href="https://www.facebook.com/share/1DfeQVVvSG/" target="_blank" class="facebook-btn" id="facebookBtn">
+                <i class="fab fa-facebook-f"></i>
+                <span>تابعنا على فيسبوك</span>
+            </a>
+            
+            <p id="footerText" class="text-gray-500 text-xs mt-6">© 2026 دوبامين - جميع الحقوق محفوظة</p>
+        </div>
     </footer>
 
-    <!-- Admin Panel -->
-    <div id="adminOverlay" class="admin-overlay"></div>
-    <div id="adminPanel" class="admin-panel">
-        <div class="bg-gray-900 text-white p-3 sticky top-0 flex justify-between items-center">
-            <span class="text-sm"><i class="fas fa-lock ml-2"></i> لوحة الإدارة</span>
-            <button onclick="closeAdminPanel()" class="text-white text-xl">&times;</button>
-        </div>
-        <div class="p-3">
-            <div class="flex flex-wrap gap-1 mb-3 border-b pb-2">
-                <button onclick="showAdminTab('reports')" class="admin-tab active" id="tabReports">تقارير</button>
-                <button onclick="showAdminTab('articles')" class="admin-tab" id="tabArticles">مقالات</button>
-                <button onclick="showAdminTab('news')" class="admin-tab" id="tabNews">أخبار</button>
-                <button onclick="showAdminTab('interviews')" class="admin-tab" id="tabInterviews">حوارات</button>
-                <button onclick="showAdminTab('investigations')" class="admin-tab" id="tabInvestigations">تحقيقات</button>
-                <button onclick="showAdminTab('infographics')" class="admin-tab" id="tabInfographics">إنفوجرافيك</button>
-                <button onclick="showAdminTab('videos')" class="admin-tab" id="tabVideos">فيديو</button>
-                <button onclick="showAdminTab('quiz')" class="admin-tab" id="tabQuiz">الاختبار</button>
-                <button onclick="showAdminTab('texts')" class="admin-tab" id="tabTexts">نصوص</button>
-            </div>
-            
-            <div id="reportsPanel">
-                <div class="bg-blue-50 p-2 rounded-xl mb-3">
-                    <input type="text" id="repTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="repDate" placeholder="التاريخ" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="repImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <textarea id="repSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <textarea id="repContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <button onclick="addItem('reports')" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm">حفظ</button>
-                </div>
-                <div id="reportsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
-            </div>
-            
-            <div id="articlesPanel" class="hidden">
-                <div class="bg-green-50 p-2 rounded-xl mb-3">
-                    <input type="text" id="artTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="artCategory" placeholder="التصنيف" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="artImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <textarea id="artSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <textarea id="artContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <input type="number" id="artReadTime" placeholder="وقت القراءة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <button onclick="addItem('articles')" class="w-full bg-green-600 text-white py-2 rounded-lg text-sm">حفظ</button>
-                </div>
-                <div id="articlesList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
-            </div>
-            
-            <div id="newsPanel" class="hidden">
-                <div class="bg-yellow-50 p-2 rounded-xl mb-3">
-                    <input type="text" id="newsTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="newsDate" placeholder="التاريخ" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="newsImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <textarea id="newsSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <textarea id="newsContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <button onclick="addItem('news')" class="w-full bg-yellow-600 text-white py-2 rounded-lg text-sm">حفظ</button>
-                </div>
-                <div id="newsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
-            </div>
-            
-            <div id="interviewsPanel" class="hidden">
-                <div class="bg-pink-50 p-2 rounded-xl mb-3">
-                    <input type="text" id="interTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="interSpeaker" placeholder="المتحدث" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="interDate" placeholder="التاريخ" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="interImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <textarea id="interSummary" placeholder="الملخص" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <textarea id="interContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <button onclick="addItem('interviews')" class="w-full bg-pink-600 text-white py-2 rounded-lg text-sm">حفظ</button>
-                </div>
-                <div id="interviewsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
-            </div>
-            
-            <div id="investigationsPanel" class="hidden">
-                <div class="bg-purple-50 p-2 rounded-xl mb-3">
-                    <input type="text" id="invTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="invImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <textarea id="invSummary" placeholder="الوصف" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <textarea id="invContent" placeholder="المحتوى" rows="3" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <button onclick="addItem('investigations')" class="w-full bg-purple-600 text-white py-2 rounded-lg text-sm">حفظ</button>
-                </div>
-                <div id="investigationsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
-            </div>
-            
-            <div id="infographicsPanel" class="hidden">
-                <div class="bg-orange-50 p-2 rounded-xl mb-3">
-                    <input type="text" id="infTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="infImage" placeholder="رابط الصورة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <button onclick="addItem('infographics')" class="w-full bg-orange-600 text-white py-2 rounded-lg text-sm">حفظ</button>
-                </div>
-                <div id="infographicsList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
-            </div>
-            
-            <div id="videosPanel" class="hidden">
-                <div class="bg-red-50 p-2 rounded-xl mb-3">
-                    <input type="text" id="vidTitle" placeholder="العنوان *" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="vidUrl" placeholder="رابط يوتيوب" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <textarea id="vidDesc" placeholder="الوصف" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <button onclick="addItem('videos')" class="w-full bg-red-600 text-white py-2 rounded-lg text-sm">حفظ</button>
-                </div>
-                <div id="videosList" class="space-y-1 max-h-60 overflow-y-auto text-sm"></div>
-            </div>
-            
-            <div id="quizPanel" class="hidden">
-                <div class="bg-gray-50 p-2 rounded-xl">
-                    <h3 class="font-bold text-sm mb-2">أسئلة مقياس الدوبامين</h3>
-                    <p class="text-xs text-gray-500 mb-2">كل سؤال: نص السؤال، 4 خيارات، درجات [4,3,2,1]</p>
-                    <textarea id="quizJson" rows="10" class="w-full border rounded-lg p-2 text-xs font-mono"></textarea>
-                    <button onclick="saveQuiz()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm mt-2">حفظ الأسئلة</button>
-                </div>
-            </div>
-            
-            <div id="textsPanel" class="hidden">
-                <div class="bg-indigo-50 p-2 rounded-xl">
-                    <input type="text" id="textSiteTitle" placeholder="عنوان الصفحة" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textHeaderTitle" placeholder="عنوان الهيدر" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textHeroTitle" placeholder="نص الهيرو" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <textarea id="textHeroDesc" placeholder="وصف الهيرو" rows="2" class="w-full border rounded-lg p-2 mb-1 text-sm"></textarea>
-                    <input type="text" id="textReportsTitle" placeholder="عنوان التقارير" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textArticlesTitle" placeholder="عنوان المقالات" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textNewsTitle" placeholder="عنوان الأخبار" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textInterviewsTitle" placeholder="عنوان الحوارات" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textInvestigationsTitle" placeholder="عنوان التحقيقات" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textInfographicsTitle" placeholder="عنوان الإنفوجرافيك" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textVideosTitle" placeholder="عنوان الفيديو" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textQuizTitle" placeholder="عنوان الاختبار" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <input type="text" id="textFooter" placeholder="نص التذييل" class="w-full border rounded-lg p-2 mb-1 text-sm">
-                    <button onclick="saveTexts()" class="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm mt-2">حفظ</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Trigger -->
-    <div class="admin-trigger" onclick="openAdminPanel()">
-        <i class="fas fa-cog"></i>
-    </div>
-    
     <div id="scrollTopBtn" class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
         <i class="fas fa-arrow-up text-white"></i>
     </div>
 
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-sun"></i>
+    </div>
+
+    <div id="colorPickerPanel" class="color-picker-panel">
+        <div class="color-option" style="background: #2563eb;" onclick="changeColor('#2563eb', '#1d4ed8')"></div>
+        <div class="color-option" style="background: #22c55e;" onclick="changeColor('#22c55e', '#16a34a')"></div>
+        <div class="color-option" style="background: #ef4444;" onclick="changeColor('#ef4444', '#dc2626')"></div>
+        <div class="color-option" style="background: #a855f7;" onclick="changeColor('#a855f7', '#9333ea')"></div>
+        <div class="color-option" style="background: #f59e0b;" onclick="changeColor('#f59e0b', '#d97706')"></div>
+        <div class="color-option" style="background: #ec4899;" onclick="changeColor('#ec4899', '#db2777')"></div>
+        <div class="color-option" style="background: #06b6d4;" onclick="changeColor('#06b6d4', '#0891b2')"></div>
+    </div>
+
     <script>
-        // Firebase
+        // =============== Functions for Modal ===============
+        function openModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.add('show');
+            modalImg.src = imageUrl;
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('show');
+        }
+        
+        // =============== Firebase Config ===============
         const firebaseConfig = {
             apiKey: "AIzaSyCuYQh5gqlss3gdRjpSPZm-zShiwSAtetQ",
             authDomain: "prmaga1.firebaseapp.com",
@@ -391,28 +878,19 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         
-        // Global
+        // =============== Global Variables ===============
         let quizQuestions = [];
         let userAnswers = [];
-        let currentQuestionIndex = 0;
-        let quizMode = 'all'; // 'all' or 'one-by-one'
+        let isQuizOpen = false;
         
         const defaultQuiz = [
             { text: "كم مرة تشعر برغبة ملحة في التحقق من هاتفك ووسائل التواصل الاجتماعي؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "هل تجد صعوبة في التوقف عن استخدام الأجهزة الإلكترونية (هاتف، كمبيوتر، تلفاز)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "كم مرة تتناول الطعام بدافع الملل أو التوتر وليس بسبب الجوع؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "هل تشعر بالنشوة أو السعادة عند شراء أشياء جديدة حتى لو لم تكن بحاجتها؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "كم مرة تقضي ساعات طويلة في مشاهدة المقاطع القصيرة (تيك توك، ريلز، شورتس)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "هل تجد نفسك تتصفح الإنترنت دون هدف محدد لفترات طويلة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "كم مرة تؤجل مهامك اليومية بسبب الرغبة في الترفيه (مسلسل، لعبة، تصفح)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "هل تشعر بالقلق أو الانزعاج عندما تنفد بطارية هاتفك أو لا يتوفر إنترنت؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "كم مرة تستهلك المشروبات التي تحتوي على الكافيين (قهوة، شاي، مشروبات طاقة) بشكل مفرط؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "هل تجد صعوبة في الاستمتاع بالأنشطة اليومية بدون وجود محفز رقمي (هاتف، تلفاز)؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "كم مرة تشعر بالحاجة إلى الحصول على إعجابات أو تفاعل على منشوراتك؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "هل تمارس سلوكيات خطرة بحثًا عن الإثارة والدوبامين؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "كم مرة تشعر بالرغبة في المقامرة أو الألعاب التي تعتمد على الحظ؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "هل تؤثر عاداتك الرقمية على نومك أو علاقاتك الاجتماعية؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
-            { text: "كم مرة تحاول الإقلاع عن عادة معينة ولكنك تفشل؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] }
+            { text: "هل تجد صعوبة في التوقف عن استخدام الأجهزة الإلكترونية؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تتناول الطعام بدافع الملل أو التوتر؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تشعر بالنشوة عند شراء أشياء جديدة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تقضي ساعات في مشاهدة المقاطع القصيرة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تجد نفسك تتصفح الإنترنت دون هدف؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تؤجل مهامك بسبب الترفيه؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] }
         ];
         
         const defaultTexts = {
@@ -428,10 +906,96 @@
             infographicsTitle: "الإنفوجرافيك",
             videosTitle: "الفيديوهات",
             quizTitle: "مقياس إدمان الدوبامين",
-            footer: "© دوبامين وعي رقمي=عقل سليم"
+            footer: "© 2026 دوبامين وعي رقمي=عقل سليم"
         };
         
-        // Helpers
+        // =============== Theme Functions ===============
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.querySelector('.theme-toggle i');
+            const isDark = body.classList.contains('dark');
+            
+            if (isDark) {
+                body.classList.remove('dark');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+                Swal.fire({
+                    title: "✨ الوضع الفاتح",
+                    text: "تم التبديل إلى الوضع النهاري",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: '#ffffff',
+                    color: '#1e293b'
+                });
+            } else {
+                body.classList.add('dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+                Swal.fire({
+                    title: "🌙 الوضع الداكن",
+                    text: "تم التبديل إلى الوضع الليلي",
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: '#1e293b',
+                    color: '#f1f5f9'
+                });
+            }
+        }
+        
+        function toggleColorPicker() {
+            const panel = document.getElementById('colorPickerPanel');
+            panel.classList.toggle('open');
+        }
+        
+        function changeColor(primary, primaryDark) {
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--primary-dark', primaryDark);
+            localStorage.setItem('userPrimary', primary);
+            localStorage.setItem('userPrimaryDark', primaryDark);
+            document.getElementById('colorPickerPanel').classList.remove('open');
+            Swal.fire({ title: "تم تغيير اللون", text: "لون الموقع تم تحديثه", icon: "success", timer: 1500, showConfirmButton: false });
+        }
+        
+        function loadSavedThemeAndColor() {
+            const savedTheme = localStorage.getItem('theme');
+            const savedPrimary = localStorage.getItem('userPrimary');
+            const savedPrimaryDark = localStorage.getItem('userPrimaryDark');
+            const icon = document.querySelector('.theme-toggle i');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark');
+                if (icon) {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            } else {
+                document.body.classList.add('dark');
+                if (icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+            
+            if (savedPrimary && savedPrimaryDark) {
+                document.documentElement.style.setProperty('--primary', savedPrimary);
+                document.documentElement.style.setProperty('--primary-dark', savedPrimaryDark);
+            }
+        }
+        
+        // Long press for color picker
+        let pressTimer;
+        const themeBtn = document.querySelector('.theme-toggle');
+        if (themeBtn) {
+            themeBtn.addEventListener('mousedown', () => { pressTimer = setTimeout(() => toggleColorPicker(), 500); });
+            themeBtn.addEventListener('mouseup', () => clearTimeout(pressTimer));
+            themeBtn.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+        }
+        
+        // =============== Helper Functions ===============
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
         
         function getYouTubeEmbedUrl(url) {
@@ -448,17 +1012,14 @@
             return url;
         }
         
-        // Initialize AOS
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 800, once: false });
         
-        // Scroll to top
         window.addEventListener('scroll', () => {
             const btn = document.getElementById('scrollTopBtn');
             if (window.scrollY > 300) btn.classList.add('visible');
             else btn.classList.remove('visible');
         });
         
-        // Navigation
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
@@ -473,7 +1034,7 @@
             });
         });
         
-        // Routing
+        // =============== Routing ===============
         function getParams() {
             const p = new URLSearchParams(window.location.search);
             return { type: p.get('type'), id: p.get('id') };
@@ -494,7 +1055,7 @@
             else navigator.clipboard.writeText(url).then(() => Swal.fire("تم نسخ الرابط", "", "success"));
         };
         
-        // Detail Page
+        // =============== Detail Page ===============
         async function showDetailPage(type, id) {
             const main = document.getElementById('mainContent');
             main.innerHTML = '<div class="shimmer h-96 max-w-4xl mx-auto"></div>';
@@ -513,34 +1074,37 @@
                 else typeName = type;
                 
                 let contentHtml = '';
-                if (item.image) contentHtml += `<img src="${item.image}" class="w-full rounded-xl my-4" onerror="this.src='https://placehold.co/600x400/e2e8f0/64748b?text=No+Image'">`;
+                if (item.image) contentHtml += `<img src="${item.image}" class="w-full rounded-xl my-4" onerror="this.src='https://placehold.co/600x400/1e293b/60a5fa?text=No+Image'">`;
                 if (item.content) contentHtml += `<p class="mb-4">${escapeHtml(item.content)}</p>`;
                 
                 main.innerHTML = `
                     <div class="detail-container">
                         <div class="detail-cover" style="background-image: url('${item.image || ''}')"></div>
                         <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                            <span class="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full">${typeName}</span>
+                            <span class="text-xs px-3 py-1 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${typeName}</span>
                             <button onclick="sharePage()" class="share-btn"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
                         </div>
                         <h1 class="text-xl md:text-3xl font-bold mb-4">${escapeHtml(item.title)}</h1>
-                        <div class="text-gray-700 leading-relaxed">${contentHtml || '<p>لا يوجد محتوى</p>'}</div>
-                        <div class="border-t mt-6 pt-4 text-center">
-                            <a href="./" class="text-blue-600 hover:underline" id="backToHomeBtn"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</a>
+                        <div class="leading-relaxed" style="color: var(--text-secondary);">${contentHtml || '<p>لا يوجد محتوى</p>'}</div>
+                        <div class="border-t mt-6 pt-4 text-center" style="border-color: var(--border-color);">
+                            <button onclick="goBackToHome()" class="hover:underline" style="color: var(--primary); cursor: pointer;"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</button>
                         </div>
                     </div>
                 `;
-                
-                document.getElementById('backToHomeBtn')?.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = './';
-                });
             } catch(e) {
-                main.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>المحتوى غير موجود</h3><a href="./" class="inline-block mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg">الرئيسية</a></div>`;
+                main.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>المحتوى غير موجود</h3><button onclick="goBackToHome()" class="inline-block mt-4 px-5 py-2 rounded-lg" style="background: var(--primary); color: white; cursor: pointer;">الرئيسية</button></div>`;
             }
         }
         
-        // Load Sections
+        function goBackToHome() {
+            window.location.href = './';
+        }
+        
+        function openInNewTab(url) {
+            window.open(url, '_blank');
+        }
+        
+        // =============== Load Sections ===============
         async function loadSection(type, containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -549,15 +1113,14 @@
             const data = snap.val();
             if (data && Object.keys(data).length) {
                 container.innerHTML = '';
-                document.getElementById(type + 'Count')?.setAttribute('data-count', Object.keys(data).length);
                 Object.entries(data).forEach(([id, item]) => {
                     container.innerHTML += `
-                        <div class="premium-card" onclick="location.href='?type=${type}&id=${id}'" data-aos="fade-up">
+                        <div class="premium-card" onclick="openInNewTab('?type=${type}&id=${id}')" data-aos="fade-up">
                             <div class="card-cover" style="background-image: url('${item.image || ''}')"></div>
                             <div class="p-3">
-                                <span class="text-xs text-white bg-blue-600 px-2 py-0.5 rounded-full">${escapeHtml(item.date || '')}</span>
-                                <h3 class="font-bold text-sm md:text-base mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
-                                <p class="text-gray-600 text-xs mt-1 line-clamp-2">${escapeHtml(item.summary || '')}</p>
+                                <span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span>
+                                <h3 class="font-bold text-sm md:text-base mt-2 line-clamp-2" style="color: var(--text-primary);">${escapeHtml(item.title)}</h3>
+                                <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.summary || '')}</p>
                             </div>
                         </div>
                     `;
@@ -578,9 +1141,9 @@
                 Object.values(data).forEach((item) => {
                     let embedUrl = getYouTubeEmbedUrl(item.videoUrl || '');
                     c.innerHTML += `
-                        <div class="premium-card overflow-hidden">
+                        <div class="premium-card overflow-hidden" onclick="openInNewTab('?type=videos&id=${Date.now()}')">
                             <div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>
-                            <div class="p-3"><h3 class="font-bold text-sm">${escapeHtml(item.title)}</h3><p class="text-gray-500 text-xs">${escapeHtml(item.description || '')}</p></div>
+                            <div class="p-3"><h3 class="font-bold text-sm" style="color: var(--text-primary);">${escapeHtml(item.title)}</h3><p class="text-xs" style="color: var(--text-secondary);">${escapeHtml(item.description || '')}</p></div>
                         </div>
                     `;
                 });
@@ -589,22 +1152,15 @@
             }
         }
         
-        // ==================== RESTRUCTURED QUIZ SECTION ====================
-        
+        // =============== Quiz Functions ===============
         async function loadQuiz() {
-            const container = document.getElementById('quizContainer');
-            if (!container) return;
-            
             const snap = await db.ref('quiz/questions').once('value');
             if (snap.exists()) {
                 quizQuestions = snap.val();
             } else {
                 quizQuestions = defaultQuiz;
-                await db.ref('quiz/questions').set(defaultQuiz);
             }
-            
             userAnswers = new Array(quizQuestions.length).fill(-1);
-            renderAllQuestions();
         }
         
         function renderAllQuestions() {
@@ -615,14 +1171,14 @@
                 <div class="mb-6">
                     <div class="flex justify-between items-center mb-3">
                         <div class="flex items-center gap-2">
-                            <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
-                            <span class="text-gray-600">${quizQuestions.length} سؤال</span>
+                            <i class="fas fa-clipboard-list" style="color: var(--primary);"></i>
+                            <span style="color: var(--text-secondary);">${quizQuestions.length} سؤال</span>
                         </div>
                         <div class="quiz-progress w-48">
-                            <div class="quiz-progress-fill" id="quizProgressFill" style="width: 0%"></div>
+                            <div class="quiz-progress-fill" id="quizProgressFill"></div>
                         </div>
                     </div>
-                    <div class="border-b border-gray-200 mb-4"></div>
+                    <div class="border-b mb-4" style="border-color: var(--border-color);"></div>
                 </div>
             `;
             
@@ -634,8 +1190,8 @@
                         <div class="flex items-start gap-3 mb-4">
                             <div class="quiz-question-number">${i+1}</div>
                             <div class="flex-1">
-                                <p class="font-bold text-gray-800 text-base md:text-lg">${escapeHtml(q.text)}</p>
-                                ${isAnswered ? `<span class="text-xs text-green-600 mt-1 inline-block"><i class="fas fa-check-circle"></i> تم الإجابة</span>` : ''}
+                                <p class="font-bold text-base md:text-lg" style="color: var(--text-primary);">${escapeHtml(q.text)}</p>
+                                ${isAnswered ? `<span class="text-xs text-green-500 mt-1 inline-block"><i class="fas fa-check-circle"></i> تم الإجابة</span>` : ''}
                             </div>
                         </div>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -651,7 +1207,7 @@
             
             html += `
                 <div class="mt-8 text-center">
-                    <button id="submitQuizFinalBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold text-lg hover:shadow-xl transition-all flex items-center gap-2 mx-auto">
+                    <button id="submitQuizFinalBtn" class="px-8 py-3 rounded-xl font-bold text-lg transition-all flex items-center gap-2 mx-auto" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">
                         <i class="fas fa-chart-line"></i> تحليل النتيجة النهائية
                     </button>
                 </div>
@@ -659,44 +1215,32 @@
             
             container.innerHTML = html;
             
-            // Update progress
             const answeredCount = userAnswers.filter(a => a !== -1).length;
-            const progressPercent = (answeredCount / quizQuestions.length) * 100;
             const progressFill = document.getElementById('quizProgressFill');
-            if (progressFill) progressFill.style.width = progressPercent + '%';
+            if (progressFill) progressFill.style.width = (answeredCount / quizQuestions.length) * 100 + '%';
             
-            // Attach click events to options
             document.querySelectorAll('.quiz-option').forEach(el => {
                 el.addEventListener('click', function() {
                     const q = parseInt(this.dataset.q);
                     const o = parseInt(this.dataset.opt);
                     userAnswers[q] = o;
                     
-                    // Update UI
                     const questionCard = this.closest('.quiz-question-card');
                     questionCard.querySelectorAll('.quiz-option').forEach(x => x.classList.remove('selected'));
                     this.classList.add('selected');
                     
-                    // Add answered indicator
-                    const answeredSpan = questionCard.querySelector('.text-green-600');
-                    if (!answeredSpan) {
+                    if (!questionCard.querySelector('.text-green-500')) {
                         const flexDiv = questionCard.querySelector('.flex-1');
-                        flexDiv.innerHTML += `<span class="text-xs text-green-600 mt-1 inline-block"><i class="fas fa-check-circle"></i> تم الإجابة</span>`;
+                        flexDiv.innerHTML += `<span class="text-xs text-green-500 mt-1 inline-block"><i class="fas fa-check-circle"></i> تم الإجابة</span>`;
                     }
                     
-                    // Update progress bar
-                    const newAnsweredCount = userAnswers.filter(a => a !== -1).length;
-                    const newProgress = (newAnsweredCount / quizQuestions.length) * 100;
-                    const progressFillEl = document.getElementById('quizProgressFill');
-                    if (progressFillEl) progressFillEl.style.width = newProgress + '%';
+                    const newCount = userAnswers.filter(a => a !== -1).length;
+                    const pFill = document.getElementById('quizProgressFill');
+                    if (pFill) pFill.style.width = (newCount / quizQuestions.length) * 100 + '%';
                 });
             });
             
-            // Submit button
-            const submitBtn = document.getElementById('submitQuizFinalBtn');
-            if (submitBtn) {
-                submitBtn.addEventListener('click', calculateAndShowResult);
-            }
+            document.getElementById('submitQuizFinalBtn')?.addEventListener('click', calculateAndShowResult);
         }
         
         function calculateScore() {
@@ -706,14 +1250,13 @@
                 if (userAnswers[i] !== -1) {
                     total += quizQuestions[i].scores[userAnswers[i]];
                 } else {
-                    total += 1; // Default to lowest score for unanswered
+                    total += 1;
                 }
             }
             return Math.round((total / max) * 100);
         }
         
         async function calculateAndShowResult() {
-            // Check for unanswered
             let unanswered = [];
             for (let i = 0; i < quizQuestions.length; i++) {
                 if (userAnswers[i] === -1) unanswered.push(i + 1);
@@ -755,19 +1298,19 @@
             const resultDiv = document.getElementById('quizResult');
             resultDiv.innerHTML = `
                 <div class="${resultClass} result-card">
-                    <i class="fas ${icon} text-5xl mb-4"></i>
-                    <h3 class="text-2xl font-bold mb-4">${title}</h3>
+                    <i class="fas ${icon} text-5xl mb-4 text-white"></i>
+                    <h3 class="text-2xl font-bold mb-4 text-white">${title}</h3>
                     <div class="score-circle">
-                        <span class="text-5xl font-bold">${percentage}%</span>
-                        <span class="text-sm opacity-90">نسبة الإدمان</span>
+                        <span class="text-5xl font-bold text-white">${percentage}%</span>
+                        <span class="text-sm opacity-90 text-white">نسبة الإدمان</span>
                     </div>
                     <div class="progress-bar-custom w-full max-w-md mx-auto my-6">
                         <div class="progress-fill" style="width: 0%"></div>
                     </div>
-                    <p class="text-lg mb-4 max-w-md mx-auto">${message}</p>
+                    <p class="text-lg mb-4 max-w-md mx-auto text-white">${message}</p>
                     <div class="bg-white/20 rounded-xl p-4 text-right max-w-md mx-auto">
-                        <p class="text-sm whitespace-pre-line font-semibold">📋 نصائح مخصصة لك:</p>
-                        <p class="text-sm whitespace-pre-line mt-2">${advice}</p>
+                        <p class="text-sm whitespace-pre-line font-semibold text-white">📋 نصائح مخصصة لك:</p>
+                        <p class="text-sm whitespace-pre-line mt-2 text-white">${advice}</p>
                     </div>
                     <div class="flex gap-3 justify-center mt-6">
                         <button onclick="resetQuiz()" class="px-6 py-2 bg-white text-gray-800 rounded-xl font-semibold hover:bg-gray-100 transition">
@@ -781,16 +1324,13 @@
             `;
             resultDiv.classList.remove('hidden');
             
-            // Animate progress bar
             setTimeout(() => {
                 const fill = document.querySelector('.progress-fill');
                 if (fill) fill.style.width = percentage + '%';
             }, 100);
             
-            // Scroll to result
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
             
-            // Save to database
             try {
                 await db.ref('quiz_results').push().set({ percentage: percentage, date: new Date().toISOString() });
                 await loadCounts();
@@ -799,11 +1339,10 @@
         
         function resetQuiz() {
             userAnswers.fill(-1);
-            const container = document.getElementById('quizContainer');
-            if (container) renderAllQuestions();
+            renderAllQuestions();
             const resultDiv = document.getElementById('quizResult');
             if (resultDiv) resultDiv.classList.add('hidden');
-            window.scrollTo({ top: document.getElementById('quiz').offsetTop - 100, behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById('quiz-section').offsetTop - 100, behavior: 'smooth' });
         }
         
         function shareResult(percentage) {
@@ -816,63 +1355,22 @@
             }
         }
         
-        // ==================== HOME PAGE ====================
-        async function showHome() {
-            const texts = await loadTexts();
-            document.getElementById('mainContent').innerHTML = `
-                <div class="text-center p-6 md:p-8 rounded-2xl mb-6" style="background:linear-gradient(135deg,rgba(37,99,235,0.05),white)" data-aos="fade-up">
-                    <i class="fas fa-dna text-4xl md:text-5xl text-blue-600 mb-2"></i>
-                    <h2 class="text-2xl md:text-4xl font-bold">${texts.heroTitle}<br><span class="gradient-text">دوبامين وعي رقمي=عقل سليم</span></h2>
-                    <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto my-3">${texts.heroDesc}</p>
-                    <div class="flex gap-2 justify-center flex-wrap">
-                        <a href="#reports" class="px-4 md:px-6 py-1.5 md:py-2 bg-blue-600 text-white rounded-xl text-sm">استكشف</a>
-                        <a href="#quiz" class="px-4 md:px-6 py-1.5 md:py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-xl text-sm">اختبر مدي إدمانك</a>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 mb-6" data-aos="fade-up">
-                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-file-alt text-xl text-blue-600"></i><div id="reportsCount" class="text-xl font-bold">0</div><div class="text-xs">تقارير</div></div>
-                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-pen-nib text-xl text-blue-600"></i><div id="articlesCount" class="text-xl font-bold">0</div><div class="text-xs">مقالات</div></div>
-                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-bullhorn text-xl text-blue-600"></i><div id="newsCount" class="text-xl font-bold">0</div><div class="text-xs">أخبار</div></div>
-                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-comments text-xl text-blue-600"></i><div id="interviewsCount" class="text-xl font-bold">0</div><div class="text-xs">حوارات</div></div>
-                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-users text-xl text-blue-600"></i><div id="quizCount" class="text-xl font-bold">0</div><div class="text-xs">مشاركات</div></div>
-                    <div class="bg-white rounded-xl p-3 text-center shadow"><i class="fas fa-chart-line text-xl text-blue-600"></i><div id="avgScore" class="text-xl font-bold">--%</div><div class="text-xs">المتوسط</div></div>
-                </div>
-                
-                <section id="reports" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-newspaper text-blue-600 ml-2"></i> ${texts.reportsTitle}</h2><div id="reportsContainer" class="grid-responsive"></div></section>
-                <section id="articles" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-pen-fancy text-blue-600 ml-2"></i> ${texts.articlesTitle}</h2><div id="articlesContainer" class="grid-responsive"></div></section>
-                <section id="news" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-bullhorn text-blue-600 ml-2"></i> ${texts.newsTitle}</h2><div id="newsContainer" class="grid-responsive"></div></section>
-                <section id="interviews" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-comments text-blue-600 ml-2"></i> ${texts.interviewsTitle}</h2><div id="interviewsContainer" class="grid-responsive"></div></section>
-                <section id="investigations" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-microscope text-blue-600 ml-2"></i> ${texts.investigationsTitle}</h2><div id="investigationsContainer" class="grid-responsive"></div></section>
-                <section id="infographics" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-chart-pie text-blue-600 ml-2"></i> ${texts.infographicsTitle}</h2><div id="infographicsContainer" class="grid md:grid-cols-2 gap-4"></div></section>
-                <section id="videos" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3"><i class="fas fa-video text-blue-600 ml-2"></i> ${texts.videosTitle}</h2><div id="videosContainer" class="grid md:grid-cols-2 gap-4"></div></section>
-                <section id="quiz"><div class="bg-white rounded-2xl shadow-xl overflow-hidden"><div class="bg-gradient-to-r from-blue-700 to-blue-900 px-4 md:px-6 py-4"><h2 class="text-xl md:text-2xl font-bold text-white">${texts.quizTitle}</h2><p class="text-blue-100 text-sm">اختبار علمي مكون من ${quizQuestions.length || '15'} سؤالاً لتقييم درجة إدمان الدوبامين</p></div><div class="p-4 md:p-6"><div id="quizContainer"></div><div id="quizResult" class="mt-6 hidden"></div></div></div></section>
-            `;
+        function toggleQuiz() {
+            isQuizOpen = !isQuizOpen;
+            const quizContent = document.getElementById('quizContent');
+            const toggleBtn = document.getElementById('quizToggleBtn');
             
-            await loadSection('reports', 'reportsContainer');
-            await loadSection('articles', 'articlesContainer');
-            await loadSection('news', 'newsContainer');
-            await loadSection('interviews', 'interviewsContainer');
-            await loadSection('investigations', 'investigationsContainer');
-            await loadSection('infographics', 'infographicsContainer');
-            await loadVideos();
-            await loadQuiz();
-            await loadCounts();
-            
-            // Re-attach navigation
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const target = document.getElementById(href.substring(1));
-                        if (target) target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
+            if (isQuizOpen) {
+                quizContent.classList.add('open');
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-up ml-1"></i> إخفاء الاختبار';
+                if (quizQuestions.length > 0) renderAllQuestions();
+            } else {
+                quizContent.classList.remove('open');
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-down ml-1"></i> ابدأ الاختبار الآن';
+            }
         }
         
-        // Text Functions
+        // =============== Load Texts & Counts ===============
         async function loadTexts() {
             const snap = await db.ref('site_texts').once('value');
             const texts = snap.val();
@@ -885,229 +1383,113 @@
             return defaultTexts;
         }
         
-        window.saveTexts = async function() {
-            const texts = {
-                siteTitle: document.getElementById('textSiteTitle').value,
-                headerTitle: document.getElementById('textHeaderTitle').value,
-                heroTitle: document.getElementById('textHeroTitle').value,
-                heroDesc: document.getElementById('textHeroDesc').value,
-                reportsTitle: document.getElementById('textReportsTitle').value,
-                articlesTitle: document.getElementById('textArticlesTitle').value,
-                newsTitle: document.getElementById('textNewsTitle').value,
-                interviewsTitle: document.getElementById('textInterviewsTitle').value,
-                investigationsTitle: document.getElementById('textInvestigationsTitle').value,
-                infographicsTitle: document.getElementById('textInfographicsTitle').value,
-                videosTitle: document.getElementById('textVideosTitle').value,
-                quizTitle: document.getElementById('textQuizTitle').value,
-                footer: document.getElementById('textFooter').value
-            };
-            await db.ref('site_texts').set(texts);
-            applyTexts(texts);
-            Swal.fire("تم", "تم حفظ النصوص", "success");
-        };
-        
-        function applyTexts(texts) {
-            document.title = texts.siteTitle;
-            document.getElementById('headerTitle').innerText = texts.headerTitle;
-            document.getElementById('footerText').innerText = texts.footer;
-        }
-        
         async function loadCounts() {
             const r = await db.ref('reports').once('value');
-            document.getElementById('reportsCount').innerText = r.numChildren() || '0';
+            const reportsCountEl = document.getElementById('reportsCount');
+            if (reportsCountEl) reportsCountEl.innerText = r.numChildren() || '0';
+            
             const a = await db.ref('articles').once('value');
-            document.getElementById('articlesCount').innerText = a.numChildren() || '0';
+            const articlesCountEl = document.getElementById('articlesCount');
+            if (articlesCountEl) articlesCountEl.innerText = a.numChildren() || '0';
+            
             const n = await db.ref('news').once('value');
-            document.getElementById('newsCount').innerText = n.numChildren() || '0';
+            const newsCountEl = document.getElementById('newsCount');
+            if (newsCountEl) newsCountEl.innerText = n.numChildren() || '0';
+            
             const i = await db.ref('interviews').once('value');
-            document.getElementById('interviewsCount').innerText = i.numChildren() || '0';
+            const interviewsCountEl = document.getElementById('interviewsCount');
+            if (interviewsCountEl) interviewsCountEl.innerText = i.numChildren() || '0';
+            
             const q = await db.ref('quiz_results').once('value');
-            document.getElementById('quizCount').innerText = q.numChildren() || '0';
+            const quizCountEl = document.getElementById('quizCount');
+            if (quizCountEl) quizCountEl.innerText = q.numChildren() || '0';
+            
             if (q.exists()) {
                 let vals = Object.values(q.val());
                 let tot = vals.reduce((s, v) => s + (v.percentage || 0), 0);
-                document.getElementById('avgScore').innerText = Math.round(tot / vals.length) + '%';
+                const avgScoreEl = document.getElementById('avgScore');
+                if (avgScoreEl) avgScoreEl.innerText = Math.round(tot / vals.length) + '%';
             }
         }
         
-        // Admin Functions
-        function openAdminPanel() {
-            const pwd = prompt("كلمة السر:");
-            if (pwd === "gohary01010081147mo") {
-                document.getElementById('adminPanel').classList.add('open');
-                document.getElementById('adminOverlay').classList.add('open');
-                loadAllAdminLists();
-                loadQuizToAdminForm();
-                loadTextsToAdminForm();
-            } else if (pwd !== null) {
-                Swal.fire("خطأ", "كلمة سر غير صحيحة", "error");
-            }
-        }
-        
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').classList.remove('open');
-            document.getElementById('adminOverlay').classList.remove('open');
-        }
-        
-        function showAdminTab(tab) {
-            const panels = ['reports','articles','news','interviews','investigations','infographics','videos','quiz','texts'];
-            panels.forEach(t => document.getElementById(t+'Panel').classList.add('hidden'));
-            document.getElementById(tab+'Panel').classList.remove('hidden');
-            document.querySelectorAll('.admin-tab').forEach(x => x.classList.remove('active'));
-            document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
-        }
-        
-        async function loadAllAdminLists() {
-            await loadList('reports', 'reportsList');
-            await loadList('articles', 'articlesList');
-            await loadList('news', 'newsList');
-            await loadList('interviews', 'interviewsList');
-            await loadList('investigations', 'investigationsList');
-            await loadList('infographics', 'infographicsList');
-            await loadList('videos', 'videosList');
-        }
-        
-        async function loadList(col, elId) {
-            const c = document.getElementById(elId);
-            if (!c) return;
-            const snap = await db.ref(col).once('value');
-            const data = snap.val();
-            c.innerHTML = '';
-            if (data) {
-                Object.entries(data).forEach(([id, item]) => {
-                    c.innerHTML += `<div class="bg-gray-50 rounded-lg p-2 flex justify-between items-center"><span class="text-xs">${escapeHtml(item.title)}</span><button onclick="deleteItem('${col}','${id}')" class="bg-red-500 text-white px-2 py-0.5 rounded text-xs">حذف</button></div>`;
+        // =============== Home Page ===============
+        async function showHome() {
+            await loadQuiz();
+            const texts = await loadTexts();
+            
+            const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg";
+            
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="text-center p-6 md:p-8 rounded-2xl mb-6" style="background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(37,99,235,0.05)); backdrop-filter: blur(5px); border: 1px solid rgba(37,99,235,0.2);" data-aos="fade-up">
+                    <img src="${logoUrl}" class="hero-logo mx-auto" alt="logo" onclick="openModal('${logoUrl}')">
+                    <h2 class="text-2xl md:text-4xl font-bold">${texts.heroTitle || 'الدوبامين'}<br><span class="gradient-text">دوبامين وعي رقمي=عقل سليم</span></h2>
+                    <p class="text-sm md:text-base max-w-2xl mx-auto my-3" style="color: var(--text-secondary);">${texts.heroDesc || ''}</p>
+                    <div class="flex gap-2 justify-center flex-wrap">
+                        <a href="#reports" class="px-4 md:px-6 py-1.5 md:py-2 text-white rounded-xl text-sm transition-all hover:scale-105" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));">استكشف</a>
+                        <a href="#quiz-section" class="px-4 md:px-6 py-1.5 md:py-2 rounded-xl text-sm transition-all hover:scale-105" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">اختبر مدي إدمانك</a>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 mb-6" data-aos="fade-up">
+                    <div class="stat-card"><i class="fas fa-file-alt"></i><div id="reportsCount" class="stat-number">0</div><div class="stat-label">تقارير</div></div>
+                    <div class="stat-card"><i class="fas fa-pen-nib"></i><div id="articlesCount" class="stat-number">0</div><div class="stat-label">مقالات</div></div>
+                    <div class="stat-card"><i class="fas fa-bullhorn"></i><div id="newsCount" class="stat-number">0</div><div class="stat-label">أخبار</div></div>
+                    <div class="stat-card"><i class="fas fa-comments"></i><div id="interviewsCount" class="stat-number">0</div><div class="stat-label">حوارات</div></div>
+                    <div class="stat-card"><i class="fas fa-users"></i><div id="quizCount" class="stat-number">0</div><div class="stat-label">مشاركات</div></div>
+                    <div class="stat-card"><i class="fas fa-chart-line"></i><div id="avgScore" class="stat-number">--%</div><div class="stat-label">المتوسط</div></div>
+                </div>
+                
+                <section id="reports" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-newspaper" style="color: var(--primary);"></i> <span class="gradient-text">${texts.reportsTitle || 'التقارير العلمية'}</span></h2><div id="reportsContainer" class="grid-responsive"></div></section>
+                <section id="articles" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-pen-fancy" style="color: var(--primary);"></i> <span class="gradient-text">${texts.articlesTitle || 'المقالات العلمية'}</span></h2><div id="articlesContainer" class="grid-responsive"></div></section>
+                <section id="news" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-bullhorn" style="color: var(--primary);"></i> <span class="gradient-text">${texts.newsTitle || 'أخبار الدوبامين'}</span></h2><div id="newsContainer" class="grid-responsive"></div></section>
+                <section id="interviews" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-comments" style="color: var(--primary);"></i> <span class="gradient-text">${texts.interviewsTitle || 'حوارات وخبراء'}</span></h2><div id="interviewsContainer" class="grid-responsive"></div></section>
+                <section id="investigations" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-microscope" style="color: var(--primary);"></i> <span class="gradient-text">${texts.investigationsTitle || 'التحقيقات'}</span></h2><div id="investigationsContainer" class="grid-responsive"></div></section>
+                <section id="infographics" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-chart-pie" style="color: var(--primary);"></i> <span class="gradient-text">${texts.infographicsTitle || 'الإنفوجرافيك'}</span></h2><div id="infographicsContainer" class="grid md:grid-cols-2 gap-4"></div></section>
+                <section id="videos" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-video" style="color: var(--primary);"></i> <span class="gradient-text">${texts.videosTitle || 'الفيديوهات'}</span></h2><div id="videosContainer" class="grid md:grid-cols-2 gap-4"></div></section>
+                
+                <section id="quiz-section">
+                    <div class="rounded-2xl shadow-xl overflow-hidden" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="px-4 md:px-6 py-4 text-center" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));">
+                            <h2 class="text-xl md:text-2xl font-bold text-white">${texts.quizTitle || 'مقياس إدمان الدوبامين'}</h2>
+                            <p class="text-blue-200 text-sm">اختبار علمي مكون من ${quizQuestions.length || '15'} سؤالاً لتقييم درجة إدمان الدوبامين</p>
+                        </div>
+                        <div class="p-4 md:p-6 text-center">
+                            <div id="quizToggleBtn" class="quiz-toggle-btn" onclick="toggleQuiz()">
+                                <i class="fas fa-chevron-down ml-1"></i> ابدأ الاختبار الآن
+                            </div>
+                            <div id="quizContent" class="quiz-content">
+                                <div id="quizContainer"></div>
+                                <div id="quizResult" class="mt-6 hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+            
+            await loadSection('reports', 'reportsContainer');
+            await loadSection('articles', 'articlesContainer');
+            await loadSection('news', 'newsContainer');
+            await loadSection('interviews', 'interviewsContainer');
+            await loadSection('investigations', 'investigationsContainer');
+            await loadSection('infographics', 'infographicsContainer');
+            await loadVideos();
+            await loadCounts();
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.getElementById(href.substring(1));
+                        if (target) target.scrollIntoView({ behavior: 'smooth' });
+                    }
                 });
-            } else {
-                c.innerHTML = '<div class="text-gray-400 text-center py-2 text-xs">لا يوجد</div>';
-            }
+            });
         }
         
-        window.addItem = async function(type) {
-            let title = '';
-            if (type === 'reports') title = document.getElementById('repTitle')?.value.trim();
-            else if (type === 'articles') title = document.getElementById('artTitle')?.value.trim();
-            else if (type === 'news') title = document.getElementById('newsTitle')?.value.trim();
-            else if (type === 'interviews') title = document.getElementById('interTitle')?.value.trim();
-            else if (type === 'investigations') title = document.getElementById('invTitle')?.value.trim();
-            else if (type === 'infographics') title = document.getElementById('infTitle')?.value.trim();
-            else if (type === 'videos') title = document.getElementById('vidTitle')?.value.trim();
-            
-            if (!title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
-            
-            let item = { title: title, date: new Date().toLocaleDateString('ar-EG') };
-            
-            if (type === 'reports') {
-                item.date = document.getElementById('repDate').value;
-                item.image = document.getElementById('repImage').value;
-                item.summary = document.getElementById('repSummary').value;
-                item.content = document.getElementById('repContent').value;
-                await db.ref('reports').push().set(item);
-                clearForm(['repTitle','repDate','repImage','repSummary','repContent']);
-                loadList('reports', 'reportsList');
-            }
-            else if (type === 'articles') {
-                item.category = document.getElementById('artCategory').value;
-                item.image = document.getElementById('artImage').value;
-                item.summary = document.getElementById('artSummary').value;
-                item.content = document.getElementById('artContent').value;
-                item.readTime = parseInt(document.getElementById('artReadTime').value) || 5;
-                await db.ref('articles').push().set(item);
-                clearForm(['artTitle','artCategory','artImage','artSummary','artContent','artReadTime']);
-                loadList('articles', 'articlesList');
-            }
-            else if (type === 'news') {
-                item.date = document.getElementById('newsDate').value;
-                item.image = document.getElementById('newsImage').value;
-                item.summary = document.getElementById('newsSummary').value;
-                item.content = document.getElementById('newsContent').value;
-                await db.ref('news').push().set(item);
-                clearForm(['newsTitle','newsDate','newsImage','newsSummary','newsContent']);
-                loadList('news', 'newsList');
-            }
-            else if (type === 'interviews') {
-                item.speaker = document.getElementById('interSpeaker').value;
-                item.date = document.getElementById('interDate').value;
-                item.image = document.getElementById('interImage').value;
-                item.summary = document.getElementById('interSummary').value;
-                item.content = document.getElementById('interContent').value;
-                await db.ref('interviews').push().set(item);
-                clearForm(['interTitle','interSpeaker','interDate','interImage','interSummary','interContent']);
-                loadList('interviews', 'interviewsList');
-            }
-            else if (type === 'investigations') {
-                item.image = document.getElementById('invImage').value;
-                item.summary = document.getElementById('invSummary').value;
-                item.content = document.getElementById('invContent').value;
-                await db.ref('investigations').push().set(item);
-                clearForm(['invTitle','invImage','invSummary','invContent']);
-                loadList('investigations', 'investigationsList');
-            }
-            else if (type === 'infographics') {
-                item.imageUrl = document.getElementById('infImage').value;
-                await db.ref('infographics').push().set(item);
-                clearForm(['infTitle','infImage']);
-                loadList('infographics', 'infographicsList');
-            }
-            else if (type === 'videos') {
-                item.videoUrl = document.getElementById('vidUrl').value;
-                item.description = document.getElementById('vidDesc').value;
-                await db.ref('videos').push().set(item);
-                clearForm(['vidTitle','vidUrl','vidDesc']);
-                loadList('videos', 'videosList');
-            }
-            
-            Swal.fire("تم", "تم الحفظ بنجاح", "success");
-            location.reload();
-        };
-        
-        window.saveQuiz = async function() {
-            try {
-                let q = JSON.parse(document.getElementById('quizJson').value);
-                if (!q.length) throw new Error();
-                await db.ref('quiz/questions').set(q);
-                Swal.fire("نجاح", "تم حفظ الأسئلة", "success");
-                loadQuiz();
-            } catch(e) { Swal.fire("خطأ", "JSON غير صالح", "error"); }
-        };
-        
-        window.deleteItem = async function(col, id) {
-            let r = await Swal.fire({ title: "تأكيد الحذف", icon: "warning", showCancelButton: true });
-            if (r.isConfirmed) {
-                await db.ref(`${col}/${id}`).remove();
-                Swal.fire("تم الحذف", "", "success");
-                loadAllAdminLists();
-                if (!window.location.search) location.reload();
-            }
-        };
-        
-        function clearForm(ids) {
-            ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-        }
-        
-        function loadQuizToAdminForm() {
-            const ta = document.getElementById('quizJson');
-            if (ta && quizQuestions.length) ta.value = JSON.stringify(quizQuestions, null, 2);
-        }
-        
-        async function loadTextsToAdminForm() {
-            const snap = await db.ref('site_texts').once('value');
-            const texts = snap.val() || defaultTexts;
-            document.getElementById('textSiteTitle').value = texts.siteTitle || '';
-            document.getElementById('textHeaderTitle').value = texts.headerTitle || '';
-            document.getElementById('textHeroTitle').value = texts.heroTitle || '';
-            document.getElementById('textHeroDesc').value = texts.heroDesc || '';
-            document.getElementById('textReportsTitle').value = texts.reportsTitle || '';
-            document.getElementById('textArticlesTitle').value = texts.articlesTitle || '';
-            document.getElementById('textNewsTitle').value = texts.newsTitle || '';
-            document.getElementById('textInterviewsTitle').value = texts.interviewsTitle || '';
-            document.getElementById('textInvestigationsTitle').value = texts.investigationsTitle || '';
-            document.getElementById('textInfographicsTitle').value = texts.infographicsTitle || '';
-            document.getElementById('textVideosTitle').value = texts.videosTitle || '';
-            document.getElementById('textQuizTitle').value = texts.quizTitle || '';
-            document.getElementById('textFooter').value = texts.footer || '';
-        }
-        
-        // Start
+        // =============== Start ===============
+        loadSavedThemeAndColor();
         route();
     </script>
 </body>
