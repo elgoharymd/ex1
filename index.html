@@ -2,87 +2,90 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="google-site-verification" content="jpMp5DgPIK1zfpJjYl0AoBZ7dZQ64dHe-59k28jXsDw" />
-    <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="msapplication-navbutton-color" content="#0f172a">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-    
-    <title>دوبامين | المركز العلمي للدوبامين</title>
-    <meta name="description" content="المركز العلمي المتخصص في الدوبامين - أحدث الأبحاث والتقارير العلمية">
-    <meta name="keywords" content="دوبامين, dopamine, علم الأعصاب, صحة نفسية, إدمان">
-    <meta name="author" content="المركز العلمي للدوبامين">
-    <meta name="robots" content="index, follow">
-    
-    <meta property="og:title" content="دوبامين | المركز العلمي للدوبامين">
-    <meta property="og:description" content="منصة علمية متخصصة في الدوبامين">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_AR">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="دوبامين | المركز العلمي للدوبامين">
-    
-    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
-    
-    <link rel="canonical" href="https://dopaminea.com/">
-    
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دوبامين | المركز العلمي</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0a0e27, #1a1a3e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Cairo', sans-serif;
+        }
+        .loader {
+            text-align: center;
+            color: white;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg') center/cover;
+            margin: 0 auto 20px;
+            animation: pulse 1.5s infinite;
+            border: 3px solid rgba(59,130,246,0.5);
+        }
+        @keyframes pulse {
+            0%,100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .progress-bar {
+            width: 250px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s;
+        }
+    </style>
 </head>
 <body>
-
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-bg">
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
+    <div class="loader">
+        <div class="logo"></div>
+        <h2>دوبامين</h2>
+        <p>المركز العلمي المتقدم</p>
+        <div class="spinner"></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
         </div>
-        
-        <div class="splash-content">
-            <div class="splash-logo"></div>
-            <h1 class="splash-title">دوبامين</h1>
-            <p class="splash-subtitle">دوبامين وعي رقمي = عقل سليم</p>
-            
-            <div class="loader-wrapper">
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" id="progressFill"></div>
-                </div>
-                <div class="progress-text" id="progressText">جاري التحميل 0%</div>
-            </div>
-            
-            <div class="loading-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="tips-container">
-            <div class="tip-text" id="tipText">
-                <i class="fas fa-brain"></i> الدوبامين هو مفتاح التحفيز والمكافأة في الدماغ
-            </div>
-        </div>
-        
-        <div class="visit-counter" id="visitCounter"></div>
+        <p id="progressText" style="font-size: 12px; opacity: 0.7;">جاري التحميل 0%</p>
     </div>
 
-    <iframe id="secureFrame" class="secure-iframe" src="https://dopaminea.com" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation allow-popups-to-escape-sandbox" loading="eager"></iframe>
-
-    <div class="watermark" id="watermark">🔒</div>
-
-    <div class="error-container" id="errorContainer">
-        <div class="error-card">
-            <i class="fas fa-wifi"></i>
-            <h3>حدث خطأ في الاتصال</h3>
-            <p>يرجى التحقق من اتصالك بالإنترنت وإعادة المحاولة</p>
-            <button onclick="reloadSecureApp()">إعادة المحاولة</button>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // محاكاة التحميل
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 20;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    // بعد التحميل، انتقل إلى المحتوى
+                    window.location.href = 'project/index.html';
+                }, 500);
+            }
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').innerText = `جاري التحميل ${Math.floor(progress)}%`;
+        }, 200);
+    </script>
 </body>
 </html>
