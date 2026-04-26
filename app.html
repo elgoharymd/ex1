@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="jpMp5DgPIK1zfpJjYl0AoBZ7dZQ64dHe-59k28jXsDw" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>دوبامين | المركز العلمي للدوبامين</title>
+    <title>دوبامين Dobamen</title>
     
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -807,7 +807,7 @@
         }
         
         function shareResult(percentage) {
-            const text = `نتيجتي في مقياس إدمان الدوبامين: ${percentage}% - دوبامين | المركز العلمي`;
+            const text = `نتيجتي في مقياس إدمان الدوبامين: ${percentage}% - دوبامين `;
             if (navigator.share) {
                 navigator.share({ title: 'نتيجة مقياس الدوبامين', text: text, url: window.location.href });
             } else {
@@ -822,11 +822,11 @@
             document.getElementById('mainContent').innerHTML = `
                 <div class="text-center p-6 md:p-8 rounded-2xl mb-6" style="background:linear-gradient(135deg,rgba(37,99,235,0.05),white)" data-aos="fade-up">
                     <i class="fas fa-dna text-4xl md:text-5xl text-blue-600 mb-2"></i>
-                    <h2 class="text-2xl md:text-4xl font-bold">${texts.heroTitle}<br><span class="gradient-text">علم الأعصاب المتقدم</span></h2>
+                    <h2 class="text-2xl md:text-4xl font-bold">${texts.heroTitle}<br><span class="gradient-text">دوبامين وعي رقمي=عقل سليم</span></h2>
                     <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto my-3">${texts.heroDesc}</p>
                     <div class="flex gap-2 justify-center flex-wrap">
                         <a href="#reports" class="px-4 md:px-6 py-1.5 md:py-2 bg-blue-600 text-white rounded-xl text-sm">استكشف</a>
-                        <a href="#quiz" class="px-4 md:px-6 py-1.5 md:py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-xl text-sm">اختبر نفسك</a>
+                        <a href="#quiz" class="px-4 md:px-6 py-1.5 md:py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-xl text-sm">اختبر مدي إدمانك</a>
                     </div>
                 </div>
                 
@@ -933,7 +933,7 @@
         // Admin Functions
         function openAdminPanel() {
             const pwd = prompt("كلمة السر:");
-            if (pwd === "admin2025") {
+            if (pwd === "gohary01010081147mo") {
                 document.getElementById('adminPanel').classList.add('open');
                 document.getElementById('adminOverlay').classList.add('open');
                 loadAllAdminLists();
