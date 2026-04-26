@@ -1,4 +1,3 @@
-// المتغير الرئيسي: هنا الرابط النهائي للموقع الأساسي
 const targetUrl = "https://dopaminea.com";
 
 const splashScreen = document.getElementById('splashScreen');
@@ -8,15 +7,9 @@ const tipText = document.getElementById('tipText');
 const frame = document.getElementById('secureFrame');
 const errorContainer = document.getElementById('errorContainer');
 
+// تم تقليل عدد النصائح عشان التحميل أسرع
 const tips = [
-    { icon: "fa-brain", text: "الدوبامين هو مفتاح التحفيز والمكافأة في الدماغ" },
-    { icon: "fa-heart", text: "الرياضة تزيد إفراز الدوبامين بشكل طبيعي" },
-    { icon: "fa-music", text: "الاستماع للموسيقى يحفز إفراز الدوبامين" },
-    { icon: "fa-sun", text: "التعرض لأشعة الشمس يزيد من مستويات الدوبامين" },
-    { icon: "fa-apple-alt", text: "الأطعمة الغنية بالتيروزين تعزز إنتاج الدوبامين" },
-    { icon: "fa-bed", text: "النوم الجيد ينظم مستويات الدوبامين في الدماغ" },
-    { icon: "fa-hand-peace", text: "التأمل يزيد من إفراز الدوبامين" },
-    { icon: "fa-chart-line", text: "تحديد الأهداف الصغيرة يحفز إفراز الدوبامين" }
+    { icon: "fa-brain", text: "الدوبامين هو مفتاح التحفيز والمكافأة في الدماغ" }
 ];
 
 let progress = 0;
@@ -24,43 +17,50 @@ let tipIndex = 0;
 let loadInterval;
 let tipInterval;
 let retryCount = 0;
-const maxRetries = 3;
+const maxRetries = 2; // تم تقليل عدد المحاولات
 
+// تم زيادة سرعة التحميل بشكل كبير
 function updateProgress() {
     if (progress < 100) {
-        progress += Math.random() * 15 + 5;
+        progress += Math.random() * 30 + 20; // زيادة سرعة التحميل
         if (progress > 100) progress = 100;
         progressFill.style.width = progress + '%';
         progressText.innerText = `جاري التحميل ${Math.floor(progress)}%`;
+        
+        // لو وصل 100% ننهي فوراً
+        if (progress >= 100) {
+            clearInterval(loadInterval);
+        }
     }
 }
 
 function changeTip() {
-    tipIndex = (tipIndex + 1) % tips.length;
-    const tip = tips[tipIndex];
-    tipText.innerHTML = `<i class="fas ${tip.icon}"></i> ${tip.text}`;
-    tipText.style.opacity = '0';
-    setTimeout(() => {
-        tipText.style.opacity = '1';
-    }, 300);
+    // تم تقليل تغيير النصائح عشان أسرع
+    if (tips.length > 1) {
+        tipIndex = (tipIndex + 1) % tips.length;
+        const tip = tips[tipIndex];
+        tipText.innerHTML = `<i class="fas ${tip.icon}"></i> ${tip.text}`;
+    }
 }
 
 function startLoadingAnimation() {
-    loadInterval = setInterval(updateProgress, 200);
-    tipInterval = setInterval(changeTip, 4000);
+    loadInterval = setInterval(updateProgress, 30); // من 200ms إلى 30ms (أسرع)
+    tipInterval = setInterval(changeTip, 2000); // من 4000ms إلى 2000ms
 }
 
 function finishLoading() {
     clearInterval(loadInterval);
     clearInterval(tipInterval);
     progressFill.style.width = '100%';
-    progressText.innerText = 'جاري التحميل 100%';
+    progressText.innerText = 'تم التحميل بنجاح 100%';
+    
+    // إخفاء شاشة التحميل فوراً خلال 200ms بدل 800ms
     setTimeout(() => {
         splashScreen.classList.add('hide');
         setTimeout(() => {
             splashScreen.style.display = 'none';
-        }, 800);
-    }, 500);
+        }, 200);
+    }, 100);
 }
 
 function showError() {
@@ -75,6 +75,7 @@ let loadTimeout;
 
 function startLoadTimer() {
     clearTimeout(loadTimeout);
+    // تم تقليل وقت الانتظار من 8000ms إلى 2000ms
     loadTimeout = setTimeout(function() {
         if (!frame.classList.contains('visible')) {
             if (retryCount < maxRetries) {
@@ -87,7 +88,7 @@ function startLoadTimer() {
                 finishLoading();
             }
         }
-    }, 8000);
+    }, 2000);
 }
 
 frame.addEventListener('load', function() {
@@ -111,6 +112,7 @@ window.reloadSecureApp = function() {
     startLoadingAnimation();
 };
 
+// حماية الموقع
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
     return false;
@@ -161,5 +163,3 @@ startLoadingAnimation();
 startLoadTimer();
 generateWatermark();
 generateVisitCounter();
-
-console.log("%c⚠️ هذا الموقع محمي. جميع المحاولات مسجلة.", "color: red; font-size: 14px;");
