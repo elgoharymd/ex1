@@ -433,8 +433,7 @@ async function showHome() {
     mainContent.innerHTML = `
         <div class="text-center p-6 md:p-8 rounded-2xl mb-6" style="background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(37,99,235,0.05)); backdrop-filter: blur(5px);" data-aos="fade-up">
             <img src="${logoUrl}" class="hero-logo mx-auto" alt="logo" onclick="openImageModal('${logoUrl}')">
-            <h4 class="text-2xl md:text-4xl font-bold">${texts.heroTitle || 'الدوبامين'}<br><span class="gradient-text">دوبامين وعي رقمي=عقل سليم</span></h4>
-            <p class="text-sm md:text-base max-w-2xl mx-auto my-3" style="color: var(--text-secondary);">${texts.heroDesc || ''}</p>
+<h4 class="text-lg md:text-2xl font-bold">${texts.heroTitle || 'الدوبامين'}<br><span class="gradient-text">دوبامين وعي رقمي=عقل سليم</span></h4>            <p class="text-sm md:text-base max-w-2xl mx-auto my-3" style="color: var(--text-secondary);">${texts.heroDesc || ''}</p>
             <div class="flex gap-2 justify-center flex-wrap">
                 <a class="px-4 md:px-6 py-1.5 md:py-2 text-white rounded-xl text-sm cursor-pointer transition-all hover:scale-105" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));" onclick="navigateToSection('reports')">استكشف</a>
                 <a class="px-4 md:px-6 py-1.5 md:py-2 rounded-xl text-sm cursor-pointer transition-all hover:scale-105" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);" onclick="navigateToSection('quiz')">اختبر مدي إدمانك</a>
