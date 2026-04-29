@@ -7,14 +7,12 @@
     <meta name="theme-color" id="themeColor" content="#0f172a">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-navbutton-color" content="#0f172a">
-    <title>دوبامين Dobamen</title>
-      <meta property="og:title" content="دوبامين |dopaminea">
+    <title>دوبامين Dobamen - منصة الأبحاث العلمية</title>
+    <meta property="og:title" content="دوبامين | dopaminea">
     <meta property="og:description" content="منصة علمية متخصصة في أبحاث الدوبامين - أحدث التقارير والدراسات">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ar_AR">
     <meta property="og:site_name" content="دوبامين | dopaminea">
-    
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="دوبامين | dopaminea">
     <meta name="twitter:description" content="منصة علمية متخصصة في أبحاث الدوبامين">
@@ -29,17 +27,1038 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     
-    <!-- Custom CSS -->  <link rel="icon" type="image/jpeg" sizes="16x16" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
-    <link rel="icon" type="image/jpeg" sizes="32x32" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
-    <link rel="apple-touch-icon" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
+    <link rel="icon" type="image/jpeg" sizes="16x16" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
     
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" href="project/logo.png" type="image/png">
+    <style>
+        * { font-family: 'Cairo', sans-serif; }
+        html { scroll-behavior: smooth; }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #60a5fa;
+            --bg-gradient-start: #f8fafc;
+            --bg-gradient-end: #eff6ff;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --header-bg: rgba(255,255,255,0.95);
+            --glow-color: rgba(37,99,235,0.2);
+            --glow-strong: rgba(37,99,235,0.4);
+        }
+
+        body.dark {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --bg-gradient-start: #0f172a;
+            --bg-gradient-end: #1e293b;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --header-bg: rgba(15,23,42,0.95);
+            --glow-color: rgba(59,130,246,0.25);
+            --glow-strong: rgba(59,130,246,0.5);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 30%, #0f172a 100%);
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(37,99,235,0.05) 0%, 
+                rgba(59,130,246,0.1) 25%, 
+                rgba(37,99,235,0.05) 50%,
+                rgba(59,130,246,0.1) 75%,
+                rgba(37,99,235,0.05) 100%);
+            background-size: 200% 200%;
+            pointer-events: none;
+            z-index: -1;
+            animation: bgMove 12s ease infinite;
+        }
+
+        @keyframes bgMove {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        body.dark::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(37,99,235,0.2) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+            100% { opacity: 0.3; transform: scale(1); }
+        }
+
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            z-index: 9999;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            pointer-events: none;
+        }
+
+        .page-transition.active { transform: translateY(0); }
+
+        .glass-nav { 
+            background: var(--header-bg); 
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(37,99,235,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .premium-card { 
+            background: var(--card-bg); 
+            border-radius: 24px; 
+            transition: all 0.3s ease; 
+            border: 1px solid var(--border-color); 
+            overflow: hidden; 
+            position: relative;
+            animation: cardFloat 4s ease-in-out infinite;
+            box-shadow: 0 8px 25px var(--glow-color);
+        }
+
+        @keyframes cardFloat {
+            0% { transform: translateY(0); box-shadow: 0 8px 20px var(--glow-color); }
+            50% { transform: translateY(-5px); box-shadow: 0 15px 35px var(--glow-strong); }
+            100% { transform: translateY(0); box-shadow: 0 8px 20px var(--glow-color); }
+        }
+
+        body.dark .premium-card {
+            background: rgba(30,41,59,0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .premium-card:hover {
+            animation: none;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--glow-strong);
+            border-color: var(--primary);
+        }
+
+        .card-cover { 
+            height: 180px; 
+            background-size: cover; 
+            background-position: center; 
+            transition: transform 0.5s ease;
+        }
+
+        .premium-card:hover .card-cover {
+            transform: scale(1.05);
+        }
+
+        .share-card-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .premium-card:hover .share-card-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .share-card-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .gradient-text { 
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light)); 
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            color: transparent; 
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            cursor: pointer;
+            border: 3px solid var(--primary);
+            animation: logoFloat 3s ease-in-out infinite, logoPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes logoPulse {
+            0% { box-shadow: 0 0 0 0 var(--glow-color); }
+            70% { box-shadow: 0 0 0 20px rgba(37,99,235,0); }
+            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+        }
+
+        .scroll-top { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            width: 45px; 
+            height: 45px; 
+            background: var(--primary); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: 0.3s; 
+            z-index: 99; 
+        }
+        .scroll-top.visible { opacity: 1; visibility: visible; animation: btnPulse 1.5s ease-in-out infinite; }
+
+        @keyframes btnPulse {
+            0% { box-shadow: 0 0 0 0 var(--glow-color); transform: scale(1); }
+            70% { box-shadow: 0 0 0 15px rgba(37,99,235,0); transform: scale(1.05); }
+            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); transform: scale(1); }
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            animation: statFloat 4s ease-in-out infinite;
+            box-shadow: 0 5px 15px var(--glow-color);
+        }
+
+        @keyframes statFloat {
+            0%, 100% { transform: translateY(0); box-shadow: 0 5px 12px var(--glow-color); }
+            50% { transform: translateY(-5px); box-shadow: 0 12px 25px var(--glow-strong); }
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0s; }
+        .stat-card:nth-child(2) { animation-delay: 0.3s; }
+        .stat-card:nth-child(3) { animation-delay: 0.6s; }
+        .stat-card:nth-child(4) { animation-delay: 0.9s; }
+        .stat-card:nth-child(5) { animation-delay: 1.2s; }
+        .stat-card:nth-child(6) { animation-delay: 1.5s; }
+
+        body.dark .stat-card {
+            background: rgba(30,41,59,0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) !important;
+            animation: none;
+            border-color: var(--primary);
+        }
+
+        .stat-card i { 
+            font-size: 28px; 
+            color: var(--primary); 
+            margin-bottom: 8px; 
+            display: block; 
+            animation: iconPop 2s ease-in-out infinite; 
+        }
+
+        @keyframes iconPop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            transition: all 0.3s ease;
+            animation: themeRotate 4s ease-in-out infinite;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        @keyframes themeRotate {
+            0% { transform: rotate(0deg); box-shadow: 0 0 10px var(--glow-color); }
+            25% { transform: rotate(10deg); box-shadow: 0 0 20px var(--glow-strong); }
+            75% { transform: rotate(-10deg); box-shadow: 0 0 20px var(--glow-strong); }
+            100% { transform: rotate(0deg); box-shadow: 0 0 10px var(--glow-color); }
+        }
+
+        .quiz-container {
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px var(--glow-color);
+            max-width: 700px;
+            margin: 0 auto;
+            animation: containerFade 0.5s ease;
+        }
+
+        @keyframes containerFade {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .quiz-question-wrapper {
+            animation: questionTransition 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes questionTransition {
+            0% { opacity: 0; transform: translateX(30px) scale(0.95); filter: blur(5px); }
+            100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+        }
+
+        .quiz-progress-bar {
+            background: var(--border-color);
+            border-radius: 30px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .quiz-progress-fill {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.5s ease;
+            animation: progressShine 2s ease-in-out infinite;
+        }
+
+        @keyframes progressShine {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        .quiz-question-text {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .quiz-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-option-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--text-primary);
+            animation: optionFadeIn 0.4s ease backwards;
+        }
+
+        @keyframes optionFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quiz-option-card:nth-child(1) { animation-delay: 0.05s; }
+        .quiz-option-card:nth-child(2) { animation-delay: 0.1s; }
+        .quiz-option-card:nth-child(3) { animation-delay: 0.15s; }
+        .quiz-option-card:nth-child(4) { animation-delay: 0.2s; }
+
+        .quiz-option-card:hover {
+            border-color: var(--primary);
+            background: rgba(37,99,235,0.1);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .quiz-option-card.selected {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: var(--primary-dark);
+            transform: scale(1.02);
+            animation: selectPulse 0.3s ease;
+        }
+
+        @keyframes selectPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1.02); }
+        }
+
+        .quiz-nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .quiz-nav-btn {
+            padding: 12px 25px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .quiz-nav-btn.prev {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .quiz-nav-btn.prev:hover {
+            background: var(--text-secondary);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        .quiz-nav-btn.next {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            animation: btnGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes btnGlow {
+            0% { box-shadow: 0 2px 10px var(--glow-color); }
+            50% { box-shadow: 0 5px 20px var(--glow-strong); }
+            100% { box-shadow: 0 2px 10px var(--glow-color); }
+        }
+
+        .quiz-nav-btn.submit {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            animation: submitPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes submitPulse {
+            0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); transform: scale(1); }
+            70% { box-shadow: 0 0 0 10px rgba(34,197,94,0); transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); transform: scale(1); }
+        }
+
+        .quiz-counter {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .result-card {
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            animation: resultFlyIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes resultFlyIn {
+            from { opacity: 0; transform: rotateX(-90deg) translateY(100px); }
+            to { opacity: 1; transform: rotateX(0) translateY(0); }
+        }
+
+        .result-normal { background: linear-gradient(135deg, #22c55e, #16a34a); animation: resultPulse 2s ease-in-out infinite; }
+        .result-recovery { background: linear-gradient(135deg, #eab308, #ca8a04); animation: resultPulse 2s ease-in-out infinite; }
+        .result-severe { background: linear-gradient(135deg, #ef4444, #dc2626); animation: resultPulse 2s ease-in-out infinite; }
+
+        @keyframes resultPulse {
+            0%, 100% { filter: brightness(1); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+            50% { filter: brightness(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        }
+
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            backdrop-filter: blur(5px);
+            animation: scoreSpin 0.8s ease;
+        }
+
+        @keyframes scoreSpin {
+            from { transform: rotate(-180deg) scale(0); opacity: 0; }
+            to { transform: rotate(0) scale(1); opacity: 1; }
+        }
+
+        .fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen-modal.show {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fullscreen-content {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            border-radius: 28px;
+            overflow-y: auto;
+            position: relative;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            animation: contentZoom 0.3s ease;
+        }
+
+        @keyframes contentZoom {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .fullscreen-close {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .fullscreen-close:hover {
+            color: var(--primary);
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-top: 1px solid rgba(59,130,246,0.3);
+            margin-top: 50px;
+            padding: 40px 20px 30px;
+            animation: footerFade 0.6s ease;
+        }
+
+        @keyframes footerFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 2px solid var(--primary);
+            animation: footerLogoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes footerLogoPulse {
+            0% { box-shadow: 0 0 0 0 var(--glow-color); }
+            70% { box-shadow: 0 0 0 15px rgba(37,99,235,0); }
+            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+        }
+
+        .team-names {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .team-name {
+            background: rgba(59,130,246,0.15);
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(59,130,246,0.3);
+            animation: teamGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes teamGlow {
+            0% { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); }
+            50% { border-color: rgba(59,130,246,0.8); background: rgba(59,130,246,0.2); }
+            100% { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); }
+        }
+
+        .team-name:hover {
+            transform: translateY(-2px);
+            background: var(--primary);
+            color: white;
+        }
+
+        .facebook-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #1877f2, #0d65d9);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(24,119,242,0.3);
+            animation: facebookPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes facebookPulse {
+            0% { box-shadow: 0 5px 15px rgba(24,119,242,0.3); transform: scale(1); }
+            50% { box-shadow: 0 8px 30px rgba(24,119,242,0.6); transform: scale(1.03); }
+            100% { box-shadow: 0 5px 15px rgba(24,119,242,0.3); transform: scale(1); }
+        }
+
+        .color-picker-panel {
+            position: fixed;
+            bottom: 85px;
+            left: 20px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 98;
+            display: none;
+            gap: 10px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border-color);
+            animation: panelPop 0.2s ease;
+        }
+
+        @keyframes panelPop {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .color-picker-panel.open { display: flex; }
+
+        .color-option {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid white;
+            animation: colorPop 2s ease-in-out infinite;
+        }
+
+        @keyframes colorPop {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 0 15px var(--glow-color); }
+        }
+
+        .color-option:hover { transform: scale(1.15); animation: none; }
+
+        .grid-responsive { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        @media (max-width: 640px) { .grid-responsive { gap: 1rem; } }
+
+        .nav-link { transition: 0.2s; color: var(--text-secondary); position: relative; cursor: pointer; }
+        .nav-link:hover { color: var(--primary); transform: translateY(-2px); }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        .logo-img { height: 40px; width: auto; object-fit: contain; border-radius: 50%; transition: transform 0.3s; }
+        .logo-img:hover { transform: scale(1.05); }
+
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .share-btn { 
+            background: rgba(37,99,235,0.1); 
+            color: var(--primary); 
+            border: 1px solid var(--border-color); 
+            cursor: pointer; 
+            transition: 0.3s; 
+            padding: 8px 20px; 
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .share-btn:hover { background: var(--primary); color: white; transform: scale(1.02); }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .image-modal.show { display: flex; animation: modalFade 0.3s ease; }
+        @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            border: 3px solid var(--primary);
+            animation: modalZoom 0.3s ease;
+        }
+        @keyframes modalZoom { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            z-index: 1002;
+            transition: 0.3s;
+        }
+        .close-modal:hover { color: var(--primary); transform: scale(1.1) rotate(90deg); }
+
+        .shimmer { 
+            background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%); 
+            background-size: 200% 100%; 
+            animation: shimmer 1.5s infinite; 
+            border-radius: 20px; 
+        }
+        body.dark .shimmer {
+            background: linear-gradient(90deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        .empty-state { text-align: center; padding: 50px 20px; background: var(--card-bg); border-radius: 24px; border: 1px solid var(--border-color); }
+
+        .quiz-toggle-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 35px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px var(--glow-color);
+            animation: btnGlow 2s ease-in-out infinite;
+        }
+
+        .detail-container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: var(--card-bg); 
+            border-radius: 32px; 
+            padding: 25px; 
+            box-shadow: 0 20px 40px -15px var(--glow-color);
+            border: 1px solid var(--border-color);
+            animation: detailFade 0.5s ease;
+        }
+
+        @keyframes detailFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-cover { width: 100%; height: 250px; background-size: cover; background-position: center; border-radius: 20px; margin-bottom: 25px; animation: zoomIn 0.5s ease; }
+        @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .fullscreen-content .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 20px;
+        }
+
+        .fullscreen-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .fullscreen-content::-webkit-scrollbar-track {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+        .fullscreen-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =============== Search & Categories Styles =============== */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1001;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 60px;
+        }
+        .search-modal.show { display: flex; }
+        .search-container {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 900px;
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .search-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .search-header input {
+            flex: 1;
+            padding: 14px 18px;
+            border-radius: 50px;
+            border: 2px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-header input:focus { border-color: var(--primary); }
+        .search-header button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .search-header button:hover { transform: scale(1.02); }
+        
+        /* Categories Filter */
+        .categories-filter {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .category-chip {
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--border-color);
+            color: var(--text-secondary);
+        }
+        .category-chip:hover, .category-chip.active {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.02);
+        }
+        
+        .search-results {
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .search-result-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 12px;
+        }
+        .search-result-item:hover {
+            background: rgba(37,99,235,0.1);
+            transform: translateX(-5px);
+        }
+        .search-result-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: var(--border-color);
+        }
+        .search-result-info { flex: 1; }
+        .search-result-info h4 { font-weight: bold; margin-bottom: 5px; color: var(--text-primary); }
+        .search-result-info p { font-size: 12px; color: var(--text-secondary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .search-result-type {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            margin-bottom: 5px;
+        }
+        .result-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        .result-category {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: rgba(37,99,235,0.15);
+            color: var(--primary);
+        }
+        .no-results { text-align: center; padding: 40px; color: var(--text-secondary); }
+        .search-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        .search-close:hover { transform: rotate(90deg); color: var(--primary); }
+        .search-icon-nav {
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 8px 12px;
+            border-radius: 50%;
+            background: rgba(37,99,235,0.1);
+        }
+        .search-icon-nav:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body class="dark">
     <div class="animated-bg"></div>
     
-    <!-- Page Transition -->
     <div id="pageTransition" class="page-transition"></div>
     
     <!-- Modals -->
@@ -57,6 +1076,21 @@
         <img id="modalImage" class="modal-content" src="">
     </div>
 
+    <!-- Search Modal -->
+    <div id="searchModal" class="search-modal" onclick="closeSearchModal()">
+        <div class="search-container" onclick="event.stopPropagation()">
+            <div class="search-header">
+                <input type="text" id="searchInput" placeholder="🔍 ابحث عن تقارير، مقالات، أخبار، فيديوهات..." autocomplete="off">
+                <button onclick="performSearch()">بحث</button>
+            </div>
+            <div class="categories-filter" id="categoriesFilter"></div>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+        <div class="search-close" onclick="closeSearchModal()">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="glass-nav sticky top-0 z-50">
         <div class="container mx-auto px-3 py-2 flex flex-wrap justify-between items-center">
@@ -64,7 +1098,7 @@
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg" class="logo-img" alt="logo">
                 <h1 id="headerTitle" class="text-lg md:text-xl font-black gradient-text">دوبامين</h1>
             </a>
-            <div class="flex flex-wrap gap-1">
+            <div class="flex flex-wrap gap-1 items-center">
                 <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('hero')"><i class="fas fa-home ml-1"></i> الرئيسية</a>
                 <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('reports')"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
                 <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('articles')"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
@@ -74,6 +1108,9 @@
                 <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('infographics')"><i class="fas fa-chart-pie ml-1"></i> إنفوجرافيك</a>
                 <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('videos')"><i class="fas fa-video ml-1"></i> فيديو</a>
                 <a class="nav-link px-2 md:px-3 py-1.5 rounded-lg text-xs md:text-sm" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;" onclick="navigateToSection('quiz')"><i class="fas fa-chart-line ml-1"></i> مقياس الإدمان</a>
+                <div class="search-icon-nav px-2 py-1.5" onclick="openSearchModal()">
+                    <i class="fas fa-search"></i>
+                </div>
             </div>
         </div>
     </header>
@@ -126,9 +1163,853 @@
         <div class="color-option" style="background: #06b6d4;" onclick="changeColor('#06b6d4', '#0891b2')"></div>
     </div>
 
-    <!-- JavaScript Files -->
-    <script src="js/config.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/app.js"></script>
+    <script>
+        // =============== Firebase Configuration ===============
+        const firebaseConfig = {
+            apiKey: "AIzaSyCuYQh5gqlss3gdRjpSPZm-zShiwSAtetQ",
+            authDomain: "prmaga1.firebaseapp.com",
+            databaseURL: "https://prmaga1-default-rtdb.firebaseio.com/",
+            projectId: "prmaga1",
+            storageBucket: "prmaga1.firebasestorage.app",
+            messagingSenderId: "750206146558",
+            appId: "1:750206146558:web:43ca060ad36e830ca252af"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // =============== Default Quiz Questions ===============
+        const defaultQuiz = [
+            { text: "كم مرة تشعر برغبة ملحة في التحقق من هاتفك ووسائل التواصل الاجتماعي؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تجد صعوبة في التوقف عن استخدام الأجهزة الإلكترونية؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تتناول الطعام بدافع الملل أو التوتر؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تشعر بالنشوة عند شراء أشياء جديدة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تقضي ساعات في مشاهدة المقاطع القصيرة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] }
+        ];
+
+        // =============== Global Variables ===============
+        let currentSectionData = {};
+        let quizQuestions = [];
+        let userAnswers = [];
+        let currentQuestionIndex = 0;
+        let autoAdvanceTimer = null;
+        let allContentCache = null;
+        let allCategories = [];
+        let currentCategoryFilter = 'all';
+
+        // =============== Helper Functions ===============
+        function escapeHtml(str) { 
+            if (!str) return ''; 
+            return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); 
+        }
+
+        function getYouTubeEmbedUrl(url) {
+            if (!url) return '';
+            if (url.includes('youtu.be/')) {
+                let id = url.split('youtu.be/')[1];
+                if (id) return `https://www.youtube.com/embed/${id.split('?')[0]}`;
+            }
+            if (url.includes('youtube.com/watch')) {
+                let params = new URLSearchParams(url.split('?')[1]);
+                let id = params.get('v');
+                if (id) return `https://www.youtube.com/embed/${id}`;
+            }
+            return url;
+        }
+
+        // =============== Image Modal ===============
+        function openImageModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.add('show');
+            modalImg.src = imageUrl;
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('show');
+        }
+
+        // =============== Share Function ===============
+        async function shareItem(title, url) {
+            try {
+                if (navigator.share && window.innerWidth <= 768) {
+                    await navigator.share({ title: title, text: `اكتشفت هذا المحتوى الرائع: ${title}`, url: url });
+                } else {
+                    await navigator.clipboard.writeText(url);
+                    Swal.fire({ title: "تم نسخ الرابط! 📋", text: title, icon: "success", timer: 2000, showConfirmButton: false, toast: true, position: "bottom-end" });
+                }
+            } catch (err) {
+                Swal.fire({ title: "حدث خطأ", text: "لم نتمكن من مشاركة المحتوى", icon: "error", timer: 1500 });
+            }
+        }
+
+        // =============== Theme Functions ===============
+        function setTabColor(color) {
+            let meta = document.querySelector('meta[name="theme-color"]');
+            if (!meta) { 
+                meta = document.createElement('meta'); 
+                meta.name = 'theme-color'; 
+                document.head.appendChild(meta); 
+            }
+            meta.content = color;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.querySelector('.theme-toggle i');
+            const isDark = body.classList.contains('dark');
+            if (isDark) {
+                body.classList.remove('dark');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+                setTabColor('#ffffff');
+                Swal.fire({ title: "✨ الوضع الفاتح", text: "تم التبديل إلى الوضع النهاري", icon: "success", timer: 1500, showConfirmButton: false });
+            } else {
+                body.classList.add('dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+                setTabColor('#0f172a');
+                Swal.fire({ title: "🌙 الوضع الداكن", text: "تم التبديل إلى الوضع الليلي", icon: "success", timer: 1500, showConfirmButton: false });
+            }
+        }
+
+        function changeColor(primary, primaryDark) {
+            document.documentElement.style.setProperty('--primary', primary);
+            document.documentElement.style.setProperty('--primary-dark', primaryDark);
+            localStorage.setItem('userPrimary', primary);
+            localStorage.setItem('userPrimaryDark', primaryDark);
+            document.getElementById('colorPickerPanel').classList.remove('open');
+            Swal.fire({ title: "تم تغيير اللون", text: "لون الموقع تم تحديثه", icon: "success", timer: 1500, showConfirmButton: false });
+        }
+
+        function loadSavedThemeAndColor() {
+            const savedTheme = localStorage.getItem('theme');
+            const savedPrimary = localStorage.getItem('userPrimary');
+            const savedPrimaryDark = localStorage.getItem('userPrimaryDark');
+            const icon = document.querySelector('.theme-toggle i');
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark');
+                if (icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+                setTabColor('#ffffff');
+            } else {
+                document.body.classList.add('dark');
+                if (icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
+                setTabColor('#0f172a');
+            }
+            if (savedPrimary && savedPrimaryDark) {
+                document.documentElement.style.setProperty('--primary', savedPrimary);
+                document.documentElement.style.setProperty('--primary-dark', savedPrimaryDark);
+            }
+        }
+
+        // =============== Page Transition ===============
+        function navigateToSection(sectionId) {
+            const transition = document.getElementById('pageTransition');
+            transition.classList.add('active');
+            setTimeout(() => {
+                openSectionFullscreen(sectionId);
+                transition.classList.remove('active');
+            }, 400);
+        }
+
+        // =============== Scroll Reveal ===============
+        function initScrollReveal() {
+            const revealElements = document.querySelectorAll('.premium-card, .stat-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    } else {
+                        entry.target.classList.remove('revealed');
+                        entry.target.style.opacity = '0';
+                        entry.target.style.transform = 'translateY(30px)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            revealElements.forEach(el => {
+                el.classList.add('scroll-reveal');
+                observer.observe(el);
+            });
+        }
+
+        // =============== Open In New Tab ===============
+        function openInNewTab(url) { 
+            window.open(url, '_blank'); 
+        }
+
+        function goBackToHome() { 
+            window.location.href = './'; 
+        }
+
+        // =============== Load Categories from Firebase ===============
+        async function loadCategories() {
+            const snap = await db.ref('categories').once('value');
+            const data = snap.val();
+            if (data) {
+                allCategories = Object.values(data);
+            } else {
+                allCategories = [];
+            }
+            return allCategories;
+        }
+
+        // =============== Load All Content with Categories ===============
+        async function loadAllContent() {
+            if (allContentCache) return allContentCache;
+            
+            const sections = ['reports', 'articles', 'news', 'interviews', 'investigations', 'infographics', 'videos'];
+            const sectionNames = {
+                reports: '📰 تقارير', articles: '✍️ مقالات', news: '📢 أخبار', 
+                interviews: '🎙️ حوارات', investigations: '🔬 تحقيقات', infographics: '📊 إنفوجرافيك', videos: '🎥 فيديوهات'
+            };
+            
+            let allContent = [];
+            
+            for (const section of sections) {
+                const snap = await db.ref(section).once('value');
+                const data = snap.val();
+                if (data) {
+                    Object.entries(data).forEach(([id, item]) => {
+                        let itemCategories = item.categories || [];
+                        // Get category names for display
+                        let categoryNames = itemCategories.map(catId => {
+                            const cat = allCategories.find(c => c.id === catId);
+                            return cat ? cat.name : catId;
+                        });
+                        allContent.push({
+                            id: id,
+                            type: section,
+                            typeName: sectionNames[section],
+                            title: item.title || 'بدون عنوان',
+                            description: item.summary || item.description || '',
+                            content: item.content || '',
+                            image: item.image || item.imageUrl || item.img || item.photo || '',
+                            date: item.date || '',
+                            categories: itemCategories,
+                            categoryNames: categoryNames
+                        });
+                    });
+                }
+            }
+            
+            allContentCache = allContent;
+            return allContentCache;
+        }
+
+        // =============== Search Functions ===============
+        async function openSearchModal() {
+            await loadCategories();
+            await loadAllContent();
+            renderCategoriesFilter();
+            const modal = document.getElementById('searchModal');
+            modal.classList.add('show');
+            document.getElementById('searchInput').focus();
+        }
+
+        function closeSearchModal() {
+            const modal = document.getElementById('searchModal');
+            modal.classList.remove('show');
+            currentCategoryFilter = 'all';
+        }
+
+        function renderCategoriesFilter() {
+            const container = document.getElementById('categoriesFilter');
+            if (!container) return;
+            
+            if (allCategories.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            let html = `<div class="category-chip ${currentCategoryFilter === 'all' ? 'active' : ''}" onclick="filterByCategory('all')">جميع التصنيفات</div>`;
+            allCategories.forEach(cat => {
+                html += `<div class="category-chip ${currentCategoryFilter === cat.id ? 'active' : ''}" onclick="filterByCategory('${cat.id}')" style="border-right: 3px solid ${cat.color}">${escapeHtml(cat.name)}</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function filterByCategory(categoryId) {
+            currentCategoryFilter = categoryId;
+            renderCategoriesFilter();
+            performSearch();
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            
+            const allContent = await loadAllContent();
+            
+            let filteredContent = allContent;
+            
+            // Filter by text
+            if (query) {
+                filteredContent = filteredContent.filter(item => {
+                    return item.title.toLowerCase().includes(query) || 
+                           item.description.toLowerCase().includes(query) ||
+                           item.content.toLowerCase().includes(query);
+                });
+            }
+            
+            // Filter by category
+            if (currentCategoryFilter !== 'all') {
+                filteredContent = filteredContent.filter(item => {
+                    return item.categories && item.categories.includes(currentCategoryFilter);
+                });
+            }
+            
+            if (filteredContent.length === 0) {
+                resultsContainer.innerHTML = `<div class="no-results"><i class="fas fa-search fa-3x mb-3"></i><p>${query ? `لا توجد نتائج لـ "${escapeHtml(query)}"` : 'لا توجد محتويات في هذا التصنيف'}</p></div>`;
+                return;
+            }
+            
+            resultsContainer.innerHTML = filteredContent.map(item => {
+                // Display categories for this item
+                const categoriesHtml = item.categoryNames.map(catName => 
+                    `<span class="result-category">${escapeHtml(catName)}</span>`
+                ).join('');
+                
+                return `
+                    <div class="search-result-item" onclick="openSearchResult('${item.type}', '${item.id}')">
+                        ${item.image ? `<img src="${item.image}" class="search-result-img" onerror="this.src='https://placehold.co/80x80/1e293b/60a5fa?text=No+Image'">` : `<div class="search-result-img flex items-center justify-center" style="background: var(--primary);"><i class="fas fa-${item.type === 'videos' ? 'video' : 'file-alt'} text-2xl text-white"></i></div>`}
+                        <div class="search-result-info">
+                            <span class="search-result-type">${escapeHtml(item.typeName)}</span>
+                            <h4>${escapeHtml(item.title)}</h4>
+                            <p>${escapeHtml(item.description.substring(0, 100))}${item.description.length > 100 ? '...' : ''}</p>
+                            ${categoriesHtml ? `<div class="result-categories">${categoriesHtml}</div>` : ''}
+                            ${item.date ? `<small style="color: var(--text-secondary);">📅 ${escapeHtml(item.date)}</small>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openSearchResult(type, id) {
+            closeSearchModal();
+            window.location.href = `?type=${type}&id=${id}`;
+        }
+
+        // Add enter key support
+        document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        // =============== Quiz Functions ===============
+        async function loadQuiz() {
+            const snap = await db.ref('quiz/questions').once('value');
+            quizQuestions = snap.exists() ? snap.val() : defaultQuiz;
+            userAnswers = new Array(quizQuestions.length).fill(-1);
+            currentQuestionIndex = 0;
+        }
+
+        function renderFullscreenQuiz() {
+            const container = document.getElementById('fullscreenQuizContainer');
+            if (!container || quizQuestions.length === 0) return;
+            
+            const currentQ = quizQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex) / quizQuestions.length) * 100;
+            const selectedAnswer = userAnswers[currentQuestionIndex];
+            
+            let html = `
+                <div class="quiz-container">
+                    <div class="quiz-progress-bar">
+                        <div class="quiz-progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="quiz-counter">السؤال ${currentQuestionIndex + 1} من ${quizQuestions.length}</div>
+                    <div class="quiz-question-wrapper">
+                        <div class="quiz-question-text">${escapeHtml(currentQ.text)}</div>
+                        <div class="quiz-options-grid">
+                            ${currentQ.options.map((opt, idx) => `<div class="quiz-option-card ${selectedAnswer === idx ? 'selected' : ''}" data-opt-index="${idx}">${escapeHtml(opt)}</div>`).join('')}
+                        </div>
+                    </div>
+                    <div class="quiz-nav-buttons">
+                        <button class="quiz-nav-btn prev" id="prevBtn" ${currentQuestionIndex === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}><i class="fas fa-arrow-right ml-1"></i> السابق</button>
+                        ${currentQuestionIndex === quizQuestions.length - 1 ? 
+                            `<button class="quiz-nav-btn submit" id="submitBtn"><i class="fas fa-chart-line ml-1"></i> عرض النتيجة</button>` : 
+                            `<button class="quiz-nav-btn next" id="nextBtn" ${selectedAnswer === -1 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>التالي <i class="fas fa-arrow-left mr-1"></i></button>`
+                        }
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+            
+            document.querySelectorAll('#fullscreenQuizContainer .quiz-option-card').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+                    const optIndex = parseInt(opt.dataset.optIndex);
+                    userAnswers[currentQuestionIndex] = optIndex;
+                    
+                    document.querySelectorAll('#fullscreenQuizContainer .quiz-option-card').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    
+                    const nextBtn = document.getElementById('nextBtn');
+                    if (nextBtn) {
+                        nextBtn.disabled = false;
+                        nextBtn.style.opacity = '1';
+                        nextBtn.style.cursor = 'pointer';
+                    }
+                    
+                    if (currentQuestionIndex < quizQuestions.length - 1) {
+                        autoAdvanceTimer = setTimeout(() => { nextQuestion(); }, 500);
+                    }
+                });
+            });
+            
+            const prevBtn = document.getElementById('prevBtn');
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+                    if (currentQuestionIndex > 0) {
+                        currentQuestionIndex--;
+                        renderFullscreenQuiz();
+                    }
+                });
+            }
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+                    if (userAnswers[currentQuestionIndex] !== -1) {
+                        nextQuestion();
+                    }
+                });
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => {
+                    if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+                    if (userAnswers[currentQuestionIndex] !== -1) {
+                        calculateAndShowResult();
+                    } else {
+                        Swal.fire({ title: "لم تكتمل الإجابة", text: "الرجاء الإجابة على السؤال الحالي أولاً", icon: "warning" });
+                    }
+                });
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                renderFullscreenQuiz();
+                const modalContent = document.querySelector('.fullscreen-content');
+                if (modalContent) modalContent.scrollTop = 0;
+            }
+        }
+
+        function calculateScore() {
+            let total = 0, max = quizQuestions.length * 4;
+            for (let i = 0; i < quizQuestions.length; i++) {
+                total += userAnswers[i] !== -1 ? quizQuestions[i].scores[userAnswers[i]] : 1;
+            }
+            return Math.round((total / max) * 100);
+        }
+
+        async function calculateAndShowResult() {
+            let unanswered = [];
+            for (let i = 0; i < quizQuestions.length; i++) if (userAnswers[i] === -1) unanswered.push(i+1);
+            if (unanswered.length) {
+                Swal.fire({ title: "أسئلة غير مكتملة", text: `الرجاء الإجابة على الأسئلة: ${unanswered.join(', ')}`, icon: "warning" });
+                return;
+            }
+            
+            const percentage = calculateScore();
+            let resultClass = '', title = '', message = '', advice = '', icon = '';
+            if (percentage <= 40) {
+                resultClass = 'result-normal';
+                title = '🟢 درجة إدمان منخفضة';
+                message = 'ممتاز! مستوى اعتمادك طبيعي';
+                advice = '✅ حافظ على عاداتك الصحية\n✅ مارس الهوايات الإيجابية';
+                icon = 'fa-face-smile';
+            } else if (percentage <= 60) {
+                resultClass = 'result-recovery';
+                title = '🟡 درجة إدمان متوسطة';
+                message = 'لديك بعض السلوكيات الزائدة';
+                advice = '📱 قلل استخدام وسائل التواصل\n🏃 مارس الرياضة يومياً';
+                icon = 'fa-face-meh';
+            } else {
+                resultClass = 'result-severe';
+                title = '🔴 درجة إدمان عالية';
+                message = 'يوجد اعتماد شديد على الدوبامين';
+                advice = '⚠️ ننصحك باستشارة طبيب نفسي';
+                icon = 'fa-face-frown';
+            }
+            
+            const resultDiv = document.getElementById('fullscreenQuizResult');
+            resultDiv.innerHTML = `
+                <div class="${resultClass} result-card">
+                    <i class="fas ${icon} text-5xl mb-4 text-white"></i>
+                    <h3 class="text-2xl font-bold mb-4 text-white">${title}</h3>
+                    <div class="score-circle">
+                        <span class="text-5xl font-bold text-white">${percentage}%</span>
+                        <span class="text-sm opacity-90 text-white">نسبة الإدمان</span>
+                    </div>
+                    <p class="text-lg mb-4 text-white">${message}</p>
+                    <div class="bg-white/20 rounded-xl p-4 mt-4"><p class="text-sm whitespace-pre-line text-white">📋 ${advice}</p></div>
+                    <div class="flex gap-3 justify-center mt-6">
+                        <button onclick="resetFullscreenQuiz()" class="px-6 py-2 bg-white text-gray-800 rounded-xl font-semibold transition-all hover:scale-105">إعادة الاختبار</button>
+                        <button onclick="shareResult(${percentage})" class="px-6 py-2 bg-white/20 text-white rounded-xl font-semibold transition-all hover:scale-105">مشاركة</button>
+                    </div>
+                </div>
+            `;
+            resultDiv.classList.remove('hidden');
+            try { await db.ref('quiz_results').push().set({ percentage, date: new Date().toISOString() }); } catch(e) {}
+        }
+
+        function resetFullscreenQuiz() {
+            if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+            userAnswers.fill(-1);
+            currentQuestionIndex = 0;
+            renderFullscreenQuiz();
+            const resultDiv = document.getElementById('fullscreenQuizResult');
+            if (resultDiv) resultDiv.classList.add('hidden');
+        }
+
+        function shareResult(percentage) {
+            shareItem(`نتيجتي في مقياس إدمان الدوبامين: ${percentage}%`, window.location.href);
+        }
+
+        function closeFullscreenModal() {
+            if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+            const modal = document.getElementById('fullscreenModal');
+            modal.classList.remove('show');
+        }
+
+        // =============== Fullscreen Section Functions ===============
+        async function openSectionFullscreen(sectionId) {
+            const modal = document.getElementById('fullscreenModal');
+            const modalContent = document.getElementById('fullscreenModalContent');
+            modalContent.innerHTML = '<div class="text-center py-10"><i class="fas fa-spinner fa-spin text-3xl" style="color: var(--primary);"></i><p class="mt-3">جاري التحميل...</p></div>';
+            modal.classList.add('show');
+            await loadSectionData(sectionId);
+            renderFullscreenContent(sectionId, modalContent);
+        }
+
+        async function loadSectionData(sectionId) {
+            if (sectionId === 'hero') {
+                const texts = await loadTexts();
+                currentSectionData = { title: 'الرئيسية', icon: 'fa-home', texts: texts };
+                return;
+            }
+            if (sectionId === 'quiz') {
+                await loadQuiz();
+                currentSectionData = { title: 'مقياس إدمان الدوبامين', icon: 'fa-chart-line' };
+                return;
+            }
+            const snap = await db.ref(sectionId).once('value');
+            const data = snap.val();
+            let title = '', icon = '';
+            switch(sectionId) {
+                case 'reports': title = 'التقارير العلمية'; icon = 'fa-newspaper'; break;
+                case 'articles': title = 'المقالات العلمية'; icon = 'fa-pen-fancy'; break;
+                case 'news': title = 'أخبار الدوبامين'; icon = 'fa-bullhorn'; break;
+                case 'interviews': title = 'حوارات وخبراء'; icon = 'fa-comments'; break;
+                case 'investigations': title = 'التحقيقات'; icon = 'fa-microscope'; break;
+                case 'infographics': title = 'الإنفوجرافيك'; icon = 'fa-chart-pie'; break;
+                case 'videos': title = 'الفيديوهات'; icon = 'fa-video'; break;
+                default: title = sectionId; icon = 'fa-folder';
+            }
+            currentSectionData = { title: title, icon: icon, data: data, sectionId: sectionId };
+        }
+
+        function renderFullscreenContent(sectionId, container) {
+            if (sectionId === 'hero') {
+                const texts = currentSectionData.texts;
+                const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg";
+                container.innerHTML = `<div class="text-center"><img src="${logoUrl}" class="w-32 h-32 rounded-full mx-auto mb-4 cursor-pointer" style="border: 3px solid var(--primary); box-shadow: 0 0 30px var(--glow-color);" onclick="openImageModal('${logoUrl}')"><h2 class="text-2xl md:text-3xl font-bold">${texts.heroTitle || 'الدوبامين'}</h2><p class="gradient-text text-xl mt-2">وعي رقمي = عقل سليم</p><p class="text-gray-500 dark:text-gray-400 mt-4">${texts.heroDesc || ''}</p><div class="flex gap-3 justify-center mt-6"><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('reports'), 100)" class="px-6 py-2 rounded-xl text-white transition-all hover:scale-105" style="background: var(--primary);">استكشف</button><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('quiz'), 300)" class="px-6 py-2 rounded-xl transition-all hover:scale-105" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">اختبر نفسك</button></div></div>`;
+                return;
+            }
+            if (sectionId === 'quiz') {
+                container.innerHTML = `<h2 class="flex items-center gap-2 mb-3"><i class="fas fa-chart-line" style="color: var(--primary);"></i> <span class="gradient-text">مقياس إدمان الدوبامين</span></h2><p class="text-gray-500 dark:text-gray-400 mb-4">اختبار علمي مكون من ${quizQuestions.length} سؤالاً</p><div id="fullscreenQuizContainer"></div><div id="fullscreenQuizResult" class="mt-6 hidden"></div>`;
+                renderFullscreenQuiz();
+                return;
+            }
+            
+            const data = currentSectionData.data;
+            let cardsHtml = '';
+            if (data && Object.keys(data).length) {
+                Object.entries(data).forEach(([id, item]) => {
+                    const shareUrl = `${window.location.origin}/?type=${sectionId}&id=${id}`;
+                    if (sectionId === 'videos') {
+                        const videoUrl = item.videoUrl || '';
+                        const embedUrl = getYouTubeEmbedUrl(videoUrl);
+                        cardsHtml += `<div class="premium-card" onclick="openInNewTab('?type=videos&id=${id}')"><div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')"><i class="fas fa-share-alt"></i></div><div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div><div class="p-3"><h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3><p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.description || '')}</p></div></div>`;
+                    } else {
+                        const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+                        cardsHtml += `<div class="premium-card" onclick="openInNewTab('?type=${sectionId}&id=${id}')"><div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')"><i class="fas fa-share-alt"></i></div><div class="card-cover" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"></div><div class="p-3"><span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span><h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3><p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.summary || '')}</p></div></div>`;
+                    }
+                });
+            } else {
+                cardsHtml = `<div class="empty-state col-span-full text-center py-10"><i class="fas fa-inbox text-4xl text-gray-400"></i><p>لا توجد محتويات</p></div>`;
+            }
+            container.innerHTML = `<h2 class="flex items-center gap-2 mb-3"><i class="fas ${currentSectionData.icon}" style="color: var(--primary);"></i> <span class="gradient-text">${currentSectionData.title}</span></h2><div class="cards-container">${cardsHtml}</div>`;
+        }
+
+        // =============== Load Section ===============
+        async function loadSection(type, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '<div class="shimmer h-56"></div><div class="shimmer h-56"></div>';
+            const snap = await db.ref(type).once('value');
+            const data = snap.val();
+            if (data && Object.keys(data).length) {
+                container.innerHTML = '';
+                Object.entries(data).forEach(([id, item]) => {
+                    const shareUrl = `${window.location.origin}/?type=${type}&id=${id}`;
+                    
+                    if (type === 'videos') {
+                        const videoUrl = item.videoUrl || '';
+                        const embedUrl = getYouTubeEmbedUrl(videoUrl);
+                        container.innerHTML += `
+                            <div class="premium-card" onclick="openInNewTab('?type=videos&id=${id}')">
+                                <div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')">
+                                    <i class="fas fa-share-alt"></i>
+                                </div>
+                                <div class="video-container">
+                                    <iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="p-3">
+                                    <h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                    <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.description || '')}</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+                        container.innerHTML += `
+                            <div class="premium-card" onclick="openInNewTab('?type=${type}&id=${id}')">
+                                <div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')">
+                                    <i class="fas fa-share-alt"></i>
+                                </div>
+                                <div class="card-cover" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"></div>
+                                <div class="p-3">
+                                    <span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span>
+                                    <h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                    <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.summary || '')}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                initScrollReveal();
+            } else {
+                container.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-inbox"></i><h3>لا توجد محتويات</h3></div>`;
+            }
+        }
+
+        // =============== Load Texts from Firebase ===============
+        async function loadTexts() {
+            const snap = await db.ref('site_texts').once('value');
+            const texts = snap.val() || {
+                siteTitle: "دوبامين", headerTitle: "دوبامين", heroTitle: "الدوبامين",
+                heroDesc: "استكشف أحدث الأبحاث والتقارير حول الناقل العصبي الأكثر تأثيرًا",
+                reportsTitle: "التقارير العلمية", articlesTitle: "المقالات العلمية",
+                newsTitle: "أخبار الدوبامين", interviewsTitle: "حوارات وخبراء",
+                investigationsTitle: "التحقيقات", infographicsTitle: "الإنفوجرافيك",
+                videosTitle: "الفيديوهات", quizTitle: "مقياس إدمان الدوبامين",
+                footer: "© 2026 دوبامين وعي رقمي=عقل سليم"
+            };
+            document.title = texts.siteTitle;
+            document.getElementById('headerTitle').innerText = texts.headerTitle;
+            document.getElementById('footerText').innerText = texts.footer;
+            return texts;
+        }
+
+        // =============== Load Counts ===============
+        async function loadCounts() {
+            const reports = await db.ref('reports').once('value');
+            document.getElementById('reportsCount') && (document.getElementById('reportsCount').innerText = reports.numChildren() || '0');
+            const articles = await db.ref('articles').once('value');
+            document.getElementById('articlesCount') && (document.getElementById('articlesCount').innerText = articles.numChildren() || '0');
+            const news = await db.ref('news').once('value');
+            document.getElementById('newsCount') && (document.getElementById('newsCount').innerText = news.numChildren() || '0');
+            const interviews = await db.ref('interviews').once('value');
+            document.getElementById('interviewsCount') && (document.getElementById('interviewsCount').innerText = interviews.numChildren() || '0');
+            const quizResults = await db.ref('quiz_results').once('value');
+            document.getElementById('quizCount') && (document.getElementById('quizCount').innerText = quizResults.numChildren() || '0');
+            if (quizResults.exists()) {
+                const vals = Object.values(quizResults.val());
+                const avg = Math.round(vals.reduce((s,v) => s + (v.percentage||0), 0) / vals.length);
+                document.getElementById('avgScore') && (document.getElementById('avgScore').innerText = avg + '%');
+            }
+        }
+
+        // =============== Show Detail Page ===============
+        async function showDetailPage(type, id) {
+            const main = document.getElementById('mainContent');
+            main.innerHTML = '<div class="shimmer h-96 max-w-4xl mx-auto"></div>';
+            try {
+                const snap = await db.ref(`${type}/${id}`).once('value');
+                const item = snap.val();
+                if (!item) throw new Error();
+                document.title = `${item.title} | دوبامين`;
+
+                let typeName = '';
+                switch(type) {
+                    case 'reports': typeName = 'تقرير علمي'; break;
+                    case 'articles': typeName = 'مقالة'; break;
+                    case 'news': typeName = 'خبر'; break;
+                    case 'interviews': typeName = 'حوار'; break;
+                    case 'investigations': typeName = 'تحقيق'; break;
+                    case 'infographics': typeName = 'إنفوجرافيك'; break;
+                    case 'videos': typeName = 'فيديو'; break;
+                    default: typeName = type;
+                }
+
+                let contentHtml = '';
+                
+                if (type === 'videos') {
+                    const videoUrl = item.videoUrl || '';
+                    const embedUrl = getYouTubeEmbedUrl(videoUrl);
+                    contentHtml = `
+                        <div class="video-container mb-4">
+                            <iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div class="prose max-w-none mt-4">${escapeHtml(item.description || '')}</div>
+                    `;
+                    main.innerHTML = `
+                        <div class="detail-container">
+                            <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                                <span class="text-xs px-3 py-1 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${typeName}</span>
+                                <button onclick="shareItem('${escapeHtml(item.title)}', window.location.href)" class="share-btn"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
+                            </div>
+                            <h1 class="text-xl md:text-3xl font-bold mb-4">${escapeHtml(item.title)}</h1>
+                            <div class="leading-relaxed" style="color: var(--text-secondary);">${contentHtml || '<p>لا يوجد محتوى</p>'}</div>
+                            <div class="border-t mt-6 pt-4 text-center" style="border-color: var(--border-color);">
+                                <button onclick="goBackToHome()" class="hover:underline" style="color: var(--primary); cursor: pointer;"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+                    if (imageUrl) {
+                        contentHtml += `<img src="${imageUrl}" class="w-full rounded-xl my-4" onerror="this.src='https://placehold.co/600x400/1e293b/60a5fa?text=No+Image'">`;
+                    }
+                    if (item.content) {
+                        contentHtml += `<div class="prose max-w-none">${escapeHtml(item.content)}</div>`;
+                    }
+
+                    main.innerHTML = `
+                        <div class="detail-container">
+                            <div class="detail-cover" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"></div>
+                            <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                                <span class="text-xs px-3 py-1 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${typeName}</span>
+                                <button onclick="shareItem('${escapeHtml(item.title)}', window.location.href)" class="share-btn"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
+                            </div>
+                            <h1 class="text-xl md:text-3xl font-bold mb-4">${escapeHtml(item.title)}</h1>
+                            <div class="leading-relaxed" style="color: var(--text-secondary);">${contentHtml || '<p>لا يوجد محتوى</p>'}</div>
+                            <div class="border-t mt-6 pt-4 text-center" style="border-color: var(--border-color);">
+                                <button onclick="goBackToHome()" class="hover:underline" style="color: var(--primary); cursor: pointer;"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch(e) {
+                main.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>المحتوى غير موجود</h3><button onclick="goBackToHome()" class="inline-block mt-4 px-5 py-2 rounded-lg" style="background: var(--primary); color: white;">الرئيسية</button></div>`;
+            }
+        }
+
+        // =============== Show Home Page ===============
+        async function showHome() {
+            await loadQuiz();
+            const texts = await loadTexts();
+            const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg";
+            
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div class="text-center p-6 md:p-8 rounded-2xl mb-6" style="background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(37,99,235,0.05)); backdrop-filter: blur(5px);" data-aos="fade-up">
+                    <img src="${logoUrl}" class="hero-logo mx-auto" alt="logo" onclick="openImageModal('${logoUrl}')">
+                    <h4 class="text-sm md:text-base font-bold">${texts.heroTitle || 'الدوبامين'}<br><span class="gradient-text">دوبامين وعي رقمي=عقل سليم</span></h4>
+                    <p class="text-sm md:text-base max-w-2xl mx-auto my-3" style="color: var(--text-secondary);">${texts.heroDesc || ''}</p>
+                    <div class="flex gap-2 justify-center flex-wrap">
+                        <a class="px-4 md:px-6 py-1.5 md:py-2 text-white rounded-xl text-sm cursor-pointer transition-all hover:scale-105" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));" onclick="navigateToSection('reports')">استكشف</a>
+                        <a class="px-4 md:px-6 py-1.5 md:py-2 rounded-xl text-sm cursor-pointer transition-all hover:scale-105" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);" onclick="navigateToSection('quiz')">اختبر مدي إدمانك</a>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 mb-6">
+                    <div class="stat-card"><i class="fas fa-file-alt"></i><div id="reportsCount" class="stat-number">0</div><div class="stat-label">تقارير</div></div>
+                    <div class="stat-card"><i class="fas fa-pen-nib"></i><div id="articlesCount" class="stat-number">0</div><div class="stat-label">مقالات</div></div>
+                    <div class="stat-card"><i class="fas fa-bullhorn"></i><div id="newsCount" class="stat-number">0</div><div class="stat-label">أخبار</div></div>
+                    <div class="stat-card"><i class="fas fa-comments"></i><div id="interviewsCount" class="stat-number">0</div><div class="stat-label">حوارات</div></div>
+                    <div class="stat-card"><i class="fas fa-users"></i><div id="quizCount" class="stat-number">0</div><div class="stat-label">مشاركات</div></div>
+                    <div class="stat-card"><i class="fas fa-chart-line"></i><div id="avgScore" class="stat-number">--%</div><div class="stat-label">المتوسط</div></div>
+                </div>
+                
+                <section id="reports" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-newspaper" style="color: var(--primary);"></i> <span class="gradient-text">${texts.reportsTitle}</span></h2><div id="reportsContainer" class="grid-responsive"></div></section>
+                <section id="articles" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-pen-fancy" style="color: var(--primary);"></i> <span class="gradient-text">${texts.articlesTitle}</span></h2><div id="articlesContainer" class="grid-responsive"></div></section>
+                <section id="news" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-bullhorn" style="color: var(--primary);"></i> <span class="gradient-text">${texts.newsTitle}</span></h2><div id="newsContainer" class="grid-responsive"></div></section>
+                <section id="interviews" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-comments" style="color: var(--primary);"></i> <span class="gradient-text">${texts.interviewsTitle}</span></h2><div id="interviewsContainer" class="grid-responsive"></div></section>
+                <section id="investigations" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-microscope" style="color: var(--primary);"></i> <span class="gradient-text">${texts.investigationsTitle}</span></h2><div id="investigationsContainer" class="grid-responsive"></div></section>
+                <section id="infographics" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-chart-pie" style="color: var(--primary);"></i> <span class="gradient-text">${texts.infographicsTitle}</span></h2><div id="infographicsContainer" class="grid md:grid-cols-2 gap-4"></div></section>
+                <section id="videos" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-video" style="color: var(--primary);"></i> <span class="gradient-text">${texts.videosTitle}</span></h2><div id="videosContainer" class="grid md:grid-cols-2 gap-4"></div></section>
+                
+                <section id="quiz-section">
+                    <div class="rounded-2xl shadow-xl overflow-hidden" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="px-4 md:px-6 py-4 text-center" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));">
+                            <h2 class="text-xl md:text-2xl font-bold text-white">${texts.quizTitle}</h2>
+                            <p class="text-blue-200 text-sm">اختبار علمي دقيق لتقييم الإدمان</p>
+                        </div>
+                        <div class="p-4 md:p-6 text-center">
+                            <div class="quiz-toggle-btn" onclick="navigateToSection('quiz')">
+                                <i class="fas fa-chevron-down ml-1"></i> ابدأ الاختبار الآن
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+            
+            await loadSection('reports', 'reportsContainer');
+            await loadSection('articles', 'articlesContainer');
+            await loadSection('news', 'newsContainer');
+            await loadSection('interviews', 'interviewsContainer');
+            await loadSection('investigations', 'investigationsContainer');
+            await loadSection('infographics', 'infographicsContainer');
+            await loadSection('videos', 'videosContainer');
+            await loadCounts();
+            initScrollReveal();
+        }
+
+        // =============== Routing ===============
+        function getParams() {
+            return { 
+                type: new URLSearchParams(window.location.search).get('type'), 
+                id: new URLSearchParams(window.location.search).get('id') 
+            };
+        }
+
+        async function route() {
+            const p = getParams();
+            if (p.type && p.id) await showDetailPage(p.type, p.id);
+            else await showHome();
+        }
+
+        // =============== Initialize ===============
+        AOS.init({ duration: 800, once: false });
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        });
+
+        // Color picker panel toggle on long press
+        let pressTimer;
+        document.querySelector('.theme-toggle')?.addEventListener('mousedown', () => { 
+            pressTimer = setTimeout(() => document.getElementById('colorPickerPanel').classList.toggle('open'), 500); 
+        });
+        document.querySelector('.theme-toggle')?.addEventListener('mouseup', () => clearTimeout(pressTimer));
+        document.querySelector('.theme-toggle')?.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+
+        // Start the app
+        loadSavedThemeAndColor();
+        route();
+    </script>
 </body>
 </html>
