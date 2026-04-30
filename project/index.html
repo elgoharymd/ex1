@@ -7,14 +7,14 @@
     <meta name="theme-color" id="themeColor" content="#0f172a">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-navbutton-color" content="#0f172a">
-    <title>دوبامين Dobamen </title>
-    <meta property="og:title" content="دوبامين | dopaminea">
+    <title>دوبامين - </title>
+    <meta property="og:title" content="دوبامين | موقع الأبحاث العلمية">
     <meta property="og:description" content="منصة علمية متخصصة في أبحاث الدوبامين - أحدث التقارير والدراسات">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ar_AR">
-    <meta property="og:site_name" content="دوبامين | dopaminea">
+    <meta property="og:site_name" content="دوبامين">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="دوبامين | dopaminea">
+    <meta name="twitter:title" content="دوبامين">
     <meta name="twitter:description" content="منصة علمية متخصصة في أبحاث الدوبامين">
     
     <!-- External Libraries -->
@@ -30,7 +30,7 @@
     <link rel="icon" type="image/jpeg" sizes="16x16" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
     
     <style>
-        * { font-family: 'Cairo', sans-serif; }
+        * { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
         :root {
@@ -46,6 +46,7 @@
             --header-bg: rgba(255,255,255,0.95);
             --glow-color: rgba(37,99,235,0.2);
             --glow-strong: rgba(37,99,235,0.4);
+            --primary-rgb: 37, 99, 235;
         }
 
         body.dark {
@@ -61,6 +62,7 @@
             --header-bg: rgba(15,23,42,0.95);
             --glow-color: rgba(59,130,246,0.25);
             --glow-strong: rgba(59,130,246,0.5);
+            --primary-rgb: 59, 130, 246;
         }
 
         body {
@@ -98,25 +100,6 @@
             50% { background-position: 100% 100%; }
             75% { background-position: 0% 100%; }
             100% { background-position: 0% 0%; }
-        }
-
-        body.dark::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(37,99,235,0.2) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-            animation: bgPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes bgPulse {
-            0% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
-            100% { opacity: 0.3; transform: scale(1); }
         }
 
         .page-transition {
@@ -185,9 +168,7 @@
             transition: transform 0.5s ease;
         }
 
-        .premium-card:hover .card-cover {
-            transform: scale(1.05);
-        }
+        .premium-card:hover .card-cover { transform: scale(1.05); }
 
         .share-card-btn {
             position: absolute;
@@ -291,23 +272,12 @@
             border: 1px solid var(--border-color);
             animation: statFloat 4s ease-in-out infinite;
             box-shadow: 0 5px 15px var(--glow-color);
+            cursor: pointer;
         }
 
         @keyframes statFloat {
             0%, 100% { transform: translateY(0); box-shadow: 0 5px 12px var(--glow-color); }
             50% { transform: translateY(-5px); box-shadow: 0 12px 25px var(--glow-strong); }
-        }
-
-        .stat-card:nth-child(1) { animation-delay: 0s; }
-        .stat-card:nth-child(2) { animation-delay: 0.3s; }
-        .stat-card:nth-child(3) { animation-delay: 0.6s; }
-        .stat-card:nth-child(4) { animation-delay: 0.9s; }
-        .stat-card:nth-child(5) { animation-delay: 1.2s; }
-        .stat-card:nth-child(6) { animation-delay: 1.5s; }
-
-        body.dark .stat-card {
-            background: rgba(30,41,59,0.8);
-            backdrop-filter: blur(10px);
         }
 
         .stat-card:hover {
@@ -370,15 +340,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        .quiz-question-wrapper {
-            animation: questionTransition 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        @keyframes questionTransition {
-            0% { opacity: 0; transform: translateX(30px) scale(0.95); filter: blur(5px); }
-            100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
-        }
-
         .quiz-progress-bar {
             background: var(--border-color);
             border-radius: 30px;
@@ -392,17 +353,10 @@
             height: 100%;
             border-radius: 30px;
             transition: width 0.5s ease;
-            animation: progressShine 2s ease-in-out infinite;
-        }
-
-        @keyframes progressShine {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
         }
 
         .quiz-question-text {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: bold;
             margin-bottom: 30px;
             text-align: center;
@@ -420,24 +374,13 @@
             background: var(--card-bg);
             border: 2px solid var(--border-color);
             border-radius: 16px;
-            padding: 18px 12px;
+            padding: 15px 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 500;
             color: var(--text-primary);
-            animation: optionFadeIn 0.4s ease backwards;
         }
-
-        @keyframes optionFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .quiz-option-card:nth-child(1) { animation-delay: 0.05s; }
-        .quiz-option-card:nth-child(2) { animation-delay: 0.1s; }
-        .quiz-option-card:nth-child(3) { animation-delay: 0.15s; }
-        .quiz-option-card:nth-child(4) { animation-delay: 0.2s; }
 
         .quiz-option-card:hover {
             border-color: var(--primary);
@@ -450,13 +393,6 @@
             color: white;
             border-color: var(--primary-dark);
             transform: scale(1.02);
-            animation: selectPulse 0.3s ease;
-        }
-
-        @keyframes selectPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1.02); }
         }
 
         .quiz-nav-buttons {
@@ -466,7 +402,7 @@
         }
 
         .quiz-nav-btn {
-            padding: 12px 25px;
+            padding: 10px 25px;
             border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
@@ -479,81 +415,9 @@
             color: var(--text-primary);
         }
 
-        .quiz-nav-btn.prev:hover {
-            background: var(--text-secondary);
-            color: white;
-            transform: translateX(-3px);
-        }
-
-        .quiz-nav-btn.next {
+        .quiz-nav-btn.next, .quiz-nav-btn.submit {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            animation: btnGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes btnGlow {
-            0% { box-shadow: 0 2px 10px var(--glow-color); }
-            50% { box-shadow: 0 5px 20px var(--glow-strong); }
-            100% { box-shadow: 0 2px 10px var(--glow-color); }
-        }
-
-        .quiz-nav-btn.submit {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: white;
-            animation: submitPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes submitPulse {
-            0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); transform: scale(1); }
-            70% { box-shadow: 0 0 0 10px rgba(34,197,94,0); transform: scale(1.02); }
-            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); transform: scale(1); }
-        }
-
-        .quiz-counter {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .result-card {
-            border-radius: 28px;
-            padding: 30px;
-            text-align: center;
-            animation: resultFlyIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        @keyframes resultFlyIn {
-            from { opacity: 0; transform: rotateX(-90deg) translateY(100px); }
-            to { opacity: 1; transform: rotateX(0) translateY(0); }
-        }
-
-        .result-normal { background: linear-gradient(135deg, #22c55e, #16a34a); animation: resultPulse 2s ease-in-out infinite; }
-        .result-recovery { background: linear-gradient(135deg, #eab308, #ca8a04); animation: resultPulse 2s ease-in-out infinite; }
-        .result-severe { background: linear-gradient(135deg, #ef4444, #dc2626); animation: resultPulse 2s ease-in-out infinite; }
-
-        @keyframes resultPulse {
-            0%, 100% { filter: brightness(1); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-            50% { filter: brightness(1.05); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
-        }
-
-        .score-circle {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            backdrop-filter: blur(5px);
-            animation: scoreSpin 0.8s ease;
-        }
-
-        @keyframes scoreSpin {
-            from { transform: rotate(-180deg) scale(0); opacity: 0; }
-            to { transform: rotate(0) scale(1); opacity: 1; }
         }
 
         .fullscreen-modal {
@@ -570,32 +434,19 @@
             align-items: center;
         }
 
-        .fullscreen-modal.show {
-            display: flex;
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        .fullscreen-modal.show { display: flex; animation: modalFadeIn 0.3s ease; }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .fullscreen-content {
             background: var(--card-bg);
             width: 90%;
-            max-width: 800px;
+            max-width: 900px;
             max-height: 85vh;
-            border-radius: 28px;
             overflow-y: auto;
             position: relative;
             padding: 25px;
             border: 1px solid var(--border-color);
-            animation: contentZoom 0.3s ease;
-        }
-
-        @keyframes contentZoom {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            border-radius: 28px;
         }
 
         .fullscreen-close {
@@ -625,12 +476,6 @@
             border-top: 1px solid rgba(59,130,246,0.3);
             margin-top: 50px;
             padding: 40px 20px 30px;
-            animation: footerFade 0.6s ease;
-        }
-
-        @keyframes footerFade {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .footer-logo {
@@ -640,13 +485,6 @@
             object-fit: cover;
             margin-bottom: 15px;
             border: 2px solid var(--primary);
-            animation: footerLogoPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes footerLogoPulse {
-            0% { box-shadow: 0 0 0 0 var(--glow-color); }
-            70% { box-shadow: 0 0 0 15px rgba(37,99,235,0); }
-            100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
         }
 
         .team-names {
@@ -665,13 +503,6 @@
             color: #cbd5e1;
             transition: all 0.3s ease;
             border: 1px solid rgba(59,130,246,0.3);
-            animation: teamGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes teamGlow {
-            0% { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); }
-            50% { border-color: rgba(59,130,246,0.8); background: rgba(59,130,246,0.2); }
-            100% { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1); }
         }
 
         .team-name:hover {
@@ -694,13 +525,6 @@
             text-decoration: none;
             transition: all 0.3s ease;
             box-shadow: 0 5px 20px rgba(24,119,242,0.3);
-            animation: facebookPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes facebookPulse {
-            0% { box-shadow: 0 5px 15px rgba(24,119,242,0.3); transform: scale(1); }
-            50% { box-shadow: 0 8px 30px rgba(24,119,242,0.6); transform: scale(1.03); }
-            100% { box-shadow: 0 5px 15px rgba(24,119,242,0.3); transform: scale(1); }
         }
 
         .color-picker-panel {
@@ -716,12 +540,6 @@
             gap: 10px;
             flex-wrap: wrap;
             border: 1px solid var(--border-color);
-            animation: panelPop 0.2s ease;
-        }
-
-        @keyframes panelPop {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .color-picker-panel.open { display: flex; }
@@ -733,36 +551,17 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid white;
-            animation: colorPop 2s ease-in-out infinite;
         }
 
-        @keyframes colorPop {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
-            50% { transform: scale(1.05); box-shadow: 0 0 15px var(--glow-color); }
-        }
-
-        .color-option:hover { transform: scale(1.15); animation: none; }
+        .color-option:hover { transform: scale(1.15); }
 
         .grid-responsive { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         @media (max-width: 640px) { .grid-responsive { gap: 1rem; } }
 
-        .nav-link { transition: 0.2s; color: var(--text-secondary); position: relative; cursor: pointer; }
+        .nav-link { transition: 0.2s; color: var(--text-secondary); position: relative; cursor: pointer; font-size: 13px; }
         .nav-link:hover { color: var(--primary); transform: translateY(-2px); }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
 
         .logo-img { height: 40px; width: auto; object-fit: contain; border-radius: 50%; transition: transform 0.3s; }
-        .logo-img:hover { transform: scale(1.05); }
-
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -779,7 +578,8 @@
             align-items: center;
             gap: 8px;
         }
-        .share-btn:hover { background: var(--primary); color: white; transform: scale(1.02); }
+
+        .share-btn:hover { background: var(--primary); color: white; }
 
         .image-modal {
             display: none;
@@ -794,17 +594,14 @@
             align-items: center;
             backdrop-filter: blur(10px);
         }
-        .image-modal.show { display: flex; animation: modalFade 0.3s ease; }
-        @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+        .image-modal.show { display: flex; }
 
         .modal-content {
             max-width: 90%;
             max-height: 90%;
             border-radius: 20px;
             border: 3px solid var(--primary);
-            animation: modalZoom 0.3s ease;
         }
-        @keyframes modalZoom { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         .close-modal {
             position: absolute;
@@ -813,9 +610,9 @@
             font-size: 40px;
             color: white;
             cursor: pointer;
-            z-index: 1002;
             transition: 0.3s;
         }
+
         .close-modal:hover { color: var(--primary); transform: scale(1.1) rotate(90deg); }
 
         .shimmer { 
@@ -842,7 +639,6 @@
             display: inline-block;
             transition: all 0.3s;
             box-shadow: 0 5px 20px var(--glow-color);
-            animation: btnGlow 2s ease-in-out infinite;
         }
 
         .detail-container { 
@@ -853,16 +649,9 @@
             padding: 25px; 
             box-shadow: 0 20px 40px -15px var(--glow-color);
             border: 1px solid var(--border-color);
-            animation: detailFade 0.5s ease;
         }
 
-        @keyframes detailFade {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .detail-cover { width: 100%; height: 250px; background-size: cover; background-position: center; border-radius: 20px; margin-bottom: 25px; animation: zoomIn 0.5s ease; }
-        @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .detail-cover { width: 100%; height: 250px; background-size: cover; background-position: center; border-radius: 20px; margin-bottom: 25px; }
 
         .fullscreen-content .cards-container {
             display: grid;
@@ -894,7 +683,7 @@
             transform: translateY(0);
         }
 
-        /* =============== Search & Categories Styles =============== */
+        /* =============== Search Styles =============== */
         .search-modal {
             display: none;
             position: fixed;
@@ -926,11 +715,10 @@
             border-bottom: 1px solid var(--border-color);
             display: flex;
             gap: 12px;
-            flex-wrap: wrap;
         }
         .search-header input {
             flex: 1;
-            padding: 14px 18px;
+            padding: 12px 18px;
             border-radius: 50px;
             border: 2px solid var(--border-color);
             background: var(--card-bg);
@@ -948,11 +736,7 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s;
         }
-        .search-header button:hover { transform: scale(1.02); }
-        
-        /* Categories Filter */
         .categories-filter {
             padding: 12px 20px;
             border-bottom: 1px solid var(--border-color);
@@ -972,9 +756,7 @@
         .category-chip:hover, .category-chip.active {
             background: var(--primary);
             color: white;
-            transform: scale(1.02);
         }
-        
         .search-results {
             overflow-y: auto;
             padding: 15px;
@@ -1021,7 +803,7 @@
             font-size: 10px;
             padding: 2px 8px;
             border-radius: 20px;
-            background: rgba(37,99,235,0.15);
+            background: rgba(var(--primary-rgb), 0.15);
             color: var(--primary);
         }
         .no-results { text-align: center; padding: 40px; color: var(--text-secondary); }
@@ -1039,7 +821,6 @@
             cursor: pointer;
             color: var(--text-primary);
             font-size: 24px;
-            transition: all 0.3s;
         }
         .search-close:hover { transform: rotate(90deg); color: var(--primary); }
         .search-icon-nav {
@@ -1052,7 +833,114 @@
         .search-icon-nav:hover {
             background: var(--primary);
             color: white;
-            transform: scale(1.05);
+        }
+
+        /* =============== Rich Text Content Styles (المهمة لعرض التنسيقات) =============== */
+        .detail-content {
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        .detail-content h1 {
+            font-size: 28px;
+            color: var(--text-primary);
+            margin: 25px 0 15px;
+            font-weight: bold;
+        }
+        .detail-content h2 {
+            font-size: 24px;
+            color: var(--text-primary);
+            margin: 20px 0 12px;
+            font-weight: bold;
+        }
+        .detail-content h3 {
+            font-size: 20px;
+            color: var(--text-primary);
+            margin: 18px 0 10px;
+            font-weight: bold;
+        }
+        .detail-content h4 {
+            font-size: 18px;
+            color: var(--text-primary);
+            margin: 15px 0 8px;
+            font-weight: bold;
+        }
+        .detail-content p {
+            margin-bottom: 16px;
+        }
+        .detail-content strong, .detail-content b {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        .detail-content em, .detail-content i {
+            font-style: italic;
+        }
+        .detail-content u {
+            text-decoration: underline;
+        }
+        .detail-content img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .detail-content ul, .detail-content ol {
+            padding-right: 25px;
+            margin: 15px 0;
+        }
+        .detail-content li {
+            margin: 8px 0;
+        }
+        .detail-content blockquote {
+            border-right: 4px solid var(--primary);
+            padding: 10px 20px;
+            background: rgba(var(--primary-rgb), 0.05);
+            border-radius: 12px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        .detail-content a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .detail-content a:hover {
+            text-decoration: underline;
+        }
+        .detail-content code {
+            background: rgba(var(--primary-rgb), 0.1);
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .detail-content pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .detail-content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .detail-content .ql-align-center {
+            text-align: center;
+        }
+        .detail-content .ql-align-right {
+            text-align: left;
+        }
+        .detail-content .ql-align-justify {
+            text-align: justify;
+        }
+        
+        /* Dark mode adjustments for rich text */
+        body.dark .detail-content pre {
+            background: #0f172a;
+        }
+        body.dark .detail-content blockquote {
+            background: rgba(59,130,246,0.1);
         }
     </style>
 </head>
@@ -1094,20 +982,20 @@
     <!-- Header -->
     <header class="glass-nav sticky top-0 z-50">
         <div class="container mx-auto px-3 py-2 flex flex-wrap justify-between items-center">
-            <a href="./" class="flex items-center gap-2">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="goBackToHome()">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg" class="logo-img" alt="logo">
                 <h1 id="headerTitle" class="text-lg md:text-xl font-black gradient-text">دوبامين</h1>
-            </a>
+            </div>
             <div class="flex flex-wrap gap-1 items-center">
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('hero')"><i class="fas fa-home ml-1"></i> الرئيسية</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('reports')"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('articles')"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('news')"><i class="fas fa-bullhorn ml-1"></i> الأخبار</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('interviews')"><i class="fas fa-comments ml-1"></i> حوارات</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('investigations')"><i class="fas fa-microscope ml-1"></i> تحقيقات</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('infographics')"><i class="fas fa-chart-pie ml-1"></i> إنفوجرافيك</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 text-xs md:text-sm" onclick="navigateToSection('videos')"><i class="fas fa-video ml-1"></i> فيديو</a>
-                <a class="nav-link px-2 md:px-3 py-1.5 rounded-lg text-xs md:text-sm" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;" onclick="navigateToSection('quiz')"><i class="fas fa-chart-line ml-1"></i> مقياس الإدمان</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('hero')"><i class="fas fa-home ml-1"></i> الرئيسية</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('reports')"><i class="fas fa-newspaper ml-1"></i> التقارير</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('articles')"><i class="fas fa-pen-fancy ml-1"></i> المقالات</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('news')"><i class="fas fa-bullhorn ml-1"></i> الأخبار</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('interviews')"><i class="fas fa-comments ml-1"></i> حوارات</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('investigations')"><i class="fas fa-microscope ml-1"></i> تحقيقات</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('infographics')"><i class="fas fa-chart-pie ml-1"></i> إنفوجرافيك</a>
+                <a class="nav-link px-2 md:px-3 py-1.5" onclick="navigateToSection('videos')"><i class="fas fa-video ml-1"></i> فيديو</a>
+                <a class="nav-link px-2 md:px-3 py-1.5 rounded-lg" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;" onclick="navigateToSection('quiz')"><i class="fas fa-chart-line ml-1"></i> مقياس الإدمان</a>
                 <div class="search-icon-nav px-2 py-1.5" onclick="openSearchModal()">
                     <i class="fas fa-search"></i>
                 </div>
@@ -1177,7 +1065,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // =============== Default Quiz Questions ===============
+        // =============== Default Quiz ===============
         const defaultQuiz = [
             { text: "كم مرة تشعر برغبة ملحة في التحقق من هاتفك ووسائل التواصل الاجتماعي؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
             { text: "هل تجد صعوبة في التوقف عن استخدام الأجهزة الإلكترونية؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
@@ -1200,6 +1088,13 @@
         function escapeHtml(str) { 
             if (!str) return ''; 
             return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); 
+        }
+
+        // Important: This function preserves HTML formatting for rich text
+        function formatContent(content) {
+            if (!content) return '<p>لا يوجد محتوى</p>';
+            // Return as-is to preserve HTML formatting from Quill editor
+            return content;
         }
 
         function getYouTubeEmbedUrl(url) {
@@ -1229,7 +1124,7 @@
             modal.classList.remove('show');
         }
 
-        // =============== Share Function ===============
+        // =============== Share ===============
         async function shareItem(title, url) {
             try {
                 if (navigator.share && window.innerWidth <= 768) {
@@ -1243,7 +1138,7 @@
             }
         }
 
-        // =============== Theme Functions ===============
+        // =============== Theme ===============
         function setTabColor(color) {
             let meta = document.querySelector('meta[name="theme-color"]');
             if (!meta) { 
@@ -1264,14 +1159,12 @@
                 icon.classList.add('fa-moon');
                 localStorage.setItem('theme', 'light');
                 setTabColor('#ffffff');
-                Swal.fire({ title: "✨ الوضع الفاتح", text: "تم التبديل إلى الوضع النهاري", icon: "success", timer: 1500, showConfirmButton: false });
             } else {
                 body.classList.add('dark');
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
                 localStorage.setItem('theme', 'dark');
                 setTabColor('#0f172a');
-                Swal.fire({ title: "🌙 الوضع الداكن", text: "تم التبديل إلى الوضع الليلي", icon: "success", timer: 1500, showConfirmButton: false });
             }
         }
 
@@ -1304,7 +1197,7 @@
             }
         }
 
-        // =============== Page Transition ===============
+        // =============== Navigation ===============
         function navigateToSection(sectionId) {
             const transition = document.getElementById('pageTransition');
             transition.classList.add('active');
@@ -1312,6 +1205,14 @@
                 openSectionFullscreen(sectionId);
                 transition.classList.remove('active');
             }, 400);
+        }
+
+        function goBackToHome() { 
+            window.location.href = './'; 
+        }
+
+        function openInNewTab(url) { 
+            window.open(url, '_blank'); 
         }
 
         // =============== Scroll Reveal ===============
@@ -1323,10 +1224,6 @@
                         entry.target.classList.add('revealed');
                         entry.target.style.opacity = '1';
                         entry.target.style.transform = 'translateY(0)';
-                    } else {
-                        entry.target.classList.remove('revealed');
-                        entry.target.style.opacity = '0';
-                        entry.target.style.transform = 'translateY(30px)';
                     }
                 });
             }, { threshold: 0.1 });
@@ -1337,28 +1234,14 @@
             });
         }
 
-        // =============== Open In New Tab ===============
-        function openInNewTab(url) { 
-            window.open(url, '_blank'); 
-        }
-
-        function goBackToHome() { 
-            window.location.href = './'; 
-        }
-
-        // =============== Load Categories from Firebase ===============
+        // =============== Categories & Search ===============
         async function loadCategories() {
             const snap = await db.ref('categories').once('value');
             const data = snap.val();
-            if (data) {
-                allCategories = Object.values(data);
-            } else {
-                allCategories = [];
-            }
+            allCategories = data ? Object.values(data) : [];
             return allCategories;
         }
 
-        // =============== Load All Content with Categories ===============
         async function loadAllContent() {
             if (allContentCache) return allContentCache;
             
@@ -1376,7 +1259,6 @@
                 if (data) {
                     Object.entries(data).forEach(([id, item]) => {
                         let itemCategories = item.categories || [];
-                        // Get category names for display
                         let categoryNames = itemCategories.map(catId => {
                             const cat = allCategories.find(c => c.id === catId);
                             return cat ? cat.name : catId;
@@ -1401,7 +1283,6 @@
             return allContentCache;
         }
 
-        // =============== Search Functions ===============
         async function openSearchModal() {
             await loadCategories();
             await loadAllContent();
@@ -1421,12 +1302,7 @@
             const container = document.getElementById('categoriesFilter');
             if (!container) return;
             
-            if (allCategories.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-            
-            let html = `<div class="category-chip ${currentCategoryFilter === 'all' ? 'active' : ''}" onclick="filterByCategory('all')">جميع التصنيفات</div>`;
+            let html = `<div class="category-chip ${currentCategoryFilter === 'all' ? 'active' : ''}" onclick="filterByCategory('all')">الكل</div>`;
             allCategories.forEach(cat => {
                 html += `<div class="category-chip ${currentCategoryFilter === cat.id ? 'active' : ''}" onclick="filterByCategory('${cat.id}')" style="border-right: 3px solid ${cat.color}">${escapeHtml(cat.name)}</div>`;
             });
@@ -1447,7 +1323,6 @@
             
             let filteredContent = allContent;
             
-            // Filter by text
             if (query) {
                 filteredContent = filteredContent.filter(item => {
                     return item.title.toLowerCase().includes(query) || 
@@ -1456,7 +1331,6 @@
                 });
             }
             
-            // Filter by category
             if (currentCategoryFilter !== 'all') {
                 filteredContent = filteredContent.filter(item => {
                     return item.categories && item.categories.includes(currentCategoryFilter);
@@ -1469,7 +1343,6 @@
             }
             
             resultsContainer.innerHTML = filteredContent.map(item => {
-                // Display categories for this item
                 const categoriesHtml = item.categoryNames.map(catName => 
                     `<span class="result-category">${escapeHtml(catName)}</span>`
                 ).join('');
@@ -1494,12 +1367,11 @@
             window.location.href = `?type=${type}&id=${id}`;
         }
 
-        // Add enter key support
         document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') performSearch();
         });
 
-        // =============== Quiz Functions ===============
+        // =============== Quiz ===============
         async function loadQuiz() {
             const snap = await db.ref('quiz/questions').once('value');
             quizQuestions = snap.exists() ? snap.val() : defaultQuiz;
@@ -1521,17 +1393,15 @@
                         <div class="quiz-progress-fill" style="width: ${progress}%"></div>
                     </div>
                     <div class="quiz-counter">السؤال ${currentQuestionIndex + 1} من ${quizQuestions.length}</div>
-                    <div class="quiz-question-wrapper">
-                        <div class="quiz-question-text">${escapeHtml(currentQ.text)}</div>
-                        <div class="quiz-options-grid">
-                            ${currentQ.options.map((opt, idx) => `<div class="quiz-option-card ${selectedAnswer === idx ? 'selected' : ''}" data-opt-index="${idx}">${escapeHtml(opt)}</div>`).join('')}
-                        </div>
+                    <div class="quiz-question-text">${escapeHtml(currentQ.text)}</div>
+                    <div class="quiz-options-grid">
+                        ${currentQ.options.map((opt, idx) => `<div class="quiz-option-card ${selectedAnswer === idx ? 'selected' : ''}" data-opt-index="${idx}">${escapeHtml(opt)}</div>`).join('')}
                     </div>
                     <div class="quiz-nav-buttons">
-                        <button class="quiz-nav-btn prev" id="prevBtn" ${currentQuestionIndex === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}><i class="fas fa-arrow-right ml-1"></i> السابق</button>
+                        <button class="quiz-nav-btn prev" id="prevBtn" ${currentQuestionIndex === 0 ? 'disabled style="opacity:0.5;"' : ''}><i class="fas fa-arrow-right ml-1"></i> السابق</button>
                         ${currentQuestionIndex === quizQuestions.length - 1 ? 
                             `<button class="quiz-nav-btn submit" id="submitBtn"><i class="fas fa-chart-line ml-1"></i> عرض النتيجة</button>` : 
-                            `<button class="quiz-nav-btn next" id="nextBtn" ${selectedAnswer === -1 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>التالي <i class="fas fa-arrow-left mr-1"></i></button>`
+                            `<button class="quiz-nav-btn next" id="nextBtn" ${selectedAnswer === -1 ? 'disabled style="opacity:0.5;"' : ''}>التالي <i class="fas fa-arrow-left mr-1"></i></button>`
                         }
                     </div>
                 </div>
@@ -1543,55 +1413,34 @@
                     if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
                     const optIndex = parseInt(opt.dataset.optIndex);
                     userAnswers[currentQuestionIndex] = optIndex;
-                    
                     document.querySelectorAll('#fullscreenQuizContainer .quiz-option-card').forEach(o => o.classList.remove('selected'));
                     opt.classList.add('selected');
-                    
                     const nextBtn = document.getElementById('nextBtn');
                     if (nextBtn) {
                         nextBtn.disabled = false;
                         nextBtn.style.opacity = '1';
-                        nextBtn.style.cursor = 'pointer';
                     }
-                    
                     if (currentQuestionIndex < quizQuestions.length - 1) {
                         autoAdvanceTimer = setTimeout(() => { nextQuestion(); }, 500);
                     }
                 });
             });
             
-            const prevBtn = document.getElementById('prevBtn');
-            if (prevBtn) {
-                prevBtn.addEventListener('click', () => {
-                    if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
-                    if (currentQuestionIndex > 0) {
-                        currentQuestionIndex--;
-                        renderFullscreenQuiz();
-                    }
-                });
-            }
+            document.getElementById('prevBtn')?.addEventListener('click', () => {
+                if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+                if (currentQuestionIndex > 0) { currentQuestionIndex--; renderFullscreenQuiz(); }
+            });
             
-            const nextBtn = document.getElementById('nextBtn');
-            if (nextBtn) {
-                nextBtn.addEventListener('click', () => {
-                    if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
-                    if (userAnswers[currentQuestionIndex] !== -1) {
-                        nextQuestion();
-                    }
-                });
-            }
+            document.getElementById('nextBtn')?.addEventListener('click', () => {
+                if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+                if (userAnswers[currentQuestionIndex] !== -1) nextQuestion();
+            });
             
-            const submitBtn = document.getElementById('submitBtn');
-            if (submitBtn) {
-                submitBtn.addEventListener('click', () => {
-                    if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
-                    if (userAnswers[currentQuestionIndex] !== -1) {
-                        calculateAndShowResult();
-                    } else {
-                        Swal.fire({ title: "لم تكتمل الإجابة", text: "الرجاء الإجابة على السؤال الحالي أولاً", icon: "warning" });
-                    }
-                });
-            }
+            document.getElementById('submitBtn')?.addEventListener('click', () => {
+                if (autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+                if (userAnswers[currentQuestionIndex] !== -1) calculateAndShowResult();
+                else Swal.fire({ title: "لم تكتمل الإجابة", text: "الرجاء الإجابة على السؤال الحالي أولاً", icon: "warning" });
+            });
         }
 
         function nextQuestion() {
@@ -1620,21 +1469,18 @@
             }
             
             const percentage = calculateScore();
-            let resultClass = '', title = '', message = '', advice = '', icon = '';
+            let title = '', message = '', advice = '', icon = '';
             if (percentage <= 40) {
-                resultClass = 'result-normal';
                 title = '🟢 درجة إدمان منخفضة';
                 message = 'ممتاز! مستوى اعتمادك طبيعي';
                 advice = '✅ حافظ على عاداتك الصحية\n✅ مارس الهوايات الإيجابية';
                 icon = 'fa-face-smile';
             } else if (percentage <= 60) {
-                resultClass = 'result-recovery';
                 title = '🟡 درجة إدمان متوسطة';
                 message = 'لديك بعض السلوكيات الزائدة';
                 advice = '📱 قلل استخدام وسائل التواصل\n🏃 مارس الرياضة يومياً';
                 icon = 'fa-face-meh';
             } else {
-                resultClass = 'result-severe';
                 title = '🔴 درجة إدمان عالية';
                 message = 'يوجد اعتماد شديد على الدوبامين';
                 advice = '⚠️ ننصحك باستشارة طبيب نفسي';
@@ -1643,18 +1489,20 @@
             
             const resultDiv = document.getElementById('fullscreenQuizResult');
             resultDiv.innerHTML = `
-                <div class="${resultClass} result-card">
-                    <i class="fas ${icon} text-5xl mb-4 text-white"></i>
-                    <h3 class="text-2xl font-bold mb-4 text-white">${title}</h3>
-                    <div class="score-circle">
-                        <span class="text-5xl font-bold text-white">${percentage}%</span>
-                        <span class="text-sm opacity-90 text-white">نسبة الإدمان</span>
+                <div style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 28px; padding: 30px; text-align: center; color: white;">
+                    <i class="fas ${icon} text-5xl mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-4">${title}</h3>
+                    <div style="width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto;">
+                        <span class="text-5xl font-bold">${percentage}%</span>
+                        <span class="text-sm opacity-90">نسبة الإدمان</span>
                     </div>
-                    <p class="text-lg mb-4 text-white">${message}</p>
-                    <div class="bg-white/20 rounded-xl p-4 mt-4"><p class="text-sm whitespace-pre-line text-white">📋 ${advice}</p></div>
+                    <p class="text-lg mb-4 mt-4">${message}</p>
+                    <div style="background: rgba(255,255,255,0.2); border-radius: 16px; padding: 16px; margin-top: 16px;">
+                        <p class="text-sm whitespace-pre-line">📋 ${advice}</p>
+                    </div>
                     <div class="flex gap-3 justify-center mt-6">
-                        <button onclick="resetFullscreenQuiz()" class="px-6 py-2 bg-white text-gray-800 rounded-xl font-semibold transition-all hover:scale-105">إعادة الاختبار</button>
-                        <button onclick="shareResult(${percentage})" class="px-6 py-2 bg-white/20 text-white rounded-xl font-semibold transition-all hover:scale-105">مشاركة</button>
+                        <button onclick="resetFullscreenQuiz()" class="px-6 py-2 bg-white text-gray-800 rounded-xl font-semibold transition-all">إعادة الاختبار</button>
+                        <button onclick="shareResult(${percentage})" class="px-6 py-2 bg-white/20 text-white rounded-xl font-semibold transition-all">مشاركة</button>
                     </div>
                 </div>
             `;
@@ -1681,7 +1529,7 @@
             modal.classList.remove('show');
         }
 
-        // =============== Fullscreen Section Functions ===============
+        // =============== Fullscreen Sections ===============
         async function openSectionFullscreen(sectionId) {
             const modal = document.getElementById('fullscreenModal');
             const modalContent = document.getElementById('fullscreenModalContent');
@@ -1722,7 +1570,7 @@
             if (sectionId === 'hero') {
                 const texts = currentSectionData.texts;
                 const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg";
-                container.innerHTML = `<div class="text-center"><img src="${logoUrl}" class="w-32 h-32 rounded-full mx-auto mb-4 cursor-pointer" style="border: 3px solid var(--primary); box-shadow: 0 0 30px var(--glow-color);" onclick="openImageModal('${logoUrl}')"><h2 class="text-2xl md:text-3xl font-bold">${texts.heroTitle || 'الدوبامين'}</h2><p class="gradient-text text-xl mt-2">وعي رقمي = عقل سليم</p><p class="text-gray-500 dark:text-gray-400 mt-4">${texts.heroDesc || ''}</p><div class="flex gap-3 justify-center mt-6"><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('reports'), 100)" class="px-6 py-2 rounded-xl text-white transition-all hover:scale-105" style="background: var(--primary);">استكشف</button><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('quiz'), 300)" class="px-6 py-2 rounded-xl transition-all hover:scale-105" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">اختبر نفسك</button></div></div>`;
+                container.innerHTML = `<div class="text-center"><img src="${logoUrl}" class="w-32 h-32 rounded-full mx-auto mb-4 cursor-pointer" style="border: 3px solid var(--primary); box-shadow: 0 0 30px var(--glow-color);" onclick="openImageModal('${logoUrl}')"><h2 class="text-2xl md:text-3xl font-bold">${texts.heroTitle || 'الدوبامين'}</h2><p class="gradient-text text-xl mt-2">وعي رقمي = عقل سليم</p><p class="text-gray-500 dark:text-gray-400 mt-4">${texts.heroDesc || ''}</p><div class="flex gap-3 justify-center mt-6"><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('reports'), 100)" class="px-6 py-2 rounded-xl text-white transition-all" style="background: var(--primary);">استكشف</button><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('quiz'), 300)" class="px-6 py-2 rounded-xl transition-all" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">اختبر نفسك</button></div></div>`;
                 return;
             }
             if (sectionId === 'quiz') {
@@ -1742,7 +1590,7 @@
                         cardsHtml += `<div class="premium-card" onclick="openInNewTab('?type=videos&id=${id}')"><div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')"><i class="fas fa-share-alt"></i></div><div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div><div class="p-3"><h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3><p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.description || '')}</p></div></div>`;
                     } else {
                         const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
-                        cardsHtml += `<div class="premium-card" onclick="openInNewTab('?type=${sectionId}&id=${id}')"><div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')"><i class="fas fa-share-alt"></i></div><div class="card-cover" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"></div><div class="p-3"><span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span><h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3><p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.summary || '')}</p></div></div>`;
+                        cardsHtml += `<div class="premium-card" onclick="openInNewTab('?type=${sectionId}&id=${id}')"><div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')"><i class="fas fa-share-alt"></i></div><div class="card-cover" style="background-image: url('${imageUrl}');"></div><div class="p-3"><span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span><h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3><p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.summary || '')}</p></div></div>`;
                     }
                 });
             } else {
@@ -1751,7 +1599,7 @@
             container.innerHTML = `<h2 class="flex items-center gap-2 mb-3"><i class="fas ${currentSectionData.icon}" style="color: var(--primary);"></i> <span class="gradient-text">${currentSectionData.title}</span></h2><div class="cards-container">${cardsHtml}</div>`;
         }
 
-        // =============== Load Section ===============
+        // =============== Load Sections ===============
         async function loadSection(type, containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -1787,7 +1635,7 @@
                                 <div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')">
                                     <i class="fas fa-share-alt"></i>
                                 </div>
-                                <div class="card-cover" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"></div>
+                                <div class="card-cover" style="background-image: url('${imageUrl}');"></div>
                                 <div class="p-3">
                                     <span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span>
                                     <h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
@@ -1803,7 +1651,7 @@
             }
         }
 
-        // =============== Load Texts from Firebase ===============
+        // =============== Load Texts ===============
         async function loadTexts() {
             const snap = await db.ref('site_texts').once('value');
             const texts = snap.val() || {
@@ -1840,7 +1688,7 @@
             }
         }
 
-        // =============== Show Detail Page ===============
+        // =============== Detail Page ===============
         async function showDetailPage(type, id) {
             const main = document.getElementById('mainContent');
             main.innerHTML = '<div class="shimmer h-96 max-w-4xl mx-auto"></div>';
@@ -1863,6 +1711,7 @@
                 }
 
                 let contentHtml = '';
+                const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
                 
                 if (type === 'videos') {
                     const videoUrl = item.videoUrl || '';
@@ -1871,51 +1720,37 @@
                         <div class="video-container mb-4">
                             <iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
                         </div>
-                        <div class="prose max-w-none mt-4">${escapeHtml(item.description || '')}</div>
-                    `;
-                    main.innerHTML = `
-                        <div class="detail-container">
-                            <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                                <span class="text-xs px-3 py-1 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${typeName}</span>
-                                <button onclick="shareItem('${escapeHtml(item.title)}', window.location.href)" class="share-btn"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
-                            </div>
-                            <h1 class="text-xl md:text-3xl font-bold mb-4">${escapeHtml(item.title)}</h1>
-                            <div class="leading-relaxed" style="color: var(--text-secondary);">${contentHtml || '<p>لا يوجد محتوى</p>'}</div>
-                            <div class="border-t mt-6 pt-4 text-center" style="border-color: var(--border-color);">
-                                <button onclick="goBackToHome()" class="hover:underline" style="color: var(--primary); cursor: pointer;"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</button>
-                            </div>
-                        </div>
+                        <div class="detail-content">${item.description || ''}</div>
                     `;
                 } else {
-                    const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
                     if (imageUrl) {
                         contentHtml += `<img src="${imageUrl}" class="w-full rounded-xl my-4" onerror="this.src='https://placehold.co/600x400/1e293b/60a5fa?text=No+Image'">`;
                     }
-                    if (item.content) {
-                        contentHtml += `<div class="prose max-w-none">${escapeHtml(item.content)}</div>`;
-                    }
-
-                    main.innerHTML = `
-                        <div class="detail-container">
-                            <div class="detail-cover" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"></div>
-                            <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                                <span class="text-xs px-3 py-1 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${typeName}</span>
-                                <button onclick="shareItem('${escapeHtml(item.title)}', window.location.href)" class="share-btn"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
-                            </div>
-                            <h1 class="text-xl md:text-3xl font-bold mb-4">${escapeHtml(item.title)}</h1>
-                            <div class="leading-relaxed" style="color: var(--text-secondary);">${contentHtml || '<p>لا يوجد محتوى</p>'}</div>
-                            <div class="border-t mt-6 pt-4 text-center" style="border-color: var(--border-color);">
-                                <button onclick="goBackToHome()" class="hover:underline" style="color: var(--primary); cursor: pointer;"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</button>
-                            </div>
-                        </div>
-                    `;
+                    // IMPORTANT: Use formatContent to preserve HTML formatting from Quill editor
+                    contentHtml += `<div class="detail-content">${formatContent(item.content)}</div>`;
                 }
+
+                main.innerHTML = `
+                    <div class="detail-container">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                            <span class="text-xs px-3 py-1 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${typeName}</span>
+                            <button onclick="shareItem('${escapeHtml(item.title)}', window.location.href)" class="share-btn"><i class="fas fa-share-alt ml-1"></i> مشاركة</button>
+                        </div>
+                        <h1 class="text-xl md:text-3xl font-bold mb-4">${escapeHtml(item.title)}</h1>
+                        ${item.date ? `<div class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt ml-1"></i> ${escapeHtml(item.date)}</div>` : ''}
+                        ${type !== 'videos' && imageUrl ? `<div class="detail-cover" style="background-image: url('${imageUrl}');"></div>` : ''}
+                        ${contentHtml}
+                        <div class="border-t mt-6 pt-4 text-center" style="border-color: var(--border-color);">
+                            <button onclick="goBackToHome()" class="hover:underline" style="color: var(--primary); cursor: pointer;"><i class="fas fa-arrow-right ml-1"></i> العودة للرئيسية</button>
+                        </div>
+                    </div>
+                `;
             } catch(e) {
                 main.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>المحتوى غير موجود</h3><button onclick="goBackToHome()" class="inline-block mt-4 px-5 py-2 rounded-lg" style="background: var(--primary); color: white;">الرئيسية</button></div>`;
             }
         }
 
-        // =============== Show Home Page ===============
+        // =============== Home Page ===============
         async function showHome() {
             await loadQuiz();
             const texts = await loadTexts();
@@ -1928,18 +1763,18 @@
                     <h4 class="text-sm md:text-base font-bold">${texts.heroTitle || 'الدوبامين'}<br><span class="gradient-text">دوبامين وعي رقمي=عقل سليم</span></h4>
                     <p class="text-sm md:text-base max-w-2xl mx-auto my-3" style="color: var(--text-secondary);">${texts.heroDesc || ''}</p>
                     <div class="flex gap-2 justify-center flex-wrap">
-                        <a class="px-4 md:px-6 py-1.5 md:py-2 text-white rounded-xl text-sm cursor-pointer transition-all hover:scale-105" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));" onclick="navigateToSection('reports')">استكشف</a>
-                        <a class="px-4 md:px-6 py-1.5 md:py-2 rounded-xl text-sm cursor-pointer transition-all hover:scale-105" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);" onclick="navigateToSection('quiz')">اختبر مدي إدمانك</a>
+                        <a class="px-4 md:px-6 py-1.5 md:py-2 text-white rounded-xl text-sm cursor-pointer transition-all" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));" onclick="navigateToSection('reports')">استكشف</a>
+                        <a class="px-4 md:px-6 py-1.5 md:py-2 rounded-xl text-sm cursor-pointer transition-all" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);" onclick="navigateToSection('quiz')">اختبر مدي إدمانك</a>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 mb-6">
-                    <div class="stat-card"><i class="fas fa-file-alt"></i><div id="reportsCount" class="stat-number">0</div><div class="stat-label">تقارير</div></div>
-                    <div class="stat-card"><i class="fas fa-pen-nib"></i><div id="articlesCount" class="stat-number">0</div><div class="stat-label">مقالات</div></div>
-                    <div class="stat-card"><i class="fas fa-bullhorn"></i><div id="newsCount" class="stat-number">0</div><div class="stat-label">أخبار</div></div>
-                    <div class="stat-card"><i class="fas fa-comments"></i><div id="interviewsCount" class="stat-number">0</div><div class="stat-label">حوارات</div></div>
-                    <div class="stat-card"><i class="fas fa-users"></i><div id="quizCount" class="stat-number">0</div><div class="stat-label">مشاركات</div></div>
-                    <div class="stat-card"><i class="fas fa-chart-line"></i><div id="avgScore" class="stat-number">--%</div><div class="stat-label">المتوسط</div></div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4 mb-6">
+                    <div class="stat-card" onclick="navigateToSection('reports')"><i class="fas fa-file-alt"></i><div id="reportsCount" class="stat-number text-xl font-bold">0</div><div class="stat-label text-xs">تقارير</div></div>
+                    <div class="stat-card" onclick="navigateToSection('articles')"><i class="fas fa-pen-nib"></i><div id="articlesCount" class="stat-number text-xl font-bold">0</div><div class="stat-label text-xs">مقالات</div></div>
+                    <div class="stat-card" onclick="navigateToSection('news')"><i class="fas fa-bullhorn"></i><div id="newsCount" class="stat-number text-xl font-bold">0</div><div class="stat-label text-xs">أخبار</div></div>
+                    <div class="stat-card" onclick="navigateToSection('interviews')"><i class="fas fa-comments"></i><div id="interviewsCount" class="stat-number text-xl font-bold">0</div><div class="stat-label text-xs">حوارات</div></div>
+                    <div class="stat-card" onclick="navigateToSection('quiz')"><i class="fas fa-users"></i><div id="quizCount" class="stat-number text-xl font-bold">0</div><div class="stat-label text-xs">مشاركات</div></div>
+                    <div class="stat-card" onclick="navigateToSection('quiz')"><i class="fas fa-chart-line"></i><div id="avgScore" class="stat-number text-xl font-bold">--%</div><div class="stat-label text-xs">المتوسط</div></div>
                 </div>
                 
                 <section id="reports" class="mb-8"><h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2"><i class="fas fa-newspaper" style="color: var(--primary);"></i> <span class="gradient-text">${texts.reportsTitle}</span></h2><div id="reportsContainer" class="grid-responsive"></div></section>
@@ -1999,7 +1834,6 @@
             else btn.classList.remove('visible');
         });
 
-        // Color picker panel toggle on long press
         let pressTimer;
         document.querySelector('.theme-toggle')?.addEventListener('mousedown', () => { 
             pressTimer = setTimeout(() => document.getElementById('colorPickerPanel').classList.toggle('open'), 500); 
@@ -2007,7 +1841,6 @@
         document.querySelector('.theme-toggle')?.addEventListener('mouseup', () => clearTimeout(pressTimer));
         document.querySelector('.theme-toggle')?.addEventListener('mouseleave', () => clearTimeout(pressTimer));
 
-        // Start the app
         loadSavedThemeAndColor();
         route();
     </script>
