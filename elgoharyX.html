@@ -98,7 +98,7 @@
         
         /* Quill Editor Styles */
         .ql-container {
-            min-height: 250px;
+            min-height: 280px;
             font-family: 'Cairo', sans-serif;
             border-radius: 0 0 16px 16px;
         }
@@ -110,8 +110,9 @@
         }
         
         .ql-editor {
-            min-height: 250px;
-            font-size: 14px;
+            min-height: 280px;
+            font-size: 15px;
+            line-height: 1.6;
             direction: rtl;
             text-align: right;
         }
@@ -208,16 +209,6 @@
         
         .delete-btn:hover { background: #dc2626; }
         
-        .section-title {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #0f172a;
-        }
-        
         .badge-count {
             background: #e2e8f0;
             padding: 2px 10px;
@@ -235,12 +226,6 @@
         }
         
         button { cursor: pointer; }
-        
-        .json-editor {
-            font-family: monospace;
-            font-size: 12px;
-            background: #f1f5f9;
-        }
         
         .auto-date-hint {
             font-size: 11px;
@@ -277,10 +262,6 @@
             margin-left: 6px;
         }
         
-        .category-management {
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-        }
-        
         .category-chip {
             background: #e2e8f0;
             padding: 4px 12px;
@@ -300,7 +281,6 @@
         
         .category-chip .delete-cat:hover { color: #dc2626; }
         
-        /* HTML Preview */
         .preview-modal {
             display: none;
             position: fixed;
@@ -323,6 +303,23 @@
             padding: 20px;
             border-radius: 16px;
             position: relative;
+        }
+        
+        /* Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
@@ -356,7 +353,7 @@
         <button onclick="showSection('categories')" class="admin-tab" id="tabCategoriesBtn"><i class="fas fa-tags ml-1"></i> التصنيفات</button>
     </div>
     
-    <!-- ========================= CATEGORIES MANAGEMENT SECTION ========================= -->
+    <!-- ========================= CATEGORIES MANAGEMENT SECTION (FIXED) ========================= -->
     <div id="categoriesSection" class="admin-card mb-8 hidden">
         <div class="bg-gradient-to-r from-purple-600 to-purple-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-tags ml-2"></i> إدارة التصنيفات</div>
         <div class="p-5">
@@ -373,10 +370,14 @@
                     <div id="categoriesList" class="item-list" style="max-height: 300px;"></div>
                 </div>
             </div>
+            <div class="mt-4 p-3 bg-blue-50 rounded-xl text-sm text-gray-600">
+                <i class="fas fa-info-circle ml-1 text-blue-500"></i> 
+                التصنيفات تظهر تلقائياً في الموقع الرئيسي ويمكن فلترة المحتوى بواسطتها
+            </div>
         </div>
     </div>
     
-    <!-- ========================= REPORTS SECTION (with Rich Editor) ========================= -->
+    <!-- ========================= REPORTS SECTION ========================= -->
     <div id="reportsSection" class="admin-card mb-8">
         <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-newspaper ml-2"></i> إدارة التقارير العلمية</div>
         <div class="p-5">
@@ -386,19 +387,19 @@
                     <input type="text" id="repImage" placeholder="رابط الصورة (URL)" class="form-input mb-3">
                     <textarea id="repSummary" placeholder="الملخص المختصر" rows="2" class="form-textarea mb-3"></textarea>
                     
-                    <!-- Rich Text Editor for Content -->
+                    <!-- Rich Text Editor -->
                     <div class="mb-3">
-                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (حدد النص ثم طبق التنسيق):</label>
                         <div class="quill-wrapper">
-                            <div id="repContentEditor" style="min-height: 250px;"></div>
+                            <div id="repContentEditor" style="min-height: 280px;"></div>
                         </div>
                         <div class="flex gap-2 mt-2">
                             <button onclick="showPreview('repContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
-                            <button onclick="clearEditor('repContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                            <button onclick="clearEditor('repContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح الكل</button>
                         </div>
+                        <p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle"></i> حدد النص ثم اختر التنسيق (غامق، مائل، ألوان، إلخ)</p>
                     </div>
                     
-                    <!-- Categories Checkboxes -->
                     <div class="mb-3">
                         <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
                         <div id="repCategoriesGroup" class="categories-checkbox-group"></div>
@@ -426,16 +427,16 @@
                     <textarea id="artSummary" placeholder="الملخص" rows="2" class="form-textarea mb-3"></textarea>
                     <input type="number" id="artReadTime" placeholder="وقت القراءة (دقائق)" class="form-input mb-3">
                     
-                    <!-- Rich Text Editor for Content -->
                     <div class="mb-3">
-                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (حدد النص ثم طبق التنسيق):</label>
                         <div class="quill-wrapper">
-                            <div id="artContentEditor" style="min-height: 250px;"></div>
+                            <div id="artContentEditor" style="min-height: 280px;"></div>
                         </div>
                         <div class="flex gap-2 mt-2">
                             <button onclick="showPreview('artContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
-                            <button onclick="clearEditor('artContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                            <button onclick="clearEditor('artContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح الكل</button>
                         </div>
+                        <p class="text-xs text-gray-400 mt-1"><i class="fas fa-info-circle"></i> حدد النص ثم اختر التنسيق من شريط الأدوات</p>
                     </div>
                     
                     <div class="mb-3">
@@ -465,13 +466,13 @@
                     <textarea id="newsSummary" placeholder="الملخص" rows="2" class="form-textarea mb-3"></textarea>
                     
                     <div class="mb-3">
-                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل:</label>
                         <div class="quill-wrapper">
-                            <div id="newsContentEditor" style="min-height: 250px;"></div>
+                            <div id="newsContentEditor" style="min-height: 280px;"></div>
                         </div>
                         <div class="flex gap-2 mt-2">
                             <button onclick="showPreview('newsContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
-                            <button onclick="clearEditor('newsContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                            <button onclick="clearEditor('newsContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح الكل</button>
                         </div>
                     </div>
                     
@@ -503,13 +504,13 @@
                     <textarea id="interSummary" placeholder="الملخص" rows="2" class="form-textarea mb-3"></textarea>
                     
                     <div class="mb-3">
-                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل:</label>
                         <div class="quill-wrapper">
-                            <div id="interContentEditor" style="min-height: 250px;"></div>
+                            <div id="interContentEditor" style="min-height: 280px;"></div>
                         </div>
                         <div class="flex gap-2 mt-2">
                             <button onclick="showPreview('interContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
-                            <button onclick="clearEditor('interContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                            <button onclick="clearEditor('interContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح الكل</button>
                         </div>
                     </div>
                     
@@ -540,13 +541,13 @@
                     <textarea id="invSummary" placeholder="الوصف المختصر" rows="2" class="form-textarea mb-3"></textarea>
                     
                     <div class="mb-3">
-                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل:</label>
                         <div class="quill-wrapper">
-                            <div id="invContentEditor" style="min-height: 250px;"></div>
+                            <div id="invContentEditor" style="min-height: 280px;"></div>
                         </div>
                         <div class="flex gap-2 mt-2">
                             <button onclick="showPreview('invContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
-                            <button onclick="clearEditor('invContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                            <button onclick="clearEditor('invContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح الكل</button>
                         </div>
                     </div>
                     
@@ -702,56 +703,7 @@
         investigations: null
     };
     
-    // Initialize Quill editors
-    function initQuillEditors() {
-        if (document.getElementById('repContentEditor')) {
-            editors.reports = new Quill('#repContentEditor', {
-                theme: 'snow',
-                placeholder: 'اكتب محتوى التقرير هنا...',
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                        ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'color': [] }, { 'background': [] }],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'checked' }],
-                        [{ 'align': [] }],
-                        ['blockquote', 'code-block'],
-                        ['link', 'image', 'video'],
-                        ['clean']
-                    ]
-                }
-            });
-        }
-        if (document.getElementById('artContentEditor')) {
-            editors.articles = new Quill('#artContentEditor', {
-                theme: 'snow',
-                placeholder: 'اكتب محتوى المقال هنا...',
-                modules: { toolbar: toolbarOptions }
-            });
-        }
-        if (document.getElementById('newsContentEditor')) {
-            editors.news = new Quill('#newsContentEditor', {
-                theme: 'snow',
-                placeholder: 'اكتب محتوى الخبر هنا...',
-                modules: { toolbar: toolbarOptions }
-            });
-        }
-        if (document.getElementById('interContentEditor')) {
-            editors.interviews = new Quill('#interContentEditor', {
-                theme: 'snow',
-                placeholder: 'اكتب محتوى الحوار هنا...',
-                modules: { toolbar: toolbarOptions }
-            });
-        }
-        if (document.getElementById('invContentEditor')) {
-            editors.investigations = new Quill('#invContentEditor', {
-                theme: 'snow',
-                placeholder: 'اكتب محتوى التحقيق هنا...',
-                modules: { toolbar: toolbarOptions }
-            });
-        }
-    }
-    
+    // Toolbar configuration for Quill
     const toolbarOptions = [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
         ['bold', 'italic', 'underline', 'strike'],
@@ -763,8 +715,53 @@
         ['clean']
     ];
     
+    // Initialize Quill editors
+    function initQuillEditors() {
+        if (document.getElementById('repContentEditor') && !editors.reports) {
+            editors.reports = new Quill('#repContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب المحتوى هنا... حدد النص ثم استخدم أدوات التنسيق أعلاه',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+        if (document.getElementById('artContentEditor') && !editors.articles) {
+            editors.articles = new Quill('#artContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب المحتوى هنا... حدد النص ثم استخدم أدوات التنسيق أعلاه',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+        if (document.getElementById('newsContentEditor') && !editors.news) {
+            editors.news = new Quill('#newsContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب المحتوى هنا... حدد النص ثم استخدم أدوات التنسيق أعلاه',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+        if (document.getElementById('interContentEditor') && !editors.interviews) {
+            editors.interviews = new Quill('#interContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب المحتوى هنا... حدد النص ثم استخدم أدوات التنسيق أعلاه',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+        if (document.getElementById('invContentEditor') && !editors.investigations) {
+            editors.investigations = new Quill('#invContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب المحتوى هنا... حدد النص ثم استخدم أدوات التنسيق أعلاه',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+    }
+    
     function showPreview(editorId) {
-        const editor = editors[editorId.replace('ContentEditor', '')];
+        let editor = null;
+        if (editorId === 'repContentEditor') editor = editors.reports;
+        else if (editorId === 'artContentEditor') editor = editors.articles;
+        else if (editorId === 'newsContentEditor') editor = editors.news;
+        else if (editorId === 'interContentEditor') editor = editors.interviews;
+        else if (editorId === 'invContentEditor') editor = editors.investigations;
+        
         if (editor) {
             const content = editor.root.innerHTML;
             document.getElementById('previewContent').innerHTML = content;
@@ -777,13 +774,19 @@
     }
     
     function clearEditor(editorId) {
-        const editor = editors[editorId.replace('ContentEditor', '')];
+        let editor = null;
+        if (editorId === 'repContentEditor') editor = editors.reports;
+        else if (editorId === 'artContentEditor') editor = editors.articles;
+        else if (editorId === 'newsContentEditor') editor = editors.news;
+        else if (editorId === 'interContentEditor') editor = editors.interviews;
+        else if (editorId === 'invContentEditor') editor = editors.investigations;
+        
         if (editor) {
             editor.root.innerHTML = '';
         }
     }
     
-    // Helper: Get current date in Arabic format
+    // Helper: Get current date
     function getCurrentDate() {
         const now = new Date();
         return now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -798,7 +801,7 @@
         { text: "كم مرة تقضي ساعات في مشاهدة المقاطع القصيرة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] }
     ];
     
-    // =============== CATEGORIES FUNCTIONS ===============
+    // =============== CATEGORIES FUNCTIONS (FIXED) ===============
     async function loadCategories() {
         const snap = await db.ref('categories').once('value');
         const data = snap.val();
@@ -815,13 +818,13 @@
         if (!container) return;
         await loadCategories();
         if (allCategories.length === 0) {
-            container.innerHTML = '<p class="text-gray-500 text-sm">لا توجد تصنيفات - أضف تصنيفات من علامة التبويب "التصنيفات"</p>';
+            container.innerHTML = '<p class="text-gray-500 text-sm">📭 لا توجد تصنيفات - أضف تصنيفاً جديداً من علامة التبويب "التصنيفات"</p>';
             return;
         }
         container.innerHTML = allCategories.map(cat => `
             <label class="category-checkbox" style="border-right: 3px solid ${cat.color}">
                 <input type="checkbox" value="${cat.id}" ${selectedCats.includes(cat.id) ? 'checked' : ''}>
-                <span style="color: ${cat.color}">${cat.name}</span>
+                <span style="color: ${cat.color}">${escapeHtml(cat.name)}</span>
             </label>
         `).join('');
     }
@@ -837,14 +840,14 @@
         const countSpan = document.getElementById('categoriesCount');
         if (container) {
             if (allCategories.length === 0) {
-                container.innerHTML = '<div class="empty-state-admin">لا توجد تصنيفات، أضف تصنيفاً جديداً</div>';
+                container.innerHTML = '<div class="empty-state-admin">📭 لا توجد تصنيفات، أضف تصنيفاً جديداً</div>';
                 if(countSpan) countSpan.innerText = '0';
                 return;
             }
             if(countSpan) countSpan.innerText = allCategories.length;
             container.innerHTML = allCategories.map(cat => `
                 <div class="category-chip" style="background: ${cat.color}20; border-right: 3px solid ${cat.color}">
-                    <span style="color: ${cat.color}">${cat.name}</span>
+                    <span style="color: ${cat.color}">${escapeHtml(cat.name)}</span>
                     <span class="delete-cat" onclick="deleteCategory('${cat.id}')"><i class="fas fa-times-circle"></i></span>
                 </div>
             `).join('');
@@ -861,20 +864,38 @@
             return;
         }
         
+        // Check if category already exists
+        if (allCategories.some(cat => cat.id === id)) {
+            Swal.fire("خطأ", "هذا المعرف موجود بالفعل", "error");
+            return;
+        }
+        
         const newCat = { id, name, color };
         await db.ref(`categories/${id}`).set(newCat);
+        
+        // Clear form
         document.getElementById('newCatId').value = '';
         document.getElementById('newCatName').value = '';
+        
+        // Reload categories and refresh UI
         await loadCategories();
         await renderCategoriesList();
         await refreshAllCategoriesGroups();
-        Swal.fire("✅ تم الإضافة", `تم إضافة التصنيف "${name}"`, "success");
+        
+        // Show success message
+        Swal.fire({
+            title: "✅ تم الإضافة",
+            text: `تم إضافة التصنيف "${name}" بنجاح`,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+        });
     }
     
     async function deleteCategory(catId) {
         const result = await Swal.fire({
             title: "⚠️ تأكيد الحذف",
-            text: "هل أنت متأكد من حذف هذا التصنيف؟",
+            text: "هل أنت متأكد من حذف هذا التصنيف؟ سيتم إزالته من جميع المحتويات المرتبطة به",
             icon: "warning",
             showCancelButton: true
         });
@@ -931,7 +952,7 @@
         if(badgeSpan) badgeSpan.innerText = Object.keys(data).length;
         if(!listDiv) return;
         if(Object.keys(data).length === 0) {
-            listDiv.innerHTML = '<div class="empty-state-admin">لا توجد محتويات، أضف محتوى جديد</div>';
+            listDiv.innerHTML = '<div class="empty-state-admin">📭 لا توجد محتويات، أضف محتوى جديد</div>';
             return;
         }
         listDiv.innerHTML = '';
@@ -1077,7 +1098,7 @@
             clearVidForm();
         }
         
-        Swal.fire("تم الحفظ", `تم ${currentEditId ? 'تعديل' : 'إضافة'} المحتوى بنجاح مع التاريخ والتصنيفات`, "success");
+        Swal.fire("تم الحفظ", `تم ${currentEditId ? 'تعديل' : 'إضافة'} المحتوى بنجاح`, "success");
         loadListForSection(type);
         currentEditId = null;
         currentEditType = null;
@@ -1135,7 +1156,7 @@
             document.getElementById('vidDesc').value = item.description || '';
             await renderCategoriesCheckboxes('vidCategoriesGroup', selectedCats);
         }
-        Swal.fire("وضع التعديل", "قم بتعديل البيانات ثم اضغط حفظ (سيتم تحديث التاريخ والتصنيفات)", "info");
+        Swal.fire("وضع التعديل", "قم بتعديل البيانات ثم اضغط حفظ", "info");
     };
     
     window.deleteItem = async function(type, id) {
@@ -1317,8 +1338,8 @@
     
     // Initialize
     async function init() {
-        initQuillEditors();
         await loadCategories();
+        initQuillEditors();
         await refreshAllCategoriesGroups();
         showSection('reports');
     }
