@@ -1,41 +1,1329 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>لوحة إدارة دوبامين - محرر النصوص المتقدم</title>
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'cairo': ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Quill Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; }
+        * { font-family: 'Cairo', sans-serif; }
+        :root { --primary: #2563eb; --primary-dark: #1d4ed8; }
+        body { background: #f1f5f9; }
+        
+        .admin-main-panel {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 24px 24px 0 0;
+        }
+        
+        .admin-tab {
+            padding: 10px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            background: #f1f5f9;
+            color: #1e293b;
+            margin: 4px;
+        }
+        
+        .admin-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(37,99,235,0.3);
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 10px 14px;
+            font-size: 14px;
+            transition: 0.2s;
+            background: #fefefe;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        
+        /* Quill Editor Styles */
+        .ql-container {
+            min-height: 250px;
+            font-family: 'Cairo', sans-serif;
+            border-radius: 0 0 16px 16px;
+        }
+        
+        .ql-toolbar {
+            border-radius: 16px 16px 0 0;
+            background: #f8fafc;
+            direction: ltr;
+        }
+        
+        .ql-editor {
+            min-height: 250px;
+            font-size: 14px;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .quill-wrapper {
+            margin-bottom: 15px;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            overflow: hidden;
+        }
+        
+        .item-list {
+            max-height: 500px;
+            overflow-y: auto;
+            border-radius: 20px;
+        }
+        
+        .list-item {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+            border: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        
+        .list-item:hover {
+            background: #f1f5f9;
+            transform: translateX(-3px);
+        }
+        
+        .item-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #0f172a;
+            word-break: break-word;
+            flex: 1;
+            margin-left: 12px;
+        }
+        
+        .item-date-badge {
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            color: #475569;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        
+        .item-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-right: 10px;
+        }
+        
+        .item-cat-badge {
+            background: #2563eb20;
+            color: #2563eb;
+            padding: 2px 6px;
+            border-radius: 20px;
+            font-size: 9px;
+        }
+        
+        .edit-btn {
+            background: #3b82f6;
+            color: white;
+            border-radius: 30px;
+            padding: 5px 12px;
+            font-size: 12px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+        }
+        
+        .edit-btn:hover { background: #2563eb; }
+        
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border-radius: 30px;
+            padding: 5px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+        }
+        
+        .delete-btn:hover { background: #dc2626; }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0f172a;
+        }
+        
+        .badge-count {
+            background: #e2e8f0;
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: normal;
+        }
+        
+        .empty-state-admin {
+            text-align: center;
+            padding: 40px;
+            background: #f8fafc;
+            border-radius: 24px;
+            color: #64748b;
+        }
+        
+        button { cursor: pointer; }
+        
+        .json-editor {
+            font-family: monospace;
+            font-size: 12px;
+            background: #f1f5f9;
+        }
+        
+        .auto-date-hint {
+            font-size: 11px;
+            color: #10b981;
+            background: #d1fae5;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+        
+        .categories-checkbox-group {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #e2e8f0;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        
+        .category-checkbox {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 15px;
+            margin-bottom: 8px;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .category-checkbox input {
+            margin-left: 6px;
+        }
+        
+        .category-management {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        
+        .category-chip {
+            background: #e2e8f0;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 3px;
+        }
+        
+        .category-chip .delete-cat {
+            cursor: pointer;
+            color: #ef4444;
+            font-size: 10px;
+        }
+        
+        .category-chip .delete-cat:hover { color: #dc2626; }
+        
+        /* HTML Preview */
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .preview-modal.show { display: flex; }
+        .preview-content {
+            background: white;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            border-radius: 16px;
+            position: relative;
+        }
     </style>
 </head>
 <body>
 
-    <div id="view-container" style="height: 100vh; width: 100vw;"></div>
+<div class="admin-main-panel">
+    <!-- Header -->
+    <div class="admin-header flex justify-between items-center mb-6 flex-wrap">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-brain text-2xl"></i>
+            <h1 class="text-xl md:text-2xl font-bold">لوحة إدارة دوبامين <span class="text-xs bg-white/20 px-2 py-1 rounded-full">محرر النصوص المتقدم</span></h1>
+        </div>
+        <div class="flex gap-2 mt-2 sm:mt-0">
+            <button onclick="exportAllData()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-2"><i class="fas fa-download"></i> تصدير البيانات</button>
+            <button onclick="importDataFromJSON()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-2"><i class="fas fa-upload"></i> استيراد JSON</button>
+        </div>
+    </div>
+    
+    <!-- Tab Bar -->
+    <div class="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-3">
+        <button onclick="showSection('reports')" class="admin-tab active" id="tabReportsBtn"><i class="fas fa-newspaper ml-1"></i> التقارير</button>
+        <button onclick="showSection('articles')" class="admin-tab" id="tabArticlesBtn"><i class="fas fa-pen-fancy ml-1"></i> المقالات</button>
+        <button onclick="showSection('news')" class="admin-tab" id="tabNewsBtn"><i class="fas fa-bullhorn ml-1"></i> الأخبار</button>
+        <button onclick="showSection('interviews')" class="admin-tab" id="tabInterviewsBtn"><i class="fas fa-comments ml-1"></i> الحوارات</button>
+        <button onclick="showSection('investigations')" class="admin-tab" id="tabInvestigationsBtn"><i class="fas fa-microscope ml-1"></i> التحقيقات</button>
+        <button onclick="showSection('infographics')" class="admin-tab" id="tabInfographicsBtn"><i class="fas fa-chart-pie ml-1"></i> الإنفوجرافيك</button>
+        <button onclick="showSection('videos')" class="admin-tab" id="tabVideosBtn"><i class="fas fa-video ml-1"></i> الفيديوهات</button>
+        <button onclick="showSection('quiz')" class="admin-tab" id="tabQuizBtn"><i class="fas fa-clipboard-list ml-1"></i> أسئلة الاختبار</button>
+        <button onclick="showSection('texts')" class="admin-tab" id="tabTextsBtn"><i class="fas fa-globe ml-1"></i> نصوص الموقع</button>
+        <button onclick="showSection('results')" class="admin-tab" id="tabResultsBtn"><i class="fas fa-chart-line ml-1"></i> نتائج المستخدمين</button>
+        <button onclick="showSection('categories')" class="admin-tab" id="tabCategoriesBtn"><i class="fas fa-tags ml-1"></i> التصنيفات</button>
+    </div>
+    
+    <!-- ========================= CATEGORIES MANAGEMENT SECTION ========================= -->
+    <div id="categoriesSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-purple-600 to-purple-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-tags ml-2"></i> إدارة التصنيفات</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <h3 class="font-bold mb-3">➕ إضافة تصنيف جديد</h3>
+                    <input type="text" id="newCatId" placeholder="معرف التصنيف (مثال: science)" class="form-input mb-3">
+                    <input type="text" id="newCatName" placeholder="اسم التصنيف (مثال: علوم عصبية)" class="form-input mb-3">
+                    <input type="color" id="newCatColor" value="#2563eb" class="form-input mb-3" style="height: 45px;">
+                    <button onclick="addNewCategory()" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-xl w-full font-bold"><i class="fas fa-plus ml-1"></i> إضافة التصنيف</button>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-3">📋 قائمة التصنيفات الحالية <span id="categoriesCount" class="badge-count">0</span></h3>
+                    <div id="categoriesList" class="item-list" style="max-height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= REPORTS SECTION (with Rich Editor) ========================= -->
+    <div id="reportsSection" class="admin-card mb-8">
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-newspaper ml-2"></i> إدارة التقارير العلمية</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5 mb-6">
+                <div>
+                    <input type="text" id="repTitle" placeholder="العنوان *" class="form-input mb-3">
+                    <input type="text" id="repImage" placeholder="رابط الصورة (URL)" class="form-input mb-3">
+                    <textarea id="repSummary" placeholder="الملخص المختصر" rows="2" class="form-textarea mb-3"></textarea>
+                    
+                    <!-- Rich Text Editor for Content -->
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <div class="quill-wrapper">
+                            <div id="repContentEditor" style="min-height: 250px;"></div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="showPreview('repContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
+                            <button onclick="clearEditor('repContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Categories Checkboxes -->
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
+                        <div id="repCategoriesGroup" class="categories-checkbox-group"></div>
+                    </div>
+                    
+                    <div class="auto-date-hint mb-3"><i class="fas fa-calendar-alt ml-1"></i> التاريخ يُضاف تلقائياً عند الحفظ</div>
+                    <button onclick="saveItem('reports')" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl w-full font-bold"><i class="fas fa-save ml-1"></i> حفظ التقرير</button>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 mb-2 flex items-center gap-2"><i class="fas fa-list"></i> التقارير الحالية <span id="reportsCountBadge" class="badge-count">0</span></div>
+                    <div id="reportsList" class="item-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= ARTICLES SECTION ========================= -->
+    <div id="articlesSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-green-600 to-green-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-pen-fancy ml-2"></i> إدارة المقالات</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <input type="text" id="artTitle" placeholder="العنوان *" class="form-input mb-3">
+                    <input type="text" id="artImage" placeholder="رابط الصورة" class="form-input mb-3">
+                    <textarea id="artSummary" placeholder="الملخص" rows="2" class="form-textarea mb-3"></textarea>
+                    <input type="number" id="artReadTime" placeholder="وقت القراءة (دقائق)" class="form-input mb-3">
+                    
+                    <!-- Rich Text Editor for Content -->
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <div class="quill-wrapper">
+                            <div id="artContentEditor" style="min-height: 250px;"></div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="showPreview('artContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
+                            <button onclick="clearEditor('artContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
+                        <div id="artCategoriesGroup" class="categories-checkbox-group"></div>
+                    </div>
+                    
+                    <div class="auto-date-hint mb-3"><i class="fas fa-calendar-alt ml-1"></i> التاريخ يُضاف تلقائياً عند الحفظ</div>
+                    <button onclick="saveItem('articles')" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl w-full font-bold">حفظ المقال</button>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 mb-2">المقالات الحالية <span id="articlesCountBadge" class="badge-count">0</span></div>
+                    <div id="articlesList" class="item-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= NEWS SECTION ========================= -->
+    <div id="newsSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-yellow-600 to-yellow-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-bullhorn ml-2"></i> إدارة الأخبار</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <input type="text" id="newsTitle" placeholder="العنوان *" class="form-input mb-3">
+                    <input type="text" id="newsImage" placeholder="رابط الصورة" class="form-input mb-3">
+                    <textarea id="newsSummary" placeholder="الملخص" rows="2" class="form-textarea mb-3"></textarea>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <div class="quill-wrapper">
+                            <div id="newsContentEditor" style="min-height: 250px;"></div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="showPreview('newsContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
+                            <button onclick="clearEditor('newsContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
+                        <div id="newsCategoriesGroup" class="categories-checkbox-group"></div>
+                    </div>
+                    
+                    <div class="auto-date-hint mb-3"><i class="fas fa-calendar-alt ml-1"></i> التاريخ يُضاف تلقائياً عند الحفظ</div>
+                    <button onclick="saveItem('news')" class="bg-yellow-600 hover:bg-yellow-700 text-white px-5 py-2 rounded-xl w-full font-bold">حفظ الخبر</button>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 mb-2">الأخبار الحالية <span id="newsCountBadge" class="badge-count">0</span></div>
+                    <div id="newsList" class="item-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= INTERVIEWS SECTION ========================= -->
+    <div id="interviewsSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-pink-600 to-pink-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-comments ml-2"></i> إدارة الحوارات</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <input type="text" id="interTitle" placeholder="العنوان *" class="form-input mb-3">
+                    <input type="text" id="interSpeaker" placeholder="اسم المتحدث" class="form-input mb-3">
+                    <input type="text" id="interImage" placeholder="رابط الصورة" class="form-input mb-3">
+                    <textarea id="interSummary" placeholder="الملخص" rows="2" class="form-textarea mb-3"></textarea>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <div class="quill-wrapper">
+                            <div id="interContentEditor" style="min-height: 250px;"></div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="showPreview('interContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
+                            <button onclick="clearEditor('interContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
+                        <div id="interCategoriesGroup" class="categories-checkbox-group"></div>
+                    </div>
+                    
+                    <div class="auto-date-hint mb-3"><i class="fas fa-calendar-alt ml-1"></i> التاريخ يُضاف تلقائياً عند الحفظ</div>
+                    <button onclick="saveItem('interviews')" class="bg-pink-600 hover:bg-pink-700 text-white px-5 py-2 rounded-xl w-full font-bold">حفظ الحوار</button>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 mb-2">الحوارات الحالية <span id="interviewsCountBadge" class="badge-count">0</span></div>
+                    <div id="interviewsList" class="item-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= INVESTIGATIONS SECTION ========================= -->
+    <div id="investigationsSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-purple-600 to-purple-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-microscope ml-2"></i> إدارة التحقيقات</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <input type="text" id="invTitle" placeholder="العنوان *" class="form-input mb-3">
+                    <input type="text" id="invImage" placeholder="رابط الصورة" class="form-input mb-3">
+                    <textarea id="invSummary" placeholder="الوصف المختصر" rows="2" class="form-textarea mb-3"></textarea>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-edit ml-1"></i> المحتوى الكامل (محرر متقدم):</label>
+                        <div class="quill-wrapper">
+                            <div id="invContentEditor" style="min-height: 250px;"></div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="showPreview('invContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eye"></i> معاينة</button>
+                            <button onclick="clearEditor('invContentEditor')" class="text-xs bg-gray-200 px-3 py-1 rounded-full"><i class="fas fa-eraser"></i> مسح</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
+                        <div id="invCategoriesGroup" class="categories-checkbox-group"></div>
+                    </div>
+                    
+                    <div class="auto-date-hint mb-3"><i class="fas fa-calendar-alt ml-1"></i> التاريخ يُضاف تلقائياً عند الحفظ</div>
+                    <button onclick="saveItem('investigations')" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-xl w-full font-bold">حفظ التحقيق</button>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 mb-2">التحقيقات الحالية <span id="investigationsCountBadge" class="badge-count">0</span></div>
+                    <div id="investigationsList" class="item-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= INFOGRAPHICS SECTION ========================= -->
+    <div id="infographicsSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-orange-600 to-orange-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-chart-pie ml-2"></i> إدارة الإنفوجرافيك</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <input type="text" id="infTitle" placeholder="العنوان *" class="form-input mb-3">
+                    <input type="text" id="infImage" placeholder="رابط الصورة (إنفوجرافيك)" class="form-input mb-3">
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
+                        <div id="infCategoriesGroup" class="categories-checkbox-group"></div>
+                    </div>
+                    
+                    <div class="auto-date-hint mb-3"><i class="fas fa-calendar-alt ml-1"></i> التاريخ يُضاف تلقائياً عند الحفظ</div>
+                    <button onclick="saveItem('infographics')" class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2 rounded-xl w-full font-bold">حفظ الإنفوجرافيك</button>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 mb-2">الإنفوجرافيك الحالي <span id="infographicsCountBadge" class="badge-count">0</span></div>
+                    <div id="infographicsList" class="item-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= VIDEOS SECTION ========================= -->
+    <div id="videosSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-red-600 to-red-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-video ml-2"></i> إدارة الفيديوهات</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-5">
+                <div>
+                    <input type="text" id="vidTitle" placeholder="العنوان *" class="form-input mb-3">
+                    <input type="text" id="vidUrl" placeholder="رابط يوتيوب (youtube.com أو youtu.be)" class="form-input mb-3">
+                    <textarea id="vidDesc" placeholder="وصف الفيديو" rows="2" class="form-textarea mb-3"></textarea>
+                    
+                    <div class="mb-3">
+                        <label class="font-bold text-sm block mb-2"><i class="fas fa-tags ml-1"></i> التصنيفات:</label>
+                        <div id="vidCategoriesGroup" class="categories-checkbox-group"></div>
+                    </div>
+                    
+                    <div class="auto-date-hint mb-3"><i class="fas fa-calendar-alt ml-1"></i> التاريخ يُضاف تلقائياً عند الحفظ</div>
+                    <button onclick="saveItem('videos')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl w-full font-bold">حفظ الفيديو</button>
+                </div>
+                <div>
+                    <div class="font-bold text-gray-700 mb-2">الفيديوهات الحالية <span id="videosCountBadge" class="badge-count">0</span></div>
+                    <div id="videosList" class="item-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ========================= QUIZ SECTION ========================= -->
+    <div id="quizSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-indigo-600 to-indigo-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-clipboard-list ml-2"></i> أسئلة مقياس الدوبامين (JSON)</div>
+        <div class="p-5">
+            <p class="text-sm text-gray-600 mb-3">تعديل أسئلة الاختبار. كل سؤال يحتوي على: text, options[], scores[] (4 درجات).</p>
+            <textarea id="quizJsonEditor" rows="12" class="form-input json-editor mb-4"></textarea>
+            <button onclick="saveQuizQuestions()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl font-bold"><i class="fas fa-save"></i> حفظ أسئلة الاختبار</button>
+            <button onclick="resetDefaultQuiz()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-xl font-bold mr-2"><i class="fas fa-undo-alt"></i> استعادة الأسئلة الافتراضية</button>
+        </div>
+    </div>
+    
+    <!-- ========================= SITE TEXTS SECTION ========================= -->
+    <div id="textsSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-teal-600 to-teal-800 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-globe ml-2"></i> نصوص وترجمات الموقع</div>
+        <div class="p-5">
+            <div class="grid md:grid-cols-2 gap-4">
+                <div><input type="text" id="textSiteTitle" placeholder="عنوان الموقع (SEO)" class="form-input"><label class="text-xs text-gray-500">عنوان المتصفح</label></div>
+                <div><input type="text" id="textHeaderTitle" placeholder="عنوان الهيدر" class="form-input"><label class="text-xs text-gray-500">شعار الرأس</label></div>
+                <div><input type="text" id="textHeroTitle" placeholder="نص الهيرو الرئيسي" class="form-input"></div>
+                <div><textarea id="textHeroDesc" placeholder="وصف الهيرو" rows="2" class="form-textarea"></textarea></div>
+                <div><input type="text" id="textReportsTitle" placeholder="عنوان قسم التقارير" class="form-input"></div>
+                <div><input type="text" id="textArticlesTitle" placeholder="عنوان المقالات" class="form-input"></div>
+                <div><input type="text" id="textNewsTitle" placeholder="عنوان الأخبار" class="form-input"></div>
+                <div><input type="text" id="textInterviewsTitle" placeholder="عنوان الحوارات" class="form-input"></div>
+                <div><input type="text" id="textInvestigationsTitle" placeholder="عنوان التحقيقات" class="form-input"></div>
+                <div><input type="text" id="textInfographicsTitle" placeholder="عنوان الإنفوجرافيك" class="form-input"></div>
+                <div><input type="text" id="textVideosTitle" placeholder="عنوان الفيديوهات" class="form-input"></div>
+                <div><input type="text" id="textQuizTitle" placeholder="عنوان الاختبار" class="form-input"></div>
+                <div><input type="text" id="textFooter" placeholder="نص التذييل" class="form-input"></div>
+            </div>
+            <button onclick="saveSiteTexts()" class="mt-5 bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-xl w-full font-bold">حفظ جميع النصوص</button>
+        </div>
+    </div>
+    
+    <!-- ========================= USER RESULTS SECTION ========================= -->
+    <div id="resultsSection" class="admin-card mb-8 hidden">
+        <div class="bg-gradient-to-r from-slate-700 to-slate-900 px-6 py-3 text-white font-bold text-lg"><i class="fas fa-chart-line ml-2"></i> نتائج المستخدمين - إحصائيات الاختبار</div>
+        <div class="p-5">
+            <div class="flex flex-wrap gap-4 mb-4">
+                <div class="bg-blue-100 p-4 rounded-2xl flex-1 text-center"><span class="text-2xl font-bold" id="totalResultsCount">0</span><br>عدد المشاركات</div>
+                <div class="bg-green-100 p-4 rounded-2xl flex-1 text-center"><span class="text-2xl font-bold" id="avgResultsScore">--</span><br>متوسط النسبة المئوية</div>
+            </div>
+            <div class="font-bold mb-2">آخر النتائج المسجلة:</div>
+            <div id="resultsListAdmin" class="item-list max-h-80"></div>
+            <button onclick="clearAllResults()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-xl text-sm">مسح كل النتائج</button>
+        </div>
+    </div>
+</div>
 
-    <script>
-        
-        const encodedUrl = "aHR0cHM6Ly9lbGdvaGFyeW1kLmdpdGh1Yi5pby9BZG1pbjEyM2RvcGFtZW4v";
+<!-- Preview Modal -->
+<div id="previewModal" class="preview-modal" onclick="closePreview()">
+    <div class="preview-content" onclick="event.stopPropagation()">
+        <button onclick="closePreview()" style="position: absolute; top: 10px; left: 10px;" class="text-gray-500 hover:text-red-500"><i class="fas fa-times"></i></button>
+        <h3 class="font-bold mb-3">معاينة المحتوى</h3>
+        <div id="previewContent" style="max-height: 60vh; overflow-y: auto; padding: 15px; background: #f8fafc; border-radius: 12px;"></div>
+    </div>
+</div>
 
-        // وظيفة فك التشفير وعرض الرابط
-        function loadContent() {
-            try {
-                const decodedUrl = atob(encodedUrl); // فك تشفير Base64
-                const container = document.getElementById('view-container');
-                
-                // إنشاء عنصر iframe لعرض الرابط
-                const iframe = document.createElement('iframe');
-                iframe.src = decodedUrl;
-                iframe.setAttribute('allowfullscreen', '');
-                
-                container.appendChild(iframe);
-            } catch (e) {
-                console.error("فشل في تحميل .");
-            }
+<script>
+    // Firebase config
+    const firebaseConfig = {
+        apiKey: "AIzaSyCuYQh5gqlss3gdRjpSPZm-zShiwSAtetQ",
+        authDomain: "prmaga1.firebaseapp.com",
+        databaseURL: "https://prmaga1-default-rtdb.firebaseio.com/",
+        projectId: "prmaga1",
+        storageBucket: "prmaga1.firebasestorage.app",
+        messagingSenderId: "750206146558",
+        appId: "1:750206146558:web:43ca060ad36e830ca252af"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    
+    let currentEditId = null;
+    let currentEditType = null;
+    let allCategories = [];
+    
+    // Quill Editors
+    let editors = {
+        reports: null,
+        articles: null,
+        news: null,
+        interviews: null,
+        investigations: null
+    };
+    
+    // Initialize Quill editors
+    function initQuillEditors() {
+        if (document.getElementById('repContentEditor')) {
+            editors.reports = new Quill('#repContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب محتوى التقرير هنا...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'checked' }],
+                        [{ 'align': [] }],
+                        ['blockquote', 'code-block'],
+                        ['link', 'image', 'video'],
+                        ['clean']
+                    ]
+                }
+            });
         }
-
-        // تشغيل الوظيفة عند تحميل الصفحة
-        window.onload = loadContent;
-    </script>
+        if (document.getElementById('artContentEditor')) {
+            editors.articles = new Quill('#artContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب محتوى المقال هنا...',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+        if (document.getElementById('newsContentEditor')) {
+            editors.news = new Quill('#newsContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب محتوى الخبر هنا...',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+        if (document.getElementById('interContentEditor')) {
+            editors.interviews = new Quill('#interContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب محتوى الحوار هنا...',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+        if (document.getElementById('invContentEditor')) {
+            editors.investigations = new Quill('#invContentEditor', {
+                theme: 'snow',
+                placeholder: 'اكتب محتوى التحقيق هنا...',
+                modules: { toolbar: toolbarOptions }
+            });
+        }
+    }
+    
+    const toolbarOptions = [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'checked' }],
+        [{ 'align': [] }],
+        ['blockquote', 'code-block'],
+        ['link', 'image', 'video'],
+        ['clean']
+    ];
+    
+    function showPreview(editorId) {
+        const editor = editors[editorId.replace('ContentEditor', '')];
+        if (editor) {
+            const content = editor.root.innerHTML;
+            document.getElementById('previewContent').innerHTML = content;
+            document.getElementById('previewModal').classList.add('show');
+        }
+    }
+    
+    function closePreview() {
+        document.getElementById('previewModal').classList.remove('show');
+    }
+    
+    function clearEditor(editorId) {
+        const editor = editors[editorId.replace('ContentEditor', '')];
+        if (editor) {
+            editor.root.innerHTML = '';
+        }
+    }
+    
+    // Helper: Get current date in Arabic format
+    function getCurrentDate() {
+        const now = new Date();
+        return now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    
+    // Default quiz data
+    const defaultQuizData = [
+        { text: "كم مرة تشعر برغبة ملحة في التحقق من هاتفك؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+        { text: "هل تجد صعوبة في التوقف عن استخدام الأجهزة الإلكترونية؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+        { text: "كم مرة تتناول الطعام بدافع الملل أو التوتر؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+        { text: "هل تشعر بالنشوة عند شراء أشياء جديدة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+        { text: "كم مرة تقضي ساعات في مشاهدة المقاطع القصيرة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] }
+    ];
+    
+    // =============== CATEGORIES FUNCTIONS ===============
+    async function loadCategories() {
+        const snap = await db.ref('categories').once('value');
+        const data = snap.val();
+        if (data) {
+            allCategories = Object.values(data);
+        } else {
+            allCategories = [];
+        }
+        return allCategories;
+    }
+    
+    async function renderCategoriesCheckboxes(containerId, selectedCats = []) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        await loadCategories();
+        if (allCategories.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-sm">لا توجد تصنيفات - أضف تصنيفات من علامة التبويب "التصنيفات"</p>';
+            return;
+        }
+        container.innerHTML = allCategories.map(cat => `
+            <label class="category-checkbox" style="border-right: 3px solid ${cat.color}">
+                <input type="checkbox" value="${cat.id}" ${selectedCats.includes(cat.id) ? 'checked' : ''}>
+                <span style="color: ${cat.color}">${cat.name}</span>
+            </label>
+        `).join('');
+    }
+    
+    function getSelectedCategories(containerId) {
+        const checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`);
+        return Array.from(checkboxes).map(cb => cb.value);
+    }
+    
+    async function renderCategoriesList() {
+        await loadCategories();
+        const container = document.getElementById('categoriesList');
+        const countSpan = document.getElementById('categoriesCount');
+        if (container) {
+            if (allCategories.length === 0) {
+                container.innerHTML = '<div class="empty-state-admin">لا توجد تصنيفات، أضف تصنيفاً جديداً</div>';
+                if(countSpan) countSpan.innerText = '0';
+                return;
+            }
+            if(countSpan) countSpan.innerText = allCategories.length;
+            container.innerHTML = allCategories.map(cat => `
+                <div class="category-chip" style="background: ${cat.color}20; border-right: 3px solid ${cat.color}">
+                    <span style="color: ${cat.color}">${cat.name}</span>
+                    <span class="delete-cat" onclick="deleteCategory('${cat.id}')"><i class="fas fa-times-circle"></i></span>
+                </div>
+            `).join('');
+        }
+    }
+    
+    async function addNewCategory() {
+        const id = document.getElementById('newCatId').value.trim();
+        const name = document.getElementById('newCatName').value.trim();
+        const color = document.getElementById('newCatColor').value;
+        
+        if (!id || !name) {
+            Swal.fire("خطأ", "الرجاء إدخال معرف واسم التصنيف", "error");
+            return;
+        }
+        
+        const newCat = { id, name, color };
+        await db.ref(`categories/${id}`).set(newCat);
+        document.getElementById('newCatId').value = '';
+        document.getElementById('newCatName').value = '';
+        await loadCategories();
+        await renderCategoriesList();
+        await refreshAllCategoriesGroups();
+        Swal.fire("✅ تم الإضافة", `تم إضافة التصنيف "${name}"`, "success");
+    }
+    
+    async function deleteCategory(catId) {
+        const result = await Swal.fire({
+            title: "⚠️ تأكيد الحذف",
+            text: "هل أنت متأكد من حذف هذا التصنيف؟",
+            icon: "warning",
+            showCancelButton: true
+        });
+        if (result.isConfirmed) {
+            await db.ref(`categories/${catId}`).remove();
+            await loadCategories();
+            await renderCategoriesList();
+            await refreshAllCategoriesGroups();
+            Swal.fire("✅ تم الحذف", "تم حذف التصنيف", "success");
+        }
+    }
+    
+    async function refreshAllCategoriesGroups() {
+        await loadCategories();
+        await renderCategoriesCheckboxes('repCategoriesGroup');
+        await renderCategoriesCheckboxes('artCategoriesGroup');
+        await renderCategoriesCheckboxes('newsCategoriesGroup');
+        await renderCategoriesCheckboxes('interCategoriesGroup');
+        await renderCategoriesCheckboxes('invCategoriesGroup');
+        await renderCategoriesCheckboxes('infCategoriesGroup');
+        await renderCategoriesCheckboxes('vidCategoriesGroup');
+    }
+    
+    // =============== MAIN FUNCTIONS ===============
+    function showSection(section) {
+        const sections = ['reports','articles','news','interviews','investigations','infographics','videos','quiz','texts','results','categories'];
+        sections.forEach(s => {
+            const el = document.getElementById(s+'Section');
+            if(el) el.classList.add('hidden');
+        });
+        document.getElementById(section+'Section').classList.remove('hidden');
+        document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+        const activeBtn = document.getElementById('tab'+section.charAt(0).toUpperCase()+section.slice(1)+'Btn');
+        if(activeBtn) activeBtn.classList.add('active');
+        
+        if(section === 'results') loadUserResults();
+        else if(section === 'quiz') loadQuizToEditor();
+        else if(section === 'texts') loadTextsToForm();
+        else if(section === 'categories') {
+            renderCategoriesList();
+            loadCategories();
+        }
+        else {
+            loadListForSection(section);
+            refreshAllCategoriesGroups();
+        }
+    }
+    
+    async function loadListForSection(type) {
+        const snap = await db.ref(type).once('value');
+        const data = snap.val() || {};
+        const listDiv = document.getElementById(`${type}List`);
+        const badgeSpan = document.getElementById(`${type}CountBadge`);
+        if(badgeSpan) badgeSpan.innerText = Object.keys(data).length;
+        if(!listDiv) return;
+        if(Object.keys(data).length === 0) {
+            listDiv.innerHTML = '<div class="empty-state-admin">لا توجد محتويات، أضف محتوى جديد</div>';
+            return;
+        }
+        listDiv.innerHTML = '';
+        for(let [id, item] of Object.entries(data)) {
+            const title = item.title || 'بدون عنوان';
+            const date = item.date || '';
+            const categories = item.categories || [];
+            
+            const categoryNames = categories.map(catId => {
+                const cat = allCategories.find(c => c.id === catId);
+                return cat ? cat.name : catId;
+            });
+            
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `
+                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; flex: 1;">
+                    <span class="item-title">${escapeHtml(title)}</span>
+                    ${date ? `<span class="item-date-badge"><i class="fas fa-calendar-alt ml-1"></i> ${escapeHtml(date)}</span>` : ''}
+                    <div class="item-categories">
+                        ${categoryNames.map(cat => `<span class="item-cat-badge">${escapeHtml(cat)}</span>`).join('')}
+                    </div>
+                </div>
+                <div>
+                    <button class="edit-btn" onclick="editItem('${type}','${id}')"><i class="fas fa-edit ml-1"></i> تعديل</button>
+                    <button class="delete-btn" onclick="deleteItem('${type}','${id}')"><i class="fas fa-trash-alt ml-1"></i> حذف</button>
+                </div>
+            `;
+            listDiv.appendChild(div);
+        }
+    }
+    
+    window.saveItem = async function(type) {
+        const currentDate = getCurrentDate();
+        
+        let selectedCategories = [];
+        if(type === 'reports') selectedCategories = getSelectedCategories('repCategoriesGroup');
+        else if(type === 'articles') selectedCategories = getSelectedCategories('artCategoriesGroup');
+        else if(type === 'news') selectedCategories = getSelectedCategories('newsCategoriesGroup');
+        else if(type === 'interviews') selectedCategories = getSelectedCategories('interCategoriesGroup');
+        else if(type === 'investigations') selectedCategories = getSelectedCategories('invCategoriesGroup');
+        else if(type === 'infographics') selectedCategories = getSelectedCategories('infCategoriesGroup');
+        else if(type === 'videos') selectedCategories = getSelectedCategories('vidCategoriesGroup');
+        
+        let itemData = { title: '', date: currentDate, categories: selectedCategories };
+        
+        // Get content from Quill editor
+        let content = '';
+        if(type === 'reports' && editors.reports) content = editors.reports.root.innerHTML;
+        else if(type === 'articles' && editors.articles) content = editors.articles.root.innerHTML;
+        else if(type === 'news' && editors.news) content = editors.news.root.innerHTML;
+        else if(type === 'interviews' && editors.interviews) content = editors.interviews.root.innerHTML;
+        else if(type === 'investigations' && editors.investigations) content = editors.investigations.root.innerHTML;
+        
+        if(type === 'reports') {
+            itemData.title = document.getElementById('repTitle').value.trim();
+            if(!itemData.title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
+            itemData.image = document.getElementById('repImage').value;
+            itemData.summary = document.getElementById('repSummary').value;
+            itemData.content = content;
+            if(currentEditId && currentEditType === type) {
+                await db.ref(`reports/${currentEditId}`).update(itemData);
+                clearReportForm();
+                currentEditId = null;
+            } else await db.ref('reports').push(itemData);
+            clearReportForm();
+        }
+        else if(type === 'articles') {
+            itemData.title = document.getElementById('artTitle').value.trim();
+            if(!itemData.title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
+            itemData.image = document.getElementById('artImage').value;
+            itemData.summary = document.getElementById('artSummary').value;
+            itemData.content = content;
+            itemData.readTime = parseInt(document.getElementById('artReadTime').value) || 3;
+            if(currentEditId && currentEditType === type) {
+                await db.ref(`articles/${currentEditId}`).update(itemData);
+                clearArticleForm();
+                currentEditId = null;
+            } else await db.ref('articles').push(itemData);
+            clearArticleForm();
+        }
+        else if(type === 'news') {
+            itemData.title = document.getElementById('newsTitle').value.trim();
+            if(!itemData.title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
+            itemData.image = document.getElementById('newsImage').value;
+            itemData.summary = document.getElementById('newsSummary').value;
+            itemData.content = content;
+            if(currentEditId && currentEditType === type) {
+                await db.ref(`news/${currentEditId}`).update(itemData);
+                clearNewsForm();
+                currentEditId = null;
+            } else await db.ref('news').push(itemData);
+            clearNewsForm();
+        }
+        else if(type === 'interviews') {
+            itemData.title = document.getElementById('interTitle').value.trim();
+            if(!itemData.title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
+            itemData.speaker = document.getElementById('interSpeaker').value;
+            itemData.image = document.getElementById('interImage').value;
+            itemData.summary = document.getElementById('interSummary').value;
+            itemData.content = content;
+            if(currentEditId && currentEditType === type) {
+                await db.ref(`interviews/${currentEditId}`).update(itemData);
+                clearInterForm();
+                currentEditId = null;
+            } else await db.ref('interviews').push(itemData);
+            clearInterForm();
+        }
+        else if(type === 'investigations') {
+            itemData.title = document.getElementById('invTitle').value.trim();
+            if(!itemData.title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
+            itemData.image = document.getElementById('invImage').value;
+            itemData.summary = document.getElementById('invSummary').value;
+            itemData.content = content;
+            if(currentEditId && currentEditType === type) {
+                await db.ref(`investigations/${currentEditId}`).update(itemData);
+                clearInvForm();
+                currentEditId = null;
+            } else await db.ref('investigations').push(itemData);
+            clearInvForm();
+        }
+        else if(type === 'infographics') {
+            itemData.title = document.getElementById('infTitle').value.trim();
+            if(!itemData.title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
+            itemData.imageUrl = document.getElementById('infImage').value;
+            if(currentEditId && currentEditType === type) {
+                await db.ref(`infographics/${currentEditId}`).update(itemData);
+                clearInfForm();
+                currentEditId = null;
+            } else await db.ref('infographics').push(itemData);
+            clearInfForm();
+        }
+        else if(type === 'videos') {
+            itemData.title = document.getElementById('vidTitle').value.trim();
+            if(!itemData.title) return Swal.fire("خطأ", "العنوان مطلوب", "error");
+            itemData.videoUrl = document.getElementById('vidUrl').value;
+            itemData.description = document.getElementById('vidDesc').value;
+            if(currentEditId && currentEditType === type) {
+                await db.ref(`videos/${currentEditId}`).update(itemData);
+                clearVidForm();
+                currentEditId = null;
+            } else await db.ref('videos').push(itemData);
+            clearVidForm();
+        }
+        
+        Swal.fire("تم الحفظ", `تم ${currentEditId ? 'تعديل' : 'إضافة'} المحتوى بنجاح مع التاريخ والتصنيفات`, "success");
+        loadListForSection(type);
+        currentEditId = null;
+        currentEditType = null;
+    };
+    
+    window.editItem = async function(type, id) {
+        const snap = await db.ref(`${type}/${id}`).once('value');
+        const item = snap.val();
+        if(!item) return;
+        currentEditId = id;
+        currentEditType = type;
+        
+        const selectedCats = item.categories || [];
+        const content = item.content || '';
+        
+        if(type === 'reports') {
+            document.getElementById('repTitle').value = item.title || '';
+            document.getElementById('repImage').value = item.image || '';
+            document.getElementById('repSummary').value = item.summary || '';
+            if(editors.reports) editors.reports.root.innerHTML = content;
+            await renderCategoriesCheckboxes('repCategoriesGroup', selectedCats);
+        } else if(type === 'articles') {
+            document.getElementById('artTitle').value = item.title || '';
+            document.getElementById('artImage').value = item.image || '';
+            document.getElementById('artSummary').value = item.summary || '';
+            document.getElementById('artReadTime').value = item.readTime || '';
+            if(editors.articles) editors.articles.root.innerHTML = content;
+            await renderCategoriesCheckboxes('artCategoriesGroup', selectedCats);
+        } else if(type === 'news') {
+            document.getElementById('newsTitle').value = item.title || '';
+            document.getElementById('newsImage').value = item.image || '';
+            document.getElementById('newsSummary').value = item.summary || '';
+            if(editors.news) editors.news.root.innerHTML = content;
+            await renderCategoriesCheckboxes('newsCategoriesGroup', selectedCats);
+        } else if(type === 'interviews') {
+            document.getElementById('interTitle').value = item.title || '';
+            document.getElementById('interSpeaker').value = item.speaker || '';
+            document.getElementById('interImage').value = item.image || '';
+            document.getElementById('interSummary').value = item.summary || '';
+            if(editors.interviews) editors.interviews.root.innerHTML = content;
+            await renderCategoriesCheckboxes('interCategoriesGroup', selectedCats);
+        } else if(type === 'investigations') {
+            document.getElementById('invTitle').value = item.title || '';
+            document.getElementById('invImage').value = item.image || '';
+            document.getElementById('invSummary').value = item.summary || '';
+            if(editors.investigations) editors.investigations.root.innerHTML = content;
+            await renderCategoriesCheckboxes('invCategoriesGroup', selectedCats);
+        } else if(type === 'infographics') {
+            document.getElementById('infTitle').value = item.title || '';
+            document.getElementById('infImage').value = item.imageUrl || '';
+            await renderCategoriesCheckboxes('infCategoriesGroup', selectedCats);
+        } else if(type === 'videos') {
+            document.getElementById('vidTitle').value = item.title || '';
+            document.getElementById('vidUrl').value = item.videoUrl || '';
+            document.getElementById('vidDesc').value = item.description || '';
+            await renderCategoriesCheckboxes('vidCategoriesGroup', selectedCats);
+        }
+        Swal.fire("وضع التعديل", "قم بتعديل البيانات ثم اضغط حفظ (سيتم تحديث التاريخ والتصنيفات)", "info");
+    };
+    
+    window.deleteItem = async function(type, id) {
+        const confirm = await Swal.fire({ title: "حذف المحتوى", text: "هل أنت متأكد؟", icon: "warning", showCancelButton: true });
+        if(confirm.isConfirmed) {
+            await db.ref(`${type}/${id}`).remove();
+            Swal.fire("تم الحذف", "", "success");
+            loadListForSection(type);
+            if(type === 'results') loadUserResults();
+        }
+    };
+    
+    async function loadQuizToEditor() {
+        const snap = await db.ref('quiz/questions').once('value');
+        let qs = snap.val();
+        if(!qs || !qs.length) qs = defaultQuizData;
+        document.getElementById('quizJsonEditor').value = JSON.stringify(qs, null, 2);
+    }
+    
+    window.saveQuizQuestions = async function() {
+        try {
+            const parsed = JSON.parse(document.getElementById('quizJsonEditor').value);
+            if(!Array.isArray(parsed) || parsed.length === 0) throw new Error();
+            await db.ref('quiz/questions').set(parsed);
+            Swal.fire("تم", "تم حفظ أسئلة الاختبار", "success");
+        } catch(e) { Swal.fire("خطأ", "JSON غير صالح", "error"); }
+    };
+    
+    window.resetDefaultQuiz = async function() {
+        await db.ref('quiz/questions').set(defaultQuizData);
+        loadQuizToEditor();
+        Swal.fire("تم", "تم استعادة الأسئلة الافتراضية", "success");
+    };
+    
+    async function loadTextsToForm() {
+        const snap = await db.ref('site_texts').once('value');
+        const t = snap.val() || {};
+        document.getElementById('textSiteTitle').value = t.siteTitle || 'دوبامين';
+        document.getElementById('textHeaderTitle').value = t.headerTitle || 'دوبامين';
+        document.getElementById('textHeroTitle').value = t.heroTitle || 'الدوبامين';
+        document.getElementById('textHeroDesc').value = t.heroDesc || 'استكشف الأبحاث';
+        document.getElementById('textReportsTitle').value = t.reportsTitle || 'التقارير';
+        document.getElementById('textArticlesTitle').value = t.articlesTitle || 'المقالات';
+        document.getElementById('textNewsTitle').value = t.newsTitle || 'الأخبار';
+        document.getElementById('textInterviewsTitle').value = t.interviewsTitle || 'الحوارات';
+        document.getElementById('textInvestigationsTitle').value = t.investigationsTitle || 'التحقيقات';
+        document.getElementById('textInfographicsTitle').value = t.infographicsTitle || 'الإنفوجرافيك';
+        document.getElementById('textVideosTitle').value = t.videosTitle || 'الفيديوهات';
+        document.getElementById('textQuizTitle').value = t.quizTitle || 'مقياس الإدمان';
+        document.getElementById('textFooter').value = t.footer || 'دوبامين | المركز العلمي';
+    }
+    
+    window.saveSiteTexts = async function() {
+        const texts = {
+            siteTitle: document.getElementById('textSiteTitle').value,
+            headerTitle: document.getElementById('textHeaderTitle').value,
+            heroTitle: document.getElementById('textHeroTitle').value,
+            heroDesc: document.getElementById('textHeroDesc').value,
+            reportsTitle: document.getElementById('textReportsTitle').value,
+            articlesTitle: document.getElementById('textArticlesTitle').value,
+            newsTitle: document.getElementById('textNewsTitle').value,
+            interviewsTitle: document.getElementById('textInterviewsTitle').value,
+            investigationsTitle: document.getElementById('textInvestigationsTitle').value,
+            infographicsTitle: document.getElementById('textInfographicsTitle').value,
+            videosTitle: document.getElementById('textVideosTitle').value,
+            quizTitle: document.getElementById('textQuizTitle').value,
+            footer: document.getElementById('textFooter').value,
+        };
+        await db.ref('site_texts').set(texts);
+        Swal.fire("تم", "تم حفظ نصوص الموقع", "success");
+    };
+    
+    async function loadUserResults() {
+        const snap = await db.ref('quiz_results').once('value');
+        const data = snap.val() || {};
+        const total = Object.keys(data).length;
+        document.getElementById('totalResultsCount').innerText = total;
+        let sum = 0;
+        const listDiv = document.getElementById('resultsListAdmin');
+        listDiv.innerHTML = '';
+        if(total === 0) { listDiv.innerHTML = '<div class="empty-state-admin">لا توجد نتائج بعد</div>'; document.getElementById('avgResultsScore').innerText = '--'; return; }
+        const resultsArray = [];
+        for(let [id, val] of Object.entries(data)) {
+            sum += (val.percentage || 0);
+            resultsArray.push({ id, ...val });
+        }
+        const avg = (sum / total).toFixed(1);
+        document.getElementById('avgResultsScore').innerText = avg + '%';
+        resultsArray.reverse().slice(0, 50).forEach(res => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<span class="item-title">نسبة: ${res.percentage}% - ${new Date(res.date).toLocaleString('ar-EG')}</span><button class="delete-btn" onclick="deleteItem('quiz_results','${res.id}')"><i class="fas fa-trash"></i> حذف</button>`;
+            listDiv.appendChild(div);
+        });
+    }
+    
+    window.clearAllResults = async function() {
+        const confirm = await Swal.fire({ title: "مسح كل النتائج", text: "لا يمكن التراجع", icon: "warning", showCancelButton: true });
+        if(confirm.isConfirmed) {
+            await db.ref('quiz_results').remove();
+            loadUserResults();
+            Swal.fire("تم المسح", "", "success");
+        }
+    };
+    
+    window.exportAllData = async function() {
+        const refs = ['reports','articles','news','interviews','investigations','infographics','videos','quiz/questions','site_texts','quiz_results','categories'];
+        let exportObj = {};
+        for(let r of refs) {
+            const snap = await db.ref(r).once('value');
+            exportObj[r] = snap.val();
+        }
+        const dataStr = JSON.stringify(exportObj, null, 2);
+        const blob = new Blob([dataStr], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `dopamine_backup_${new Date().toISOString()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        Swal.fire("تم التصدير", "تم حفظ ملف النسخة الاحتياطية", "success");
+    };
+    
+    window.importDataFromJSON = async function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json';
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const text = await file.text();
+            try {
+                const data = JSON.parse(text);
+                for(let [path, value] of Object.entries(data)) {
+                    if(value) await db.ref(path).set(value);
+                }
+                Swal.fire("تم الاستيراد", "تم تحديث قاعدة البيانات", "success");
+                location.reload();
+            } catch(err) { Swal.fire("خطأ", "ملف غير صالح", "error"); }
+        };
+        input.click();
+    };
+    
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    
+    function clearReportForm() { 
+        ['repTitle','repImage','repSummary'].forEach(id => document.getElementById(id).value = '');
+        if(editors.reports) editors.reports.root.innerHTML = '';
+        renderCategoriesCheckboxes('repCategoriesGroup');
+    }
+    function clearArticleForm() { 
+        ['artTitle','artImage','artSummary','artReadTime'].forEach(id => document.getElementById(id).value = '');
+        if(editors.articles) editors.articles.root.innerHTML = '';
+        renderCategoriesCheckboxes('artCategoriesGroup');
+    }
+    function clearNewsForm() { 
+        ['newsTitle','newsImage','newsSummary'].forEach(id => document.getElementById(id).value = '');
+        if(editors.news) editors.news.root.innerHTML = '';
+        renderCategoriesCheckboxes('newsCategoriesGroup');
+    }
+    function clearInterForm() { 
+        ['interTitle','interSpeaker','interImage','interSummary'].forEach(id => document.getElementById(id).value = '');
+        if(editors.interviews) editors.interviews.root.innerHTML = '';
+        renderCategoriesCheckboxes('interCategoriesGroup');
+    }
+    function clearInvForm() { 
+        ['invTitle','invImage','invSummary'].forEach(id => document.getElementById(id).value = '');
+        if(editors.investigations) editors.investigations.root.innerHTML = '';
+        renderCategoriesCheckboxes('invCategoriesGroup');
+    }
+    function clearInfForm() { 
+        ['infTitle','infImage'].forEach(id => document.getElementById(id).value = '');
+        renderCategoriesCheckboxes('infCategoriesGroup');
+    }
+    function clearVidForm() { 
+        ['vidTitle','vidUrl','vidDesc'].forEach(id => document.getElementById(id).value = '');
+        renderCategoriesCheckboxes('vidCategoriesGroup');
+    }
+    
+    // Initialize
+    async function init() {
+        initQuillEditors();
+        await loadCategories();
+        await refreshAllCategoriesGroups();
+        showSection('reports');
+    }
+    
+    init();
+</script>
 </body>
 </html>
