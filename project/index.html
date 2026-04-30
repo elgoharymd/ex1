@@ -7,7 +7,7 @@
     <meta name="theme-color" id="themeColor" content="#0f172a">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-navbutton-color" content="#0f172a">
-    <title>دوبامين - </title>
+    <title>دوبامين - منصة الأبحاث العلمية</title>
     <meta property="og:title" content="دوبامين | موقع الأبحاث العلمية">
     <meta property="og:description" content="منصة علمية متخصصة في أبحاث الدوبامين - أحدث التقارير والدراسات">
     <meta property="og:type" content="website">
@@ -132,6 +132,7 @@
             to { transform: translateY(0); }
         }
 
+        /* Premium Card with Concave Image */
         .premium-card { 
             background: var(--card-bg); 
             border-radius: 24px; 
@@ -161,14 +162,36 @@
             border-color: var(--primary);
         }
 
+        /* Concave Image Effect - مقعرة */
         .card-cover { 
-            height: 180px; 
+            height: 200px; 
             background-size: cover; 
             background-position: center; 
             transition: transform 0.5s ease;
+            position: relative;
+            /* Concave effect using border-radius and inner shadow */
+            border-radius: 20px 20px 30px 30px;
+            box-shadow: inset 0 8px 12px -6px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.1);
+            transform: scale(0.98);
+            margin: 6px 6px 0 6px;
+        }
+        
+        /* Additional concave effect */
+        .card-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 100%);
+            border-radius: 20px 20px 30px 30px;
+            pointer-events: none;
         }
 
-        .premium-card:hover .card-cover { transform: scale(1.05); }
+        .premium-card:hover .card-cover {
+            transform: scale(1) translateY(-2px);
+        }
 
         .share-card-btn {
             position: absolute;
@@ -198,6 +221,35 @@
         .share-card-btn:hover {
             background: var(--primary);
             transform: scale(1.1);
+        }
+
+        /* Categories badges on card */
+        .card-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .card-category-badge {
+            font-size: 9px;
+            padding: 3px 8px;
+            border-radius: 30px;
+            background: rgba(var(--primary-rgb), 0.12);
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            transition: all 0.2s;
+        }
+        
+        body.dark .card-category-badge {
+            background: rgba(var(--primary-rgb), 0.2);
+        }
+        
+        .card-category-badge i {
+            font-size: 8px;
         }
 
         .gradient-text { 
@@ -683,7 +735,7 @@
             transform: translateY(0);
         }
 
-        /* =============== Search Styles =============== */
+        /* Search Styles */
         .search-modal {
             display: none;
             position: fixed;
@@ -835,113 +887,28 @@
             color: white;
         }
 
-        /* =============== Rich Text Content Styles (المهمة لعرض التنسيقات) =============== */
+        /* Rich Text Content Styles */
         .detail-content {
             line-height: 1.8;
             color: var(--text-secondary);
             font-size: 16px;
         }
-        .detail-content h1 {
-            font-size: 28px;
+        .detail-content h1, .detail-content h2, .detail-content h3, .detail-content h4 {
             color: var(--text-primary);
-            margin: 25px 0 15px;
-            font-weight: bold;
+            margin: 20px 0 10px;
         }
-        .detail-content h2 {
-            font-size: 24px;
-            color: var(--text-primary);
-            margin: 20px 0 12px;
-            font-weight: bold;
-        }
-        .detail-content h3 {
-            font-size: 20px;
-            color: var(--text-primary);
-            margin: 18px 0 10px;
-            font-weight: bold;
-        }
-        .detail-content h4 {
-            font-size: 18px;
-            color: var(--text-primary);
-            margin: 15px 0 8px;
-            font-weight: bold;
-        }
-        .detail-content p {
-            margin-bottom: 16px;
-        }
-        .detail-content strong, .detail-content b {
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-        .detail-content em, .detail-content i {
-            font-style: italic;
-        }
-        .detail-content u {
-            text-decoration: underline;
-        }
-        .detail-content img {
-            max-width: 100%;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-        .detail-content ul, .detail-content ol {
-            padding-right: 25px;
-            margin: 15px 0;
-        }
-        .detail-content li {
-            margin: 8px 0;
-        }
+        .detail-content p { margin-bottom: 15px; }
+        .detail-content strong, .detail-content b { font-weight: bold; color: var(--text-primary); }
+        .detail-content em, .detail-content i { font-style: italic; }
+        .detail-content ul, .detail-content ol { padding-right: 25px; margin: 15px 0; }
         .detail-content blockquote {
             border-right: 4px solid var(--primary);
             padding: 10px 20px;
             background: rgba(var(--primary-rgb), 0.05);
             border-radius: 12px;
             margin: 20px 0;
-            font-style: italic;
         }
-        .detail-content a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .detail-content a:hover {
-            text-decoration: underline;
-        }
-        .detail-content code {
-            background: rgba(var(--primary-rgb), 0.1);
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 14px;
-        }
-        .detail-content pre {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 15px;
-            border-radius: 12px;
-            overflow-x: auto;
-            margin: 15px 0;
-        }
-        .detail-content pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-        }
-        .detail-content .ql-align-center {
-            text-align: center;
-        }
-        .detail-content .ql-align-right {
-            text-align: left;
-        }
-        .detail-content .ql-align-justify {
-            text-align: justify;
-        }
-        
-        /* Dark mode adjustments for rich text */
-        body.dark .detail-content pre {
-            background: #0f172a;
-        }
-        body.dark .detail-content blockquote {
-            background: rgba(59,130,246,0.1);
-        }
+        .detail-content img { max-width: 100%; border-radius: 12px; margin: 15px 0; }
     </style>
 </head>
 <body class="dark">
@@ -1090,10 +1057,8 @@
             return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); 
         }
 
-        // Important: This function preserves HTML formatting for rich text
         function formatContent(content) {
             if (!content) return '<p>لا يوجد محتوى</p>';
-            // Return as-is to preserve HTML formatting from Quill editor
             return content;
         }
 
@@ -1263,6 +1228,10 @@
                             const cat = allCategories.find(c => c.id === catId);
                             return cat ? cat.name : catId;
                         });
+                        let categoryColors = itemCategories.map(catId => {
+                            const cat = allCategories.find(c => c.id === catId);
+                            return cat ? cat.color : '#2563eb';
+                        });
                         allContent.push({
                             id: id,
                             type: section,
@@ -1273,7 +1242,8 @@
                             image: item.image || item.imageUrl || item.img || item.photo || '',
                             date: item.date || '',
                             categories: itemCategories,
-                            categoryNames: categoryNames
+                            categoryNames: categoryNames,
+                            categoryColors: categoryColors
                         });
                     });
                 }
@@ -1343,8 +1313,8 @@
             }
             
             resultsContainer.innerHTML = filteredContent.map(item => {
-                const categoriesHtml = item.categoryNames.map(catName => 
-                    `<span class="result-category">${escapeHtml(catName)}</span>`
+                const categoriesHtml = item.categoryNames.map((catName, idx) => 
+                    `<span class="result-category" style="background: ${item.categoryColors[idx]}20; color: ${item.categoryColors[idx]}">${escapeHtml(catName)}</span>`
                 ).join('');
                 
                 return `
@@ -1608,8 +1578,30 @@
             const data = snap.val();
             if (data && Object.keys(data).length) {
                 container.innerHTML = '';
-                Object.entries(data).forEach(([id, item]) => {
+                for (let [id, item] of Object.entries(data)) {
                     const shareUrl = `${window.location.origin}/?type=${type}&id=${id}`;
+                    
+                    // Get categories for this item
+                    const itemCategories = item.categories || [];
+                    const categoryNames = itemCategories.map(catId => {
+                        const cat = allCategories.find(c => c.id === catId);
+                        return cat ? cat.name : catId;
+                    });
+                    const categoryColors = itemCategories.map(catId => {
+                        const cat = allCategories.find(c => c.id === catId);
+                        return cat ? cat.color : '#2563eb';
+                    });
+                    
+                    // Generate categories HTML for card
+                    const categoriesHtml = categoryNames.length > 0 ? `
+                        <div class="card-categories">
+                            ${categoryNames.map((name, idx) => `
+                                <span class="card-category-badge" style="background: ${categoryColors[idx]}20; color: ${categoryColors[idx]}; border-right: 2px solid ${categoryColors[idx]}">
+                                    <i class="fas fa-tag"></i> ${escapeHtml(name)}
+                                </span>
+                            `).join('')}
+                        </div>
+                    ` : '';
                     
                     if (type === 'videos') {
                         const videoUrl = item.videoUrl || '';
@@ -1624,6 +1616,7 @@
                                 </div>
                                 <div class="p-3">
                                     <h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                    ${categoriesHtml}
                                     <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.description || '')}</p>
                                 </div>
                             </div>
@@ -1637,14 +1630,17 @@
                                 </div>
                                 <div class="card-cover" style="background-image: url('${imageUrl}');"></div>
                                 <div class="p-3">
-                                    <span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span>
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span>
+                                    </div>
                                     <h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                    ${categoriesHtml}
                                     <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.summary || '')}</p>
                                 </div>
                             </div>
                         `;
                     }
-                });
+                }
                 initScrollReveal();
             } else {
                 container.innerHTML = `<div class="empty-state col-span-full"><i class="fas fa-inbox"></i><h3>لا توجد محتويات</h3></div>`;
@@ -1726,7 +1722,6 @@
                     if (imageUrl) {
                         contentHtml += `<img src="${imageUrl}" class="w-full rounded-xl my-4" onerror="this.src='https://placehold.co/600x400/1e293b/60a5fa?text=No+Image'">`;
                     }
-                    // IMPORTANT: Use formatContent to preserve HTML formatting from Quill editor
                     contentHtml += `<div class="detail-content">${formatContent(item.content)}</div>`;
                 }
 
@@ -1753,6 +1748,7 @@
         // =============== Home Page ===============
         async function showHome() {
             await loadQuiz();
+            await loadCategories();
             const texts = await loadTexts();
             const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg";
             
