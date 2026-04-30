@@ -7,7 +7,7 @@
     <meta name="theme-color" id="themeColor" content="#0f172a">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-navbutton-color" content="#0f172a">
-    <title>دوبامين - منصة الأبحاث العلمية</title>
+    <title>دوبامين</title>
     <meta property="og:title" content="دوبامين | موقع الأبحاث العلمية">
     <meta property="og:description" content="منصة علمية متخصصة في أبحاث الدوبامين - أحدث التقارير والدراسات">
     <meta property="og:type" content="website">
@@ -162,21 +162,19 @@
             border-color: var(--primary);
         }
 
-        /* Concave Image Effect - مقعرة */
+        /* Concave Image Effect */
         .card-cover { 
             height: 200px; 
             background-size: cover; 
             background-position: center; 
             transition: transform 0.5s ease;
             position: relative;
-            /* Concave effect using border-radius and inner shadow */
             border-radius: 20px 20px 30px 30px;
-            box-shadow: inset 0 8px 12px -6px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: inset 0 8px 12px -6px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
             transform: scale(0.98);
             margin: 6px 6px 0 6px;
         }
         
-        /* Additional concave effect */
         .card-cover::after {
             content: '';
             position: absolute;
@@ -184,7 +182,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 100%);
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 100%);
             border-radius: 20px 20px 30px 30px;
             pointer-events: none;
         }
@@ -227,21 +225,30 @@
         .card-categories {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 6px;
             margin-top: 8px;
             margin-bottom: 8px;
         }
         
         .card-category-badge {
             font-size: 9px;
-            padding: 3px 8px;
+            padding: 3px 10px;
             border-radius: 30px;
             background: rgba(var(--primary-rgb), 0.12);
             color: var(--primary);
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        
+        .card-category-badge:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
         }
         
         body.dark .card-category-badge {
@@ -887,6 +894,51 @@
             color: white;
         }
 
+        /* Filter Bar for Category Results */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background: var(--card-bg);
+            border-radius: 60px;
+            border: 1px solid var(--border-color);
+        }
+        .filter-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .active-filter-badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .clear-filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .clear-filter-btn:hover {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
         /* Rich Text Content Styles */
         .detail-content {
             line-height: 1.8;
@@ -1050,6 +1102,8 @@
         let allContentCache = null;
         let allCategories = [];
         let currentCategoryFilter = 'all';
+        let activeCategoryFilter = null;
+        let currentDisplayMode = 'home';
 
         // =============== Helper Functions ===============
         function escapeHtml(str) { 
@@ -1199,10 +1253,193 @@
             });
         }
 
+        // =============== Filter by Category from Card Click ===============
+        async function filterByCategoryFromCard(categoryId, categoryName, categoryColor) {
+            activeCategoryFilter = { id: categoryId, name: categoryName, color: categoryColor };
+            currentDisplayMode = 'filtered';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            await showFilteredResults();
+        }
+
+        async function showFilteredResults() {
+            const mainContent = document.getElementById('mainContent');
+            const texts = await loadTexts();
+            
+            const sections = ['reports', 'articles', 'news', 'interviews', 'investigations', 'infographics', 'videos'];
+            const sectionTitles = {
+                reports: texts.reportsTitle || 'التقارير العلمية',
+                articles: texts.articlesTitle || 'المقالات العلمية',
+                news: texts.newsTitle || 'أخبار الدوبامين',
+                interviews: texts.interviewsTitle || 'حوارات وخبراء',
+                investigations: texts.investigationsTitle || 'التحقيقات',
+                infographics: texts.infographicsTitle || 'الإنفوجرافيك',
+                videos: texts.videosTitle || 'الفيديوهات'
+            };
+            const sectionIcons = {
+                reports: 'fa-newspaper',
+                articles: 'fa-pen-fancy',
+                news: 'fa-bullhorn',
+                interviews: 'fa-comments',
+                investigations: 'fa-microscope',
+                infographics: 'fa-chart-pie',
+                videos: 'fa-video'
+            };
+            
+            let filteredDataBySection = {};
+            let allFilteredCount = 0;
+            
+            for (const section of sections) {
+                const snap = await db.ref(section).once('value');
+                const data = snap.val();
+                if (data) {
+                    filteredDataBySection[section] = {};
+                    Object.entries(data).forEach(([id, item]) => {
+                        const itemCategories = item.categories || [];
+                        if (itemCategories.includes(activeCategoryFilter.id)) {
+                            filteredDataBySection[section][id] = item;
+                            allFilteredCount++;
+                        }
+                    });
+                }
+            }
+            
+            let sectionsHtml = '';
+            
+            for (const section of sections) {
+                const sectionData = filteredDataBySection[section];
+                if (sectionData && Object.keys(sectionData).length > 0) {
+                    let cardsHtml = '';
+                    for (const [id, item] of Object.entries(sectionData)) {
+                        const shareUrl = `${window.location.origin}/?type=${section}&id=${id}`;
+                        const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+                        const itemCategories = item.categories || [];
+                        const categoryNames = itemCategories.map(catId => {
+                            const cat = allCategories.find(c => c.id === catId);
+                            return cat ? cat.name : catId;
+                        });
+                        const categoryColors = itemCategories.map(catId => {
+                            const cat = allCategories.find(c => c.id === catId);
+                            return cat ? cat.color : '#2563eb';
+                        });
+                        
+                        const categoriesHtml = categoryNames.length > 0 ? `
+                            <div class="card-categories">
+                                ${categoryNames.map((name, idx) => `
+                                    <span class="card-category-badge" style="background: ${categoryColors[idx]}20; color: ${categoryColors[idx]}; border-right: 2px solid ${categoryColors[idx]}" onclick="event.stopPropagation(); filterByCategoryFromCard('${itemCategories[idx]}', '${escapeHtml(name)}', '${categoryColors[idx]}')">
+                                        <i class="fas fa-tag"></i> ${escapeHtml(name)}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        ` : '';
+                        
+                        if (section === 'videos') {
+                            const videoUrl = item.videoUrl || '';
+                            const embedUrl = getYouTubeEmbedUrl(videoUrl);
+                            cardsHtml += `
+                                <div class="premium-card" onclick="openInNewTab('?type=videos&id=${id}')">
+                                    <div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </div>
+                                    <div class="video-container">
+                                        <iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="p-3">
+                                        <h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                        ${categoriesHtml}
+                                        <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.description || '')}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            cardsHtml += `
+                                <div class="premium-card" onclick="openInNewTab('?type=${section}&id=${id}')">
+                                    <div class="share-card-btn" onclick="event.stopPropagation(); shareItem('${escapeHtml(item.title)}', '${shareUrl}')">
+                                        <i class="fas fa-share-alt"></i>
+                                    </div>
+                                    <div class="card-cover" style="background-image: url('${imageUrl}');"></div>
+                                    <div class="p-3">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="text-xs px-2 py-0.5 rounded-full" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white;">${escapeHtml(item.date || '')}</span>
+                                        </div>
+                                        <h3 class="font-bold text-sm mt-2 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                        ${categoriesHtml}
+                                        <p class="text-xs mt-1 line-clamp-2" style="color: var(--text-secondary);">${escapeHtml(item.summary || '')}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    sectionsHtml += `
+                        <section class="mb-8">
+                            <h2 class="text-lg md:text-xl font-bold mb-3 flex items-center gap-2">
+                                <i class="fas ${sectionIcons[section]}" style="color: var(--primary);"></i>
+                                <span class="gradient-text">${sectionTitles[section]}</span>
+                                <span class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full">${Object.keys(sectionData).length}</span>
+                            </h2>
+                            <div class="grid-responsive">${cardsHtml}</div>
+                        </section>
+                    `;
+                }
+            }
+            
+            const categoryInfo = allCategories.find(c => c.id === activeCategoryFilter.id);
+            const categoryDisplayName = categoryInfo ? categoryInfo.name : activeCategoryFilter.name;
+            const categoryDisplayColor = categoryInfo ? categoryInfo.color : activeCategoryFilter.color;
+            
+            if (allFilteredCount === 0) {
+                mainContent.innerHTML = `
+                    <div class="filter-bar">
+                        <div class="filter-info">
+                            <i class="fas fa-filter" style="color: var(--primary);"></i>
+                            <span>مرشح حسب التصنيف:</span>
+                            <span class="active-filter-badge" style="background: ${categoryDisplayColor};">
+                                <i class="fas fa-tag"></i> ${escapeHtml(categoryDisplayName)}
+                            </span>
+                        </div>
+                        <button class="clear-filter-btn" onclick="clearCategoryFilter()">
+                            <i class="fas fa-times ml-1"></i> إلغاء التصفية
+                        </button>
+                    </div>
+                    <div class="empty-state text-center py-10">
+                        <i class="fas fa-inbox fa-3x mb-3" style="color: var(--text-secondary);"></i>
+                        <p>لا توجد محتويات في تصنيف "${escapeHtml(categoryDisplayName)}"</p>
+                        <button onclick="clearCategoryFilter()" class="mt-4 px-4 py-2 rounded-lg" style="background: var(--primary); color: white;">العودة للرئيسية</button>
+                    </div>
+                `;
+            } else {
+                mainContent.innerHTML = `
+                    <div class="filter-bar">
+                        <div class="filter-info">
+                            <i class="fas fa-filter" style="color: var(--primary);"></i>
+                            <span>مرشح حسب التصنيف:</span>
+                            <span class="active-filter-badge" style="background: ${categoryDisplayColor};">
+                                <i class="fas fa-tag"></i> ${escapeHtml(categoryDisplayName)}
+                            </span>
+                            <span class="text-sm text-gray-500">(${allFilteredCount} نتيجة)</span>
+                        </div>
+                        <button class="clear-filter-btn" onclick="clearCategoryFilter()">
+                            <i class="fas fa-times ml-1"></i> إلغاء التصفية
+                        </button>
+                    </div>
+                    ${sectionsHtml}
+                `;
+            }
+            
+            initScrollReveal();
+        }
+        
+        async function clearCategoryFilter() {
+            activeCategoryFilter = null;
+            currentDisplayMode = 'home';
+            await showHome();
+        }
+
         // =============== Categories & Search ===============
         async function loadCategories() {
             const snap = await db.ref('categories').once('value');
             const data = snap.val();
+            // NO default categories - only load from Firebase
             allCategories = data ? Object.values(data) : [];
             return allCategories;
         }
@@ -1271,6 +1508,11 @@
         function renderCategoriesFilter() {
             const container = document.getElementById('categoriesFilter');
             if (!container) return;
+            
+            if (allCategories.length === 0) {
+                container.innerHTML = '<div class="text-gray-500 text-sm p-2">لا توجد تصنيفات - أضف تصنيفات من لوحة الإدارة</div>';
+                return;
+            }
             
             let html = `<div class="category-chip ${currentCategoryFilter === 'all' ? 'active' : ''}" onclick="filterByCategory('all')">الكل</div>`;
             allCategories.forEach(cat => {
@@ -1581,7 +1823,6 @@
                 for (let [id, item] of Object.entries(data)) {
                     const shareUrl = `${window.location.origin}/?type=${type}&id=${id}`;
                     
-                    // Get categories for this item
                     const itemCategories = item.categories || [];
                     const categoryNames = itemCategories.map(catId => {
                         const cat = allCategories.find(c => c.id === catId);
@@ -1591,12 +1832,12 @@
                         const cat = allCategories.find(c => c.id === catId);
                         return cat ? cat.color : '#2563eb';
                     });
+                    const categoryIds = itemCategories;
                     
-                    // Generate categories HTML for card
                     const categoriesHtml = categoryNames.length > 0 ? `
                         <div class="card-categories">
                             ${categoryNames.map((name, idx) => `
-                                <span class="card-category-badge" style="background: ${categoryColors[idx]}20; color: ${categoryColors[idx]}; border-right: 2px solid ${categoryColors[idx]}">
+                                <span class="card-category-badge" style="background: ${categoryColors[idx]}20; color: ${categoryColors[idx]}; border-right: 2px solid ${categoryColors[idx]}" onclick="event.stopPropagation(); filterByCategoryFromCard('${categoryIds[idx]}', '${escapeHtml(name)}', '${categoryColors[idx]}')">
                                     <i class="fas fa-tag"></i> ${escapeHtml(name)}
                                 </span>
                             `).join('')}
@@ -1836,6 +2077,26 @@
         });
         document.querySelector('.theme-toggle')?.addEventListener('mouseup', () => clearTimeout(pressTimer));
         document.querySelector('.theme-toggle')?.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+
+        // Make functions globally available
+        window.filterByCategoryFromCard = filterByCategoryFromCard;
+        window.clearCategoryFilter = clearCategoryFilter;
+        window.navigateToSection = navigateToSection;
+        window.openImageModal = openImageModal;
+        window.closeImageModal = closeImageModal;
+        window.shareItem = shareItem;
+        window.toggleTheme = toggleTheme;
+        window.changeColor = changeColor;
+        window.openInNewTab = openInNewTab;
+        window.goBackToHome = goBackToHome;
+        window.openSearchModal = openSearchModal;
+        window.closeSearchModal = closeSearchModal;
+        window.performSearch = performSearch;
+        window.filterByCategory = filterByCategory;
+        window.openSearchResult = openSearchResult;
+        window.closeFullscreenModal = closeFullscreenModal;
+        window.resetFullscreenQuiz = resetFullscreenQuiz;
+        window.shareResult = shareResult;
 
         loadSavedThemeAndColor();
         route();
