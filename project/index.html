@@ -1672,7 +1672,7 @@
         function renderFullscreenContent(sectionId, container) {
             if (sectionId === 'hero') {
                 const texts = currentSectionData.texts;
-                const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg";
+                const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg";
                 container.innerHTML = `<div class="text-center"><img src="${logoUrl}" class="w-32 h-32 rounded-full mx-auto mb-4 cursor-pointer" style="border: 3px solid var(--primary);" onclick="openImageModal('${logoUrl}')"><h2 class="text-2xl md:text-3xl font-bold">${texts.heroTitle || 'الدوبامين'}</h2><p class="gradient-text text-xl mt-2">وعي رقمي = عقل سليم</p><p class="text-gray-500 dark:text-gray-400 mt-4">${texts.heroDesc || ''}</p><div class="flex gap-3 justify-center mt-6"><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('reports'), 100)" class="px-6 py-2 rounded-xl text-white" style="background: var(--primary);">استكشف</button><button onclick="closeFullscreenModal(); setTimeout(() => navigateToSection('quiz'), 300)" class="px-6 py-2 rounded-xl" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">اختبر نفسك</button></div></div>`;
                 return;
             }
@@ -1883,7 +1883,7 @@
             await loadQuiz();
             await loadCategories();
             const texts = await loadTexts();
-            const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg";
+            const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg";
             
             const mainContent = document.getElementById('mainContent');
             mainContent.innerHTML = `
