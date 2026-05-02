@@ -946,6 +946,254 @@
             <h3 class="text-xl font-bold gradient-text mb-3">دوبامين</h3>
             <p class="text-gray-400 text-sm mb-4">وعي رقمي = عقل سليم</p>
             <div class="team-names">
+                
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    :root {
+        --dopamine-blue: #2563eb;
+        --dopamine-dark: #0f172a;
+    }
+
+    .dopamine-font {
+        font-family: 'Noto Sans Arabic', sans-serif;
+    }
+
+    #dopamine-popup {
+        display: none;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-content {
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #dopamine-popup.active .modal-content {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dopamine-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .dopamine-scroll::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+
+    .dopamine-scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--dopamine-blue);
+    }
+
+    .name-tag {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .name-tag::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 0;
+        height: 2px;
+        background: var(--dopamine-blue);
+        transition: width 0.3s ease;
+    }
+
+    .name-tag:hover::after {
+        width: 100%;
+    }
+</style>
+
+<div class="dopamine-font inline-block">
+    <!-- الزر الاحترافي في الفوتر -->
+    <button onclick="openDopamine()" class="group relative flex items-center gap-3 px-8 py-3 bg-slate-900 text-white rounded-full transition-all duration-300 hover:bg-blue-600 hover:shadow-[0_10px_20px_rgba(37,99,235,0.3)] active:scale-95">
+        <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+        </span>
+        <span class="font-bold tracking-wide">من نحن</span>
+        <svg class="w-4 h-4 transition-transform group-hover:translate-x-[-4px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+    </button>
+</div>
+
+<!-- النافذة المنبثقة الاحترافية -->
+<div id="dopamine-popup" class="fixed inset-0 z-[99999] w-full h-full bg-slate-900/40 flex items-center justify-center p-4 md:p-6 dopamine-font">
+    <div class="modal-content glass-card max-w-4xl w-full max-h-[90vh] flex flex-col rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] relative overflow-hidden">
+        
+        <!-- خلفية جمالية علوية -->
+        <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-l from-blue-600/10 to-transparent -z-10"></div>
+
+        <!-- زر الإغلاق -->
+        <button onclick="closeDopamine()" class="absolute top-6 left-6 z-20 p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+
+        <div class="dopamine-scroll overflow-y-auto p-8 md:p-14 text-right" dir="rtl">
+            
+            <!-- الهوية البصرية -->
+            <div class="flex flex-col md:flex-row items-center gap-8 mb-16 border-b border-slate-100 pb-10">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-blue-600 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg" 
+                         alt="Dopamine Logo" 
+                         class="relative w-32 h-32 rounded-[2.5rem] shadow-2xl object-cover border-4 border-white rotate-3 hover:rotate-0 transition-transform duration-500">
+                </div>
+                <div class="text-center md:text-right">
+                    <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight">Dopamine</h2>
+                    <h3 class="text-2xl font-bold text-blue-600 mt-2">من نحن</h3>
+                    <p class="text-slate-500 font-medium mt-2 flex items-center justify-center md:justify-start gap-2">
+                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.827a1 1 0 00-.788 0l-7 3a1 1 0 000 1.848l7 3a1 1 0 00.788 0l7-3a1 1 0 000-1.848l-7-3zM14 8.828l1.446.62a1 1 0 010 1.847l-7 3a1 1 0 01-.788 0l-7-3a1 1 0 010-1.847L2 8.828v2.322l8.5 3.642 8.5-3.642V8.828z"></path></svg>
+                        مشروع تخرج صحفي – كلية الإعلام جامعة الأزهر
+                    </p>
+                </div>
+            </div>
+
+            <!-- المحتوى النصي المعزز بصرياً -->
+            <div class="space-y-12">
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="w-12 h-[2px] bg-blue-600 rounded-full"></span>
+                        <h4 class="text-2xl font-extrabold text-slate-900">رؤية دوبامين</h4>
+                    </div>
+                    <div class="bg-blue-50/50 p-8 rounded-[2rem] border-r-8 border-blue-600 mb-6">
+                        <p class="text-2xl font-bold text-blue-900 leading-tight">دوبامين وعي رقمي = عقل سليم</p>
+                    </div>
+                    <p class="text-xl text-slate-600 leading-[2] text-justify font-light">
+                        دوبامين ليس مجرد ناقل عصبي في كتب الطب النفسي، بل هو <span class="font-semibold text-slate-900 text-blue-600">مهندس التجربة الرقمية</span> الذي تعتمد عليه أكبر شركات التقنية في العالم لضمان ألا تغادر منصاتها أبداً. نحن في هذا المشروع نتفكك العلاقة الملتبسة بين اقتصاد الانتباه و كيمياء الدماغ، بعيداً عن الإثارة السطحية أو التهويل الأخلاقي.
+                    </p>
+                </section>
+
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="p-8 bg-white border border-slate-100 rounded-[2rem] shadow-sm">
+                        <p class="text-lg text-slate-600 leading-[1.8] text-justify">
+                            منصة دوبامين هي فضاء ثالث يجمع بين <span class="text-blue-600 font-medium">صلابة المنهج العلمي</span> (أبحاث علم الأعصاب وتأثير الخوارزميات) ومرونة السرد الرقمي، حيث نوظف لغة بصرية تحاكي تجربة التصفح القهري لكي نضعها تحت مجهر النقد والتحليل.
+                        </p>
+                    </div>
+                    <div class="p-8 bg-slate-900 text-slate-200 rounded-[2rem] shadow-xl relative overflow-hidden">
+                        <svg class="absolute top-4 left-4 w-12 h-12 text-white/10" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H14.017C13.4647 8 13.017 8.44772 13.017 9V15C13.017 16.1046 12.1216 17 11.017 17H10.017C8.91243 17 8.01705 16.1046 8.01705 15V9C8.01705 8.44772 8.46477 8 9.01705 8H11.017V5H9.01705C6.80791 5 5.01705 6.79086 5.01705 9V15C5.01705 18.3137 7.70335 21 11.017 21H14.017Z"></path></svg>
+                        <p class="relative text-lg italic leading-[1.8] font-light">
+                            نؤمن أن الهدوء الطباعي هو الشكل الأكثر جذرية للمقاومة في عالم يفيض بالمحفزات البصرية. نقدّم محتوى يمنح القارئ وعياً ذاتياً بحركته على الشاشة، وندعوه ليكون شريكاً في فهم التحول العميق لمفهوم الوقت والانتباه في حياتنا الرقمية.
+                        </p>
+                    </div>
+                </div>
+
+                <section>
+                    <div class="flex items-center justify-between mb-8">
+                        <h4 class="text-2xl font-extrabold text-slate-900">ركائزنا</h4>
+                        <div class="flex-grow h-px bg-slate-100 mr-6"></div>
+                    </div>
+                </section>
+
+                <!-- فريق العمل والقائمين بتصميم بطاقات -->
+                <section class="bg-slate-50 p-8 md:p-12 rounded-[3rem] border border-slate-200">
+                    <div class="mb-10">
+                        <h4 class="text-2xl font-bold text-slate-900">فريق دوبامين</h4>
+                        <p class="text-blue-600 font-medium text-lg mt-1">طلاب قسم الصحافة – كلية الإعلام</p>
+                        <p class="text-slate-400 font-medium tracking-widest text-sm uppercase">جامعة الأزهر | دفعة 2026</p>
+                    </div>
+                    
+                    <div class="relative mb-8">
+                        <span class="inline-block px-4 py-1 bg-white border border-slate-200 rounded-full text-slate-900 font-bold text-sm mb-6">القائمون علي المشروع</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">01</span>
+                                محمود وليد محمود
+                            </div>
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">02</span>
+                                محمد خليل محمد
+                            </div>
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">03</span>
+                                محمد الشحات السيد
+                            </div>
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">04</span>
+                                أحمد محمد محمد
+                            </div>
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">05</span>
+                                محمود صابر السيد
+                            </div>
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">06</span>
+                                محمود نبيل عبد الدايم
+                            </div>
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">07</span>
+                                محمود عصام عبد الحكيم
+                            </div>
+                            <div class="name-tag flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-100 text-slate-700 font-medium">
+                                <span class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-600 rounded-full text-xs font-bold">08</span>
+                                مصطفى يحيى صوفي
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- تذييل النافذة -->
+            <div class="mt-16 pt-8 border-t border-slate-100 text-center">
+                <p class="text-slate-400 text-sm font-medium">حقوق الملكية الفكرية &copy; 2026 مشروع تخرج دوبامين</p>
+                <p class="text-blue-500 font-bold text-xs mt-1 uppercase tracking-tighter">Azhar Media Faculty - Journalism Department</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDopamine() {
+        const popup = document.getElementById('dopamine-popup');
+        popup.style.display = 'flex';
+        // إضافة تأخير بسيط لتفعيل الأنيميشن
+        setTimeout(() => {
+            popup.classList.add('active');
+        }, 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDopamine() {
+        const popup = document.getElementById('dopamine-popup');
+        popup.classList.remove('active');
+        // انتظار انتهاء الأنيميشن قبل الإخفاء
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 400);
+        document.body.style.overflow = 'auto';
+    }
+
+    // إغلاق عند النقر خارج المحتوى
+    window.onclick = function(event) {
+        const modal = document.getElementById('dopamine-popup');
+        if (event.target == modal) {
+            closeDopamine();
+        }
+    }
+
+    // دعم مفتاح Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === "Escape") closeDopamine();
+    });
+</script>
+<!-- نهاية كود مشروع دوبامين الاحترافي -->
+
+
+
                 <span class="team-name">محمود وليد محمود</span>
                 <span class="team-name">محمد خليل محمد</span>
                 <span class="team-name">محمد الشحات السيد</span>
