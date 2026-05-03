@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="jpMp5DgPIK1zfpJjYl0AoBZ7dZQ64dHe-59k28jXsDw" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" id="themeColor" content="#0f172a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-navbutton-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>دوبامين - منصة علمية متخصصة</title>
+    <meta property="og:title" content="دوبامين | منصة أبحاث الدوبامين">
+    <meta property="og:description" content="منصة علمية متخصصة في أبحاث الدوبامين - أحدث التقارير والدراسات">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:site_name" content="دوبامين">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="دوبامين">
+    <meta name="twitter:description" content="منصة علمية متخصصة في أبحاث الدوبامين">
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <link rel="icon" type="image/jpeg" sizes="16x16" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg2Xrst_-NA_H-l97_0RgyhAuotWFS2I2MI1A4uVBidAIYPCbajJumUTdar9u55C-VF7tKq4m_MUza7zBtxbV0hTTY_wojRA_ZNIfKVmThAuxDaFaO3CYpMOupFYpSsxSj1Kj9m7QDfHxgULcD89zvsQd3KRUKqZVAMlCgl0XivNh-amFmq6_ZzQJ4j2225/s729/18.jpg%20(1).jpeg">
+    
+    <style>
+        * { 
+            font-family: 'Cairo', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        html { 
+            scroll-behavior: smooth; 
+        }
+
+        /* Material Design 3 Variables */
+        :root {
+            --md-primary: #2563eb;
+            --md-primary-dark: #1d4ed8;
+            --md-primary-light: #60a5fa;
+            --md-surface: #ffffff;
+            --md-surface-dark: #0f172a;
+            --md-surface-container: #f8fafc;
+            --md-surface-container-dark: #1e293b;
+            --md-on-primary: #ffffff;
+            --md-on-surface: #1e293b;
+            --md-on-surface-dark: #f1f5f9;
+            --md-on-surface-variant: #475569;
+            --md-outline: #e2e8f0;
+            --md-outline-dark: #334155;
+            --md-elevation-1: 0 1px 3px 1px rgba(0,0,0,0.15), 0 1px 2px 0 rgba(0,0,0,0.3);
+            --md-elevation-2: 0 2px 6px 2px rgba(0,0,0,0.15), 0 1px 2px 0 rgba(0,0,0,0.3);
+            --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px 0 rgba(0,0,0,0.3);
+            --md-elevation-4: 0 6px 10px 4px rgba(0,0,0,0.15), 0 2px 3px 0 rgba(0,0,0,0.3);
+            --md-elevation-5: 0 8px 12px 6px rgba(0,0,0,0.15), 0 4px 4px 0 rgba(0,0,0,0.3);
+            --md-ripple: rgba(37, 99, 235, 0.12);
+            --md-ripple-dark: rgba(59, 130, 246, 0.2);
+        }
+
+        body {
+            background: var(--md-surface-container);
+            color: var(--md-on-surface);
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        body.dark {
+            --md-surface: #0f172a;
+            --md-surface-container: #1e293b;
+            --md-on-surface: #f1f5f9;
+            --md-on-surface-variant: #94a3b8;
+            --md-outline: #334155;
+            background: var(--md-surface-container);
+            color: var(--md-on-surface);
+        }
+
+        /* Ripple Effect - Material Design */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .ripple:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.4);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .ripple:active:after {
+            width: 200%;
+            height: 200%;
+            opacity: 1;
+            transition: 0s;
+        }
+
+        body.dark .ripple:after {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        /* Top App Bar - Material Design 3 */
+        .top-app-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 64px;
+            background: var(--md-surface);
+            box-shadow: var(--md-elevation-2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(var(--md-surface-rgb, 255,255,255), 0.92);
+        }
+
+        body.dark .top-app-bar {
+            background: rgba(15, 23, 42, 0.92);
+        }
+
+        :root {
+            --md-surface-rgb: 255, 255, 255;
+        }
+        body.dark {
+            --md-surface-rgb: 15, 23, 42;
+        }
+
+        .menu-icon, .search-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .menu-icon:hover, .search-icon:hover {
+            background: var(--md-ripple);
+        }
+
+        /* Navigation Drawer - Side Menu */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            bottom: 0;
+            width: 280px;
+            background: var(--md-surface);
+            z-index: 200;
+            transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: var(--md-elevation-5);
+            overflow-y: auto;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 199;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--md-outline);
+            text-align: center;
+        }
+
+        .drawer-header img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+        }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: var(--md-on-surface);
+            text-decoration: none;
+        }
+
+        .drawer-item:hover {
+            background: var(--md-ripple);
+        }
+
+        .drawer-item i {
+            width: 24px;
+            color: var(--md-primary);
+        }
+
+        /* Bottom Navigation Bar - Material Design 3 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--md-surface);
+            box-shadow: var(--md-elevation-3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 12px 16px;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(var(--md-surface-rgb), 0.96);
+        }
+
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 4px;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--md-on-surface-variant);
+            font-size: 12px;
+        }
+
+        .bottom-nav-item i {
+            font-size: 24px;
+        }
+
+        .bottom-nav-item.active {
+            color: var(--md-primary);
+            background: var(--md-ripple);
+        }
+
+        .bottom-nav-item:active {
+            transform: scale(0.95);
+        }
+
+        /* FAB - Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 96px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: var(--md-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--md-elevation-4);
+            transition: all 0.3s;
+            z-index: 99;
+            border: none;
+        }
+
+        .fab:active {
+            transform: scale(0.92);
+            box-shadow: var(--md-elevation-2);
+        }
+
+        .fab i {
+            font-size: 24px;
+        }
+
+        /* Material Cards */
+        .material-card {
+            background: var(--md-surface);
+            border-radius: 28px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--md-elevation-1);
+            position: relative;
+        }
+
+        .material-card:active {
+            transform: scale(0.98);
+        }
+
+        .material-card:hover {
+            box-shadow: var(--md-elevation-3);
+        }
+
+        /* Cover Image with concave effect */
+        .card-media {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* Categories Badges */
+        .category-badge {
+            font-size: 10px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            background: rgba(37, 99, 235, 0.12);
+            color: var(--md-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-badge:active {
+            transform: scale(0.95);
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--md-primary-dark), var(--md-primary), var(--md-primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Hero Logo Animation */
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--md-primary);
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Scroll Top Button (FAB style) */
+        .scroll-fab {
+            position: fixed;
+            bottom: 96px;
+            left: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background: var(--md-surface);
+            color: var(--md-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--md-elevation-2);
+            transition: all 0.3s;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            border: 1px solid var(--md-outline);
+        }
+
+        .scroll-fab.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-fab:active {
+            transform: scale(0.92);
+        }
+
+        /* Quiz Container - Material Style */
+        .quiz-material {
+            background: var(--md-surface);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: var(--md-elevation-2);
+        }
+
+        .quiz-progress {
+            height: 8px;
+            background: var(--md-outline);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            background: var(--md-primary);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.4s;
+        }
+
+        .quiz-option {
+            padding: 14px 16px;
+            border: 1px solid var(--md-outline);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .quiz-option:active {
+            transform: scale(0.97);
+        }
+
+        .quiz-option.selected {
+            background: var(--md-primary);
+            color: white;
+            border-color: var(--md-primary);
+        }
+
+        /* Stat Card */
+        .stat-card {
+            background: var(--md-surface);
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .stat-card:active {
+            transform: scale(0.96);
+        }
+
+        /* Modals */
+        .modal-material {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-material.show {
+            display: flex;
+        }
+
+        .modal-content-material {
+            background: var(--md-surface);
+            border-radius: 32px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px;
+            position: relative;
+        }
+
+        /* Search Modal */
+        .search-modal-material {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--md-surface);
+            z-index: 400;
+        }
+
+        .search-modal-material.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-header-material {
+            padding: 16px;
+            border-bottom: 1px solid var(--md-outline);
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-header-material input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 28px;
+            border: 1px solid var(--md-outline);
+            background: var(--md-surface-container);
+            color: var(--md-on-surface);
+        }
+
+        .search-results-material {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* Detail Page */
+        .detail-container-material {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--md-surface);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: var(--md-elevation-2);
+        }
+
+        .detail-content {
+            line-height: 1.8;
+            color: var(--md-on-surface-variant);
+        }
+
+        /* Responsive Grid */
+        .grid-material {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .grid-material {
+                gap: 12px;
+            }
+            .card-media {
+                height: 160px;
+            }
+        }
+
+        /* Loading Shimmer */
+        .shimmer-material {
+            background: linear-gradient(90deg, var(--md-outline) 0%, var(--md-surface) 50%, var(--md-outline) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 20px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Hide main content initially for smooth load */
+        #mainContent {
+            margin-top: 64px;
+            padding: 16px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        .footer-material {
+            background: var(--md-surface);
+            border-top: 1px solid var(--md-outline);
+            padding: 32px 16px;
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        /* Video Container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top App Bar -->
+    <div class="top-app-bar">
+        <div class="menu-icon ripple" onclick="toggleDrawer()">
+            <i class="fas fa-bars fa-xl"></i>
+        </div>
+        <div class="flex items-center gap-2">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg" class="w-8 h-8 rounded-full object-cover" alt="logo">
+            <h1 id="headerTitle" class="text-lg font-bold gradient-text">دوبامين</h1>
+        </div>
+        <div class="search-icon ripple" onclick="openSearchModal()">
+            <i class="fas fa-search fa-xl"></i>
+        </div>
+    </div>
+
+    <!-- Navigation Drawer -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg" alt="logo">
+            <h3 class="font-bold">دوبامين</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400">وعي رقمي = عقل سليم</p>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('home')">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('reports')">
+            <i class="fas fa-newspaper"></i>
+            <span>التقارير</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('articles')">
+            <i class="fas fa-pen-fancy"></i>
+            <span>المقالات</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('news')">
+            <i class="fas fa-bullhorn"></i>
+            <span>الأخبار</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('interviews')">
+            <i class="fas fa-comments"></i>
+            <span>حوارات</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('investigations')">
+            <i class="fas fa-microscope"></i>
+            <span>تحقيقات</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('infographics')">
+            <i class="fas fa-chart-pie"></i>
+            <span>إنفوجرافيك</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('videos')">
+            <i class="fas fa-video"></i>
+            <span>فيديو</span>
+        </div>
+        <div class="drawer-item ripple" onclick="navigateTo('quiz')">
+            <i class="fas fa-chart-line"></i>
+            <span>مقياس الإدمان</span>
+        </div>
+        <div class="drawer-item ripple" onclick="openDopamineAbout()">
+            <i class="fas fa-users"></i>
+            <span>من نحن</span>
+        </div>
+        <div class="drawer-item ripple" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i>
+            <span>الوضع المظلم</span>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="search-modal-material">
+        <div class="search-header-material">
+            <input type="text" id="searchInput" placeholder="بحث عن تقارير، مقالات، فيديوهات..." autocomplete="off">
+            <button class="px-4 py-2 rounded-full" style="background: var(--md-primary); color: white;" onclick="performSearch()">بحث</button>
+            <button class="w-10 h-10 rounded-full ripple" onclick="closeSearchModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="searchResults" class="search-results-material"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <div class="shimmer-material h-96 w-full rounded-2xl"></div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-item ripple" data-nav="home" onclick="navigateTo('home')">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </div>
+        <div class="bottom-nav-item ripple" data-nav="reports" onclick="navigateTo('reports')">
+            <i class="fas fa-newspaper"></i>
+            <span>تقارير</span>
+        </div>
+        <div class="bottom-nav-item ripple" data-nav="articles" onclick="navigateTo('articles')">
+            <i class="fas fa-pen-fancy"></i>
+            <span>مقالات</span>
+        </div>
+        <div class="bottom-nav-item ripple" data-nav="videos" onclick="navigateTo('videos')">
+            <i class="fas fa-video"></i>
+            <span>فيديو</span>
+        </div>
+        <div class="bottom-nav-item ripple" data-nav="quiz" onclick="navigateTo('quiz')">
+            <i class="fas fa-chart-line"></i>
+            <span>اختبار</span>
+        </div>
+    </div>
+
+    <!-- FAB for Search -->
+    <div class="fab ripple" onclick="openSearchModal()">
+        <i class="fas fa-search"></i>
+    </div>
+
+    <!-- Scroll to Top FAB -->
+    <div id="scrollFab" class="scroll-fab ripple" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <footer class="footer-material">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg" class="w-16 h-16 rounded-full mx-auto mb-3 object-cover">
+        <h3 class="text-xl font-bold gradient-text mb-2">دوبامين</h3>
+        <p class="text-sm text-gray-500 mb-4">وعي رقمي = عقل سليم</p>
+        <div class="flex flex-wrap justify-center gap-2 mb-4">
+            <span class="text-xs px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-800">محمود وليد</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-800">محمد خليل</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-800">محمد الشحات</span>
+            <span class="text-xs px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-800">أحمد محمد</span>
+        </div>
+        <a href="https://www.facebook.com/share/1DfeQVVvSG/" target="_blank" class="inline-flex items-center gap-2 px-6 py-2 rounded-full text-white" style="background: #1877f2;">
+            <i class="fab fa-facebook-f"></i>
+            <span>تابعنا على فيسبوك</span>
+        </a>
+        <p id="footerText" class="text-xs text-gray-400 mt-4">© 2026 دوبامين - جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // Firebase Configuration (same as yours)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCuYQh5gqlss3gdRjpSPZm-zShiwSAtetQ",
+            authDomain: "prmaga1.firebaseapp.com",
+            databaseURL: "https://prmaga1-default-rtdb.firebaseio.com/",
+            projectId: "prmaga1",
+            storageBucket: "prmaga1.firebasestorage.app",
+            messagingSenderId: "750206146558",
+            appId: "1:750206146558:web:43ca060ad36e830ca252af"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Quiz Questions
+        const defaultQuiz = [
+            { text: "كم مرة تشعر برغبة ملحة في التحقق من هاتفك ووسائل التواصل الاجتماعي؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تجد صعوبة في التوقف عن استخدام الأجهزة الإلكترونية؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تتناول الطعام بدافع الملل أو التوتر؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "هل تشعر بالنشوة عند شراء أشياء جديدة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] },
+            { text: "كم مرة تقضي ساعات في مشاهدة المقاطع القصيرة؟", options: ["دائمًا", "كثيرًا", "أحيانًا", "نادرًا"], scores: [4,3,2,1] }
+        ];
+
+        let quizQuestions = [];
+        let userAnswers = [];
+        let currentQuestionIndex = 0;
+        let allCategories = [];
+        let allContentCache = null;
+        let currentView = 'home';
+        let currentCategoryFilter = null;
+
+        // Helper Functions
+        function escapeHtml(str) { 
+            if (!str) return ''; 
+            return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); 
+        }
+
+        function formatContent(content) {
+            if (!content) return '<p>لا يوجد محتوى</p>';
+            return content;
+        }
+
+        function getYouTubeEmbedUrl(url) {
+            if (!url) return '';
+            if (url.includes('youtu.be/')) {
+                let id = url.split('youtu.be/')[1];
+                if (id) return `https://www.youtube.com/embed/${id.split('?')[0]}`;
+            }
+            if (url.includes('youtube.com/watch')) {
+                let params = new URLSearchParams(url.split('?')[1]);
+                let id = params.get('v');
+                if (id) return `https://www.youtube.com/embed/${id}`;
+            }
+            return url;
+        }
+
+        // Theme
+        function setThemeColor(color) {
+            let meta = document.querySelector('meta[name="theme-color"]');
+            if (!meta) { 
+                meta = document.createElement('meta'); 
+                meta.name = 'theme-color'; 
+                document.head.appendChild(meta); 
+            }
+            meta.content = color;
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark');
+            if (isDark) {
+                body.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                setThemeColor('#ffffff');
+            } else {
+                body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                setThemeColor('#0f172a');
+            }
+        }
+
+        // Drawer
+        function toggleDrawer() {
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('drawerOverlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function closeDrawer() {
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('drawerOverlay');
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+
+        // Navigation
+        function setActiveNavItem(navId) {
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.nav === navId) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        async function navigateTo(section) {
+            closeDrawer();
+            currentView = section;
+            setActiveNavItem(section === 'home' ? 'home' : section);
+            
+            const main = document.getElementById('mainContent');
+            main.innerHTML = '<div class="shimmer-material h-96 w-full rounded-2xl"></div>';
+            
+            if (section === 'home') {
+                await showHome();
+            } else if (section === 'quiz') {
+                await showQuizSection();
+            } else {
+                await showSectionPage(section);
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Load Categories
+        async function loadCategories() {
+            const snap = await db.ref('categories').once('value');
+            const data = snap.val();
+            allCategories = data ? Object.values(data) : [];
+            return allCategories;
+        }
+
+        // Load Texts
+        async function loadTexts() {
+            const snap = await db.ref('site_texts').once('value');
+            const texts = snap.val() || {
+                siteTitle: "دوبامين", headerTitle: "دوبامين", heroTitle: "الدوبامين",
+                heroDesc: "استكشف أحدث الأبحاث والتقارير حول الناقل العصبي الأكثر تأثيرًا",
+                reportsTitle: "التقارير العلمية", articlesTitle: "المقالات العلمية",
+                newsTitle: "أخبار الدوبامين", interviewsTitle: "حوارات وخبراء",
+                investigationsTitle: "التحقيقات", infographicsTitle: "الإنفوجرافيك",
+                videosTitle: "الفيديوهات", quizTitle: "مقياس إدمان الدوبامين",
+                footer: "© 2026 دوبامين"
+            };
+            document.title = texts.siteTitle;
+            document.getElementById('headerTitle').innerText = texts.headerTitle;
+            document.getElementById('footerText').innerText = texts.footer;
+            return texts;
+        }
+
+        // Load Counts
+        async function loadCounts() {
+            const reports = await db.ref('reports').once('value');
+            document.getElementById('reportsCount') && (document.getElementById('reportsCount').innerText = reports.numChildren() || '0');
+            const articles = await db.ref('articles').once('value');
+            document.getElementById('articlesCount') && (document.getElementById('articlesCount').innerText = articles.numChildren() || '0');
+            const news = await db.ref('news').once('value');
+            document.getElementById('newsCount') && (document.getElementById('newsCount').innerText = news.numChildren() || '0');
+            const interviews = await db.ref('interviews').once('value');
+            document.getElementById('interviewsCount') && (document.getElementById('interviewsCount').innerText = interviews.numChildren() || '0');
+            const quizResults = await db.ref('quiz_results').once('value');
+            document.getElementById('quizCount') && (document.getElementById('quizCount').innerText = quizResults.numChildren() || '0');
+            if (quizResults.exists()) {
+                const vals = Object.values(quizResults.val());
+                const avg = Math.round(vals.reduce((s,v) => s + (v.percentage||0), 0) / vals.length);
+                document.getElementById('avgScore') && (document.getElementById('avgScore').innerText = avg + '%');
+            }
+        }
+
+        // Load Section Data for homepage
+        async function loadSectionCards(type, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '<div class="shimmer-material h-56 rounded-2xl"></div><div class="shimmer-material h-56 rounded-2xl"></div>';
+            
+            const snap = await db.ref(type).once('value');
+            const data = snap.val();
+            
+            if (data && Object.keys(data).length) {
+                container.innerHTML = '';
+                for (const [id, item] of Object.entries(data).slice(0, 6)) {
+                    const shareUrl = `${window.location.origin}/?type=${type}&id=${id}`;
+                    const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+                    const itemCategories = item.categories || [];
+                    const categoryNames = itemCategories.map(catId => {
+                        const cat = allCategories.find(c => c.id === catId);
+                        return cat ? cat.name : catId;
+                    });
+                    const categoryColors = itemCategories.map(catId => {
+                        const cat = allCategories.find(c => c.id === catId);
+                        return cat ? cat.color : '#2563eb';
+                    });
+                    
+                    const categoriesHtml = categoryNames.map((name, idx) => `
+                        <span class="category-badge" onclick="event.stopPropagation(); filterByCategory('${itemCategories[idx]}', '${escapeHtml(name)}')">
+                            <i class="fas fa-tag fa-xs"></i> ${escapeHtml(name)}
+                        </span>
+                    `).join('');
+                    
+                    if (type === 'videos') {
+                        const embedUrl = getYouTubeEmbedUrl(item.videoUrl || '');
+                        container.innerHTML += `
+                            <div class="material-card" onclick="openDetail('${type}', '${id}')">
+                                <div class="video-container">
+                                    <iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="p-3">
+                                    <h3 class="font-bold text-sm line-clamp-2">${escapeHtml(item.title)}</h3>
+                                    ${categoriesHtml}
+                                    <p class="text-xs mt-1 text-gray-500 dark:text-gray-400 line-clamp-2">${escapeHtml(item.description || '')}</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML += `
+                            <div class="material-card" onclick="openDetail('${type}', '${id}')">
+                                <div class="card-media" style="background-image: url('${imageUrl}');"></div>
+                                <div class="p-3">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-xs px-2 py-0.5 rounded-full text-white" style="background: var(--md-primary);">${escapeHtml(item.date || '')}</span>
+                                    </div>
+                                    <h3 class="font-bold text-sm mt-1 line-clamp-2">${escapeHtml(item.title)}</h3>
+                                    ${categoriesHtml}
+                                    <p class="text-xs mt-1 text-gray-500 dark:text-gray-400 line-clamp-2">${escapeHtml(item.summary || '')}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+            } else {
+                container.innerHTML = '<div class="text-center py-8 text-gray-500">لا توجد محتويات</div>';
+            }
+        }
+
+        // Filter by Category
+        async function filterByCategory(categoryId, categoryName) {
+            currentCategoryFilter = { id: categoryId, name: categoryName };
+            await loadFilteredResults();
+        }
+
+        async function loadFilteredResults() {
+            const main = document.getElementById('mainContent');
+            const texts = await loadTexts();
+            
+            const sections = ['reports', 'articles', 'news', 'interviews', 'investigations', 'infographics', 'videos'];
+            const sectionTitles = {
+                reports: texts.reportsTitle, articles: texts.articlesTitle, news: texts.newsTitle,
+                interviews: texts.interviewsTitle, investigations: texts.investigationsTitle,
+                infographics: texts.infographicsTitle, videos: texts.videosTitle
+            };
+            const sectionIcons = {
+                reports: 'fa-newspaper', articles: 'fa-pen-fancy', news: 'fa-bullhorn',
+                interviews: 'fa-comments', investigations: 'fa-microscope', infographics: 'fa-chart-pie', videos: 'fa-video'
+            };
+            
+            let filteredData = {};
+            let totalCount = 0;
+            
+            for (const section of sections) {
+                const snap = await db.ref(section).once('value');
+                const data = snap.val();
+                if (data) {
+                    filteredData[section] = {};
+                    Object.entries(data).forEach(([id, item]) => {
+                        const itemCategories = item.categories || [];
+                        if (itemCategories.includes(currentCategoryFilter.id)) {
+                            filteredData[section][id] = item;
+                            totalCount++;
+                        }
+                    });
+                }
+            }
+            
+            let sectionsHtml = `<div class="mb-4 p-3 rounded-xl" style="background: var(--md-primary); color: white; text-align: center;">
+                <i class="fas fa-filter ml-2"></i> تصفية حسب: ${escapeHtml(currentCategoryFilter.name)} (${totalCount} نتيجة)
+                <button onclick="clearFilter()" class="mr-3 text-sm underline">إلغاء</button>
+            </div>`;
+            
+            for (const section of sections) {
+                const sectionData = filteredData[section];
+                if (sectionData && Object.keys(sectionData).length > 0) {
+                    let cardsHtml = '';
+                    for (const [id, item] of Object.entries(sectionData)) {
+                        const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+                        const itemCategories = item.categories || [];
+                        const categoryNames = itemCategories.map(catId => {
+                            const cat = allCategories.find(c => c.id === catId);
+                            return cat ? cat.name : catId;
+                        });
+                        const categoryColors = itemCategories.map(catId => {
+                            const cat = allCategories.find(c => c.id === catId);
+                            return cat ? cat.color : '#2563eb';
+                        });
+                        const categoriesHtml = categoryNames.map((name, idx) => `
+                            <span class="category-badge" style="background: ${categoryColors[idx]}20; color: ${categoryColors[idx]}">
+                                <i class="fas fa-tag fa-xs"></i> ${escapeHtml(name)}
+                            </span>
+                        `).join('');
+                        
+                        if (section === 'videos') {
+                            const embedUrl = getYouTubeEmbedUrl(item.videoUrl || '');
+                            cardsHtml += `
+                                <div class="material-card" onclick="openDetail('${section}', '${id}')">
+                                    <div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>
+                                    <div class="p-3"><h3 class="font-bold text-sm">${escapeHtml(item.title)}</h3>${categoriesHtml}</div>
+                                </div>
+                            `;
+                        } else {
+                            cardsHtml += `
+                                <div class="material-card" onclick="openDetail('${section}', '${id}')">
+                                    <div class="card-media" style="background-image: url('${imageUrl}');"></div>
+                                    <div class="p-3"><h3 class="font-bold text-sm">${escapeHtml(item.title)}</h3>${categoriesHtml}</div>
+                                </div>
+                            `;
+                        }
+                    }
+                    sectionsHtml += `
+                        <section class="mb-6">
+                            <h2 class="text-lg font-bold mb-3 flex items-center gap-2">
+                                <i class="fas ${sectionIcons[section]}" style="color: var(--md-primary);"></i>
+                                <span class="gradient-text">${sectionTitles[section]}</span>
+                            </h2>
+                            <div class="grid-material">${cardsHtml}</div>
+                        </section>
+                    `;
+                }
+            }
+            
+            if (totalCount === 0) {
+                sectionsHtml += '<div class="text-center py-12 text-gray-500"><i class="fas fa-inbox fa-3x mb-3"></i><p>لا توجد محتويات في هذا التصنيف</p></div>';
+            }
+            
+            main.innerHTML = sectionsHtml;
+        }
+
+        async function clearFilter() {
+            currentCategoryFilter = null;
+            await showHome();
+        }
+
+        // Open Detail Page
+        async function openDetail(type, id) {
+            window.location.href = `?type=${type}&id=${id}`;
+        }
+
+        // Show Homepage
+        async function showHome() {
+            await loadCategories();
+            const texts = await loadTexts();
+            const logoUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg";
+            
+            const main = document.getElementById('mainContent');
+            main.innerHTML = `
+                <!-- Hero Section -->
+                <div class="text-center p-6 rounded-3xl mb-6" style="background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(37,99,235,0.05));">
+                    <img src="${logoUrl}" class="hero-logo mx-auto" onclick="openImageModal('${logoUrl}')">
+                    <h2 class="text-xl md:text-2xl font-bold">${texts.heroTitle || 'الدوبامين'}</h2>
+                    <p class="gradient-text text-lg">وعي رقمي = عقل سليم</p>
+                    <p class="text-sm text-gray-500 mt-2">${texts.heroDesc || ''}</p>
+                    <div class="flex gap-3 justify-center mt-4">
+                        <button class="px-6 py-2 rounded-full text-white" style="background: var(--md-primary);" onclick="navigateTo('reports')">استكشف</button>
+                        <button class="px-6 py-2 rounded-full" style="border: 2px solid var(--md-primary); color: var(--md-primary);" onclick="navigateTo('quiz')">اختبر نفسك</button>
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-2 mb-6">
+                    <div class="stat-card" onclick="navigateTo('reports')"><i class="fas fa-file-alt text-xl"></i><div id="reportsCount" class="font-bold text-lg">0</div><div class="text-xs">تقارير</div></div>
+                    <div class="stat-card" onclick="navigateTo('articles')"><i class="fas fa-pen-nib text-xl"></i><div id="articlesCount" class="font-bold text-lg">0</div><div class="text-xs">مقالات</div></div>
+                    <div class="stat-card" onclick="navigateTo('news')"><i class="fas fa-bullhorn text-xl"></i><div id="newsCount" class="font-bold text-lg">0</div><div class="text-xs">أخبار</div></div>
+                    <div class="stat-card" onclick="navigateTo('interviews')"><i class="fas fa-comments text-xl"></i><div id="interviewsCount" class="font-bold text-lg">0</div><div class="text-xs">حوارات</div></div>
+                    <div class="stat-card" onclick="navigateTo('quiz')"><i class="fas fa-users text-xl"></i><div id="quizCount" class="font-bold text-lg">0</div><div class="text-xs">مشاركات</div></div>
+                    <div class="stat-card" onclick="navigateTo('quiz')"><i class="fas fa-chart-line text-xl"></i><div id="avgScore" class="font-bold text-lg">--</div><div class="text-xs">المتوسط</div></div>
+                </div>
+                
+                <!-- Sections -->
+                <section class="mb-6"><h2 class="text-lg font-bold mb-3 flex items-center gap-2"><i class="fas fa-newspaper" style="color: var(--md-primary);"></i><span class="gradient-text">${texts.reportsTitle}</span></h2><div id="reportsContainer" class="grid-material"></div></section>
+                <section class="mb-6"><h2 class="text-lg font-bold mb-3 flex items-center gap-2"><i class="fas fa-pen-fancy" style="color: var(--md-primary);"></i><span class="gradient-text">${texts.articlesTitle}</span></h2><div id="articlesContainer" class="grid-material"></div></section>
+                <section class="mb-6"><h2 class="text-lg font-bold mb-3 flex items-center gap-2"><i class="fas fa-bullhorn" style="color: var(--md-primary);"></i><span class="gradient-text">${texts.newsTitle}</span></h2><div id="newsContainer" class="grid-material"></div></section>
+                <section class="mb-6"><h2 class="text-lg font-bold mb-3 flex items-center gap-2"><i class="fas fa-microscope" style="color: var(--md-primary);"></i><span class="gradient-text">${texts.investigationsTitle}</span></h2><div id="investigationsContainer" class="grid-material"></div></section>
+                <section class="mb-6"><h2 class="text-lg font-bold mb-3 flex items-center gap-2"><i class="fas fa-video" style="color: var(--md-primary);"></i><span class="gradient-text">${texts.videosTitle}</span></h2><div id="videosContainer" class="grid-material"></div></section>
+                
+                <section class="quiz-material text-center">
+                    <h3 class="text-xl font-bold gradient-text">${texts.quizTitle}</h3>
+                    <p class="text-sm text-gray-500 mb-4">اختبار علمي دقيق لتقييم الإدمان</p>
+                    <button class="px-8 py-3 rounded-full text-white" style="background: var(--md-primary);" onclick="navigateTo('quiz')">ابدأ الاختبار</button>
+                </section>
+            `;
+            
+            await loadSectionCards('reports', 'reportsContainer');
+            await loadSectionCards('articles', 'articlesContainer');
+            await loadSectionCards('news', 'newsContainer');
+            await loadSectionCards('investigations', 'investigationsContainer');
+            await loadSectionCards('videos', 'videosContainer');
+            await loadCounts();
+        }
+
+        // Show Section Page (all items)
+        async function showSectionPage(section) {
+            await loadCategories();
+            const texts = await loadTexts();
+            const sectionTitles = {
+                reports: texts.reportsTitle, articles: texts.articlesTitle, news: texts.newsTitle,
+                interviews: texts.interviewsTitle, investigations: texts.investigationsTitle,
+                infographics: texts.infographicsTitle, videos: texts.videosTitle
+            };
+            const sectionIcons = {
+                reports: 'fa-newspaper', articles: 'fa-pen-fancy', news: 'fa-bullhorn',
+                interviews: 'fa-comments', investigations: 'fa-microscope', infographics: 'fa-chart-pie', videos: 'fa-video'
+            };
+            
+            const snap = await db.ref(section).once('value');
+            const data = snap.val();
+            const main = document.getElementById('mainContent');
+            
+            if (!data || Object.keys(data).length === 0) {
+                main.innerHTML = `<div class="text-center py-12"><i class="fas fa-inbox fa-3x mb-3"></i><p>لا توجد محتويات</p></div>`;
+                return;
+            }
+            
+            let cardsHtml = '';
+            for (const [id, item] of Object.entries(data)) {
+                const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+                const itemCategories = item.categories || [];
+                const categoryNames = itemCategories.map(catId => {
+                    const cat = allCategories.find(c => c.id === catId);
+                    return cat ? cat.name : catId;
+                });
+                const categoryColors = itemCategories.map(catId => {
+                    const cat = allCategories.find(c => c.id === catId);
+                    return cat ? cat.color : '#2563eb';
+                });
+                const categoriesHtml = categoryNames.map((name, idx) => `
+                    <span class="category-badge" style="background: ${categoryColors[idx]}20; color: ${categoryColors[idx]}" onclick="event.stopPropagation(); filterByCategory('${itemCategories[idx]}', '${escapeHtml(name)}')">
+                        <i class="fas fa-tag fa-xs"></i> ${escapeHtml(name)}
+                    </span>
+                `).join('');
+                
+                if (section === 'videos') {
+                    const embedUrl = getYouTubeEmbedUrl(item.videoUrl || '');
+                    cardsHtml += `
+                        <div class="material-card" onclick="openDetail('${section}', '${id}')">
+                            <div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>
+                            <div class="p-3"><h3 class="font-bold">${escapeHtml(item.title)}</h3>${categoriesHtml}</div>
+                        </div>
+                    `;
+                } else {
+                    cardsHtml += `
+                        <div class="material-card" onclick="openDetail('${section}', '${id}')">
+                            <div class="card-media" style="background-image: url('${imageUrl}');"></div>
+                            <div class="p-3">
+                                <span class="text-xs px-2 py-0.5 rounded-full text-white" style="background: var(--md-primary);">${escapeHtml(item.date || '')}</span>
+                                <h3 class="font-bold mt-2">${escapeHtml(item.title)}</h3>
+                                ${categoriesHtml}
+                                <p class="text-sm mt-1 text-gray-500 dark:text-gray-400 line-clamp-2">${escapeHtml(item.summary || '')}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            main.innerHTML = `
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas ${sectionIcons[section]} text-2xl" style="color: var(--md-primary);"></i>
+                    <h1 class="text-2xl font-bold gradient-text">${sectionTitles[section] || section}</h1>
+                </div>
+                <div class="grid-material">${cardsHtml}</div>
+            `;
+        }
+
+        // Quiz Section
+        async function showQuizSection() {
+            await loadQuiz();
+            const main = document.getElementById('mainContent');
+            main.innerHTML = `
+                <div class="quiz-material">
+                    <h2 class="text-2xl font-bold gradient-text text-center mb-2">مقياس إدمان الدوبامين</h2>
+                    <p class="text-center text-gray-500 mb-6">اختبار علمي مكون من ${quizQuestions.length} أسئلة</p>
+                    <div id="quizContainer"></div>
+                    <div id="quizResult" class="mt-6 hidden"></div>
+                </div>
+            `;
+            renderQuiz();
+        }
+
+        async function loadQuiz() {
+            const snap = await db.ref('quiz/questions').once('value');
+            quizQuestions = snap.exists() ? snap.val() : defaultQuiz;
+            userAnswers = new Array(quizQuestions.length).fill(-1);
+            currentQuestionIndex = 0;
+        }
+
+        function renderQuiz() {
+            if (!quizQuestions.length) return;
+            const currentQ = quizQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex) / quizQuestions.length) * 100;
+            const selectedAnswer = userAnswers[currentQuestionIndex];
+            
+            let html = `
+                <div class="quiz-progress mb-6"><div class="quiz-progress-fill" style="width: ${progress}%"></div></div>
+                <p class="text-sm text-gray-500 mb-2">السؤال ${currentQuestionIndex + 1} من ${quizQuestions.length}</p>
+                <h3 class="text-xl font-bold mb-4">${escapeHtml(currentQ.text)}</h3>
+                <div class="space-y-2 mb-6">
+                    ${currentQ.options.map((opt, idx) => `
+                        <div class="quiz-option ripple ${selectedAnswer === idx ? 'selected' : ''}" onclick="selectAnswer(${idx})">${escapeHtml(opt)}</div>
+                    `).join('')}
+                </div>
+                <div class="flex justify-between gap-3">
+                    <button class="px-6 py-2 rounded-full ${currentQuestionIndex === 0 ? 'opacity-50' : ''}" style="border: 1px solid var(--md-outline);" ${currentQuestionIndex === 0 ? 'disabled' : ''} onclick="prevQuestion()">السابق</button>
+                    ${currentQuestionIndex === quizQuestions.length - 1 ? 
+                        `<button class="px-6 py-2 rounded-full text-white" style="background: var(--md-primary);" onclick="calculateQuizResult()">عرض النتيجة</button>` : 
+                        `<button class="px-6 py-2 rounded-full text-white ${selectedAnswer === -1 ? 'opacity-50' : ''}" style="background: var(--md-primary);" ${selectedAnswer === -1 ? 'disabled' : ''} onclick="nextQuestion()">التالي</button>`
+                    }
+                </div>
+            `;
+            document.getElementById('quizContainer').innerHTML = html;
+        }
+
+        function selectAnswer(idx) {
+            userAnswers[currentQuestionIndex] = idx;
+            renderQuiz();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1 && userAnswers[currentQuestionIndex] !== -1) {
+                currentQuestionIndex++;
+                renderQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuiz();
+            }
+        }
+
+        function calculateQuizResult() {
+            let unanswered = [];
+            for (let i = 0; i < quizQuestions.length; i++) {
+                if (userAnswers[i] === -1) unanswered.push(i+1);
+            }
+            if (unanswered.length) {
+                Swal.fire({ title: "أسئلة غير مكتملة", text: `الرجاء الإجابة على الأسئلة: ${unanswered.join(', ')}`, icon: "warning" });
+                return;
+            }
+            
+            let total = 0, max = quizQuestions.length * 4;
+            for (let i = 0; i < quizQuestions.length; i++) {
+                total += quizQuestions[i].scores[userAnswers[i]];
+            }
+            const percentage = Math.round((total / max) * 100);
+            
+            let title = '', advice = '';
+            if (percentage <= 40) { title = '🟢 درجة إدمان منخفضة'; advice = 'ممتاز! حافظ على عاداتك الصحية'; }
+            else if (percentage <= 60) { title = '🟡 درجة إدمان متوسطة'; advice = 'حاول تقليل استخدام وسائل التواصل'; }
+            else { title = '🔴 درجة إدمان عالية'; advice = 'ننصحك باستشارة طبيب نفسي'; }
+            
+            document.getElementById('quizContainer').classList.add('hidden');
+            document.getElementById('quizResult').innerHTML = `
+                <div class="text-center p-6 rounded-2xl" style="background: linear-gradient(135deg, var(--md-primary), var(--md-primary-dark)); color: white;">
+                    <i class="fas fa-chart-line text-5xl mb-3"></i>
+                    <h3 class="text-2xl font-bold">${title}</h3>
+                    <div class="text-5xl font-bold my-4">${percentage}%</div>
+                    <p>${advice}</p>
+                    <button class="mt-4 px-6 py-2 rounded-full bg-white text-gray-800" onclick="resetQuiz()">إعادة الاختبار</button>
+                </div>
+            `;
+            document.getElementById('quizResult').classList.remove('hidden');
+            
+            db.ref('quiz_results').push().set({ percentage, date: new Date().toISOString() });
+        }
+
+        function resetQuiz() {
+            userAnswers.fill(-1);
+            currentQuestionIndex = 0;
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('quizResult').classList.add('hidden');
+            renderQuiz();
+        }
+
+        // Detail Page from URL params
+        async function showDetailPage(type, id) {
+            const main = document.getElementById('mainContent');
+            main.innerHTML = '<div class="shimmer-material h-96 rounded-2xl"></div>';
+            
+            const snap = await db.ref(`${type}/${id}`).once('value');
+            const item = snap.val();
+            if (!item) {
+                main.innerHTML = '<div class="text-center py-12">المحتوى غير موجود</div>';
+                return;
+            }
+            
+            document.title = `${item.title} | دوبامين`;
+            let typeName = '';
+            switch(type) {
+                case 'reports': typeName = 'تقرير علمي'; break;
+                case 'articles': typeName = 'مقالة'; break;
+                case 'news': typeName = 'خبر'; break;
+                case 'interviews': typeName = 'حوار'; break;
+                case 'investigations': typeName = 'تحقيق'; break;
+                case 'infographics': typeName = 'إنفوجرافيك'; break;
+                case 'videos': typeName = 'فيديو'; break;
+                default: typeName = type;
+            }
+            
+            const imageUrl = item.image || item.imageUrl || item.img || item.photo || '';
+            let contentHtml = '';
+            
+            if (type === 'videos') {
+                const embedUrl = getYouTubeEmbedUrl(item.videoUrl || '');
+                contentHtml = `<div class="video-container mb-4"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>${item.description || ''}`;
+            } else {
+                if (imageUrl) contentHtml += `<img src="${imageUrl}" class="w-full rounded-2xl my-4">`;
+                contentHtml += `<div class="detail-content">${formatContent(item.content)}</div>`;
+            }
+            
+            main.innerHTML = `
+                <div class="detail-container-material">
+                    <span class="inline-block px-3 py-1 rounded-full text-white text-xs mb-3" style="background: var(--md-primary);">${typeName}</span>
+                    <h1 class="text-2xl font-bold mb-2">${escapeHtml(item.title)}</h1>
+                    ${item.date ? `<p class="text-sm text-gray-500 mb-4"><i class="fas fa-calendar-alt ml-1"></i> ${escapeHtml(item.date)}</p>` : ''}
+                    ${contentHtml}
+                    <div class="border-t mt-6 pt-4 text-center" style="border-color: var(--md-outline);">
+                        <button onclick="navigateTo('home')" class="text-sm" style="color: var(--md-primary);">← العودة للرئيسية</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Search Functions
+        async function loadAllContentForSearch() {
+            if (allContentCache) return allContentCache;
+            const sections = ['reports', 'articles', 'news', 'interviews', 'investigations', 'infographics', 'videos'];
+            const sectionNames = { reports: 'تقارير', articles: 'مقالات', news: 'أخبار', interviews: 'حوارات', investigations: 'تحقيقات', infographics: 'إنفوجرافيك', videos: 'فيديو' };
+            let allContent = [];
+            for (const section of sections) {
+                const snap = await db.ref(section).once('value');
+                const data = snap.val();
+                if (data) {
+                    Object.entries(data).forEach(([id, item]) => {
+                        allContent.push({ id, type: section, typeName: sectionNames[section], title: item.title || '', description: item.summary || item.description || '', image: item.image || item.imageUrl || '' });
+                    });
+                }
+            }
+            allContentCache = allContent;
+            return allContentCache;
+        }
+
+        async function openSearchModal() {
+            await loadAllContentForSearch();
+            document.getElementById('searchModal').classList.add('show');
+            document.getElementById('searchInput').focus();
+        }
+
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('show');
+        }
+
+        async function performSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const allContent = await loadAllContentForSearch();
+            const results = query ? allContent.filter(item => item.title.toLowerCase().includes(query) || item.description.toLowerCase().includes(query)) : allContent;
+            const container = document.getElementById('searchResults');
+            
+            if (results.length === 0) {
+                container.innerHTML = '<div class="text-center py-12 text-gray-500"><i class="fas fa-search fa-3x mb-3"></i><p>لا توجد نتائج</p></div>';
+                return;
+            }
+            
+            container.innerHTML = results.map(item => `
+                <div class="flex gap-3 p-3 border-b border-gray-200 dark:border-gray-800 cursor-pointer ripple" onclick="openSearchResult('${item.type}', '${item.id}')">
+                    ${item.image ? `<img src="${item.image}" class="w-20 h-20 rounded-xl object-cover">` : `<div class="w-20 h-20 rounded-xl flex items-center justify-center" style="background: var(--md-primary);"><i class="fas fa-file-alt text-white text-2xl"></i></div>`}
+                    <div class="flex-1">
+                        <span class="text-xs px-2 py-0.5 rounded-full text-white" style="background: var(--md-primary);">${item.typeName}</span>
+                        <h4 class="font-bold mt-1">${escapeHtml(item.title)}</h4>
+                        <p class="text-sm text-gray-500 line-clamp-2">${escapeHtml(item.description.substring(0, 80))}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openSearchResult(type, id) {
+            closeSearchModal();
+            window.location.href = `?type=${type}&id=${id}`;
+        }
+
+        // Image Modal
+        function openImageModal(url) {
+            Swal.fire({
+                imageUrl: url,
+                imageAlt: 'صورة',
+                showConfirmButton: false,
+                showCloseButton: true,
+                background: 'var(--md-surface)',
+                padding: '1rem'
+            });
+        }
+
+        // "من نحن" popup
+        function openDopamineAbout() {
+            Swal.fire({
+                title: 'من نحن',
+                html: `
+                    <div class="text-right">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4Szi5noVCfNkvyLnal_p2SErNyXyJNGibXzQwjQ0RWb1DOZwdeef6n4dvIFWrDp8ELoQhFjMh6y98o9QdGk9otbZQLJPny2VggGzkYk1IwloCIqQIjGDurb0mmKJ-1buPaRfr09gwY7QuqrLBuYwCCNsxKuXfUA_E3CbAMMjSNBCQCz5llm5YKB4Zo7Q/s506/1777.jpg%20(1).jpeg" class="w-20 h-20 rounded-full mx-auto mb-3">
+                        <h3 class="font-bold text-xl mb-2">دوبامين</h3>
+                        <p class="text-sm">منصة علمية متخصصة في أبحاث الدوبامين وتأثير التقنية على الدماغ</p>
+                        <p class="text-xs text-gray-500 mt-2">مشروع تخرج – كلية الإعلام جامعة الأزهر</p>
+                        <div class="flex flex-wrap justify-center gap-2 mt-3">
+                            <span class="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-full">محمود وليد</span>
+                            <span class="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-full">محمد خليل</span>
+                            <span class="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-full">محمد الشحات</span>
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: 'إغلاق',
+                confirmButtonColor: '#2563eb',
+                background: 'var(--md-surface)',
+                color: 'var(--md-on-surface)'
+            });
+        }
+
+        // Scroll Listener for FAB
+        window.addEventListener('scroll', () => {
+            const scrollFab = document.getElementById('scrollFab');
+            if (window.scrollY > 300) {
+                scrollFab.classList.add('visible');
+            } else {
+                scrollFab.classList.remove('visible');
+            }
+        });
+
+        // Routing
+        function getParams() {
+            return { type: new URLSearchParams(window.location.search).get('type'), id: new URLSearchParams(window.location.search).get('id') };
+        }
+
+        async function route() {
+            const p = getParams();
+            if (p.type && p.id) {
+                await showDetailPage(p.type, p.id);
+            } else {
+                await showHome();
+            }
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.remove('dark');
+            setThemeColor('#ffffff');
+        } else {
+            document.body.classList.add('dark');
+            setThemeColor('#0f172a');
+        }
+
+        // Make global functions accessible
+        window.navigateTo = navigateTo;
+        window.toggleDrawer = toggleDrawer;
+        window.closeDrawer = closeDrawer;
+        window.openSearchModal = openSearchModal;
+        window.closeSearchModal = closeSearchModal;
+        window.performSearch = performSearch;
+        window.openSearchResult = openSearchResult;
+        window.openDetail = openDetail;
+        window.filterByCategory = filterByCategory;
+        window.clearFilter = clearFilter;
+        window.toggleTheme = toggleTheme;
+        window.openImageModal = openImageModal;
+        window.openDopamineAbout = openDopamineAbout;
+        window.selectAnswer = selectAnswer;
+        window.nextQuestion = nextQuestion;
+        window.prevQuestion = prevQuestion;
+        window.calculateQuizResult = calculateQuizResult;
+        window.resetQuiz = resetQuiz;
+        window.scrollToTop = scrollToTop;
+
+        route();
+    </script>
+</body>
+</html>
