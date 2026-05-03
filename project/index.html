@@ -1146,7 +1146,128 @@
                     </div>
                 </section>
             </div>
+<a href="https://dopaminea.com/app.html?Ex-Gm" target="_blank" class="dev-portal-btn" id="bubbleTrigger">
+  <i class="fas fa-laptop-code"></i>
+  <span>بوابة المطور</span>
+</a>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+.dev-portal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #0a0c15;
+  padding: 0 18px;
+  height: 60px;
+  border-radius: 60px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: system-ui, 'Segoe UI', monospace;
+  border: 1.8px solid #00aaff;
+  box-shadow: 0 0 12px #00aaff, inset 0 0 4px #00aaff44;
+  transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  cursor: pointer;
+  white-space: nowrap;
+  width: 60px;
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(2px);
+}
+
+.dev-portal-btn i {
+  font-size: 26px;
+  color: #00aaff;
+  transition: 0.25s ease;
+  filter: drop-shadow(0 0 4px #00aaff);
+  order: 1;
+}
+
+.dev-portal-btn span {
+  opacity: 0;
+  font-size: 0;
+  transition: all 0.3s ease;
+  order: 2;
+}
+
+/* hover: يظهر الزر بالكامل */
+.dev-portal-btn:hover {
+  width: 210px;
+  background: #060a12;
+  border-color: #44ccff;
+  box-shadow: 0 0 28px #00aaff, inset 0 0 10px #00aaff88;
+}
+
+.dev-portal-btn:hover i {
+  transform: scale(1.05);
+}
+
+.dev-portal-btn:hover span {
+  opacity: 1;
+  font-size: 16px;
+  margin-left: 4px;
+}
+
+/* الفقاقيع */
+.bubble {
+  position: absolute;
+  background: radial-gradient(circle, #00aaff, #2266cc);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatUp 0.85s ease-out forwards;
+  z-index: 5;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.2);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-28px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(1.4);
+  }
+}
+</style>
+
+<script>
+(function() {
+  const btn = document.getElementById('bubbleTrigger');
+  if (!btn) return;
+  
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // صنع الفقاقيع
+    for (let i = 0; i < 18; i++) {
+      const b = document.createElement('div');
+      b.classList.add('bubble');
+      const size = Math.random() * 14 + 4;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      const offsetX = (Math.random() - 0.5) * 70;
+      b.style.left = (btn.offsetWidth / 2 + offsetX) + 'px';
+      b.style.bottom = '0px';
+      b.style.animationDuration = (Math.random() * 0.4 + 0.6) + 's';
+      btn.appendChild(b);
+      setTimeout(() => b.remove(), 850);
+    }
+    
+    // فتح الرابط
+    setTimeout(() => {
+      window.open('https://dopaminea.com/app.html?Ex-Gm', '_blank');
+    }, 200);
+  });
+})();
+</script>
             <!-- تذييل النافذة -->
             <div class="mt-16 pt-8 border-t border-slate-100 text-center">
                 <p class="text-slate-400 text-sm font-medium">حقوق الملكية الفكرية &copy; 2026 مشروع تخرج دوبامين</p>
