@@ -1190,7 +1190,7 @@
         if (e.key === "Escape") closeDopamine();
     });
 </script>
-<!-- نهاية كود مشروع دوبامين الاحترافي -->
+<!-- نهاية ك  -->
 
 
 
@@ -1207,6 +1207,122 @@
                 <i class="fab fa-facebook-f"></i>
                 <span>تابعنا على فيسبوك</span>
             </a>
+            <a href="https://dopaminea.com/admin.html" target="_blank" class="bubble-btn" id="magicBtn">
+  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#00aaff" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M2 17L12 22L22 17" stroke="#00aaff" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M2 12L12 17L22 12" stroke="#00aaff" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>
+  <span>DV: elgoharyX</span>
+</a>
+
+<style>
+.bubble-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #0a0f1f, #0a1a2a);
+  border: 2px solid #00aaff;
+  border-radius: 60px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: system-ui, sans-serif;
+  overflow: visible;
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.4);
+}
+
+/* تأثير hover الرئيسي */
+.bubble-btn:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 0 35px rgba(0, 170, 255, 0.9), 0 5px 15px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #0a1225, #0a1f35);
+  border-color: #44ccff;
+  letter-spacing: 1px;
+}
+
+/* تأثير hover على الأيقونة */
+.bubble-btn:hover .btn-icon {
+  transform: rotate(5deg) scale(1.1);
+  filter: drop-shadow(0 0 8px #00aaff);
+}
+
+/* تأثير hover على النص */
+.bubble-btn:hover span {
+  text-shadow: 0 0 8px #00aaff;
+}
+
+.btn-icon {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s ease;
+}
+
+span {
+  transition: all 0.3s ease;
+}
+
+/* الفقاقيع */
+.bubble {
+  position: absolute;
+  background: radial-gradient(circle, #00aaff, #0066cc);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: bubbleRise 0.8s ease-out forwards;
+  box-shadow: 0 0 10px #00aaff;
+}
+
+@keyframes bubbleRise {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-35px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-90px) scale(1.6);
+  }
+}
+</style>
+
+<script>
+document.getElementById('magicBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  
+  // فقاقيع جميلة
+  for (let i = 0; i < 15; i++) {
+    const bubble = document.createElement('div');
+    bubble.classList.add('bubble');
+    
+    const size = Math.random() * 18 + 4;
+    bubble.style.width = size + 'px';
+    bubble.style.height = size + 'px';
+    
+    const offsetX = (Math.random() - 0.5) * 80;
+    bubble.style.left = (this.offsetWidth / 2 + offsetX) + 'px';
+    bubble.style.bottom = '0px';
+    
+    bubble.style.animationDelay = (Math.random() * 0.4) + 's';
+    
+    this.style.position = 'relative';
+    this.appendChild(bubble);
+    
+    setTimeout(() => bubble.remove(), 900);
+  }
+  
+  setTimeout(() => {
+    window.open('https://dopaminea.com/app.html?Ex-Gm', '_blank');
+  }, 200);
+});
+</script>
             <p id="footerText" class="text-gray-500 text-xs mt-6">© 2026 دوبامين - جميع الحقوق محفوظة</p>
         </div>
     </footer>
